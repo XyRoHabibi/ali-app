@@ -289,7 +289,7 @@ export default function KarirPage() {
                     <div className="max-w-[1200px] mx-auto">
                         <div className="text-center mb-16 reveal-up">
                             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-                                Kenapa <span className="text-gradient-brand">Bergabung</span> dengan Kami?
+                                Kenapa <span className="text-gradient">Bergabung</span> dengan Kami?
                             </h2>
                             <p className="text-lg text-gray-500 font-medium max-w-2xl mx-auto">
                                 Kami menawarkan lebih dari sekadar pekerjaan. Ini adalah kesempatan untuk bertumbuh dan membuat dampak nyata.
@@ -381,7 +381,7 @@ export default function KarirPage() {
                     <div className="max-w-[1200px] mx-auto">
                         <div className="text-center mb-16 reveal-up">
                             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-                                Posisi <span className="text-gradient-brand">Tersedia</span>
+                                Posisi <span className="text-gradient">Tersedia</span>
                             </h2>
                             <p className="text-lg text-gray-500 font-medium max-w-2xl mx-auto">
                                 Temukan peran yang sesuai dengan passion dan keahlian Anda
