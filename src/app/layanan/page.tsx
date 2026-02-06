@@ -142,6 +142,16 @@ export default function LayananPage() {
         const revealElements = sectionRef.current?.querySelectorAll(".reveal-up");
         revealElements?.forEach((el) => observer.observe(el));
 
+        // Trigger immediately for elements already in viewport
+        setTimeout(() => {
+            revealElements?.forEach((el) => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight) {
+                    el.classList.add("active");
+                }
+            });
+        }, 100);
+
         return () => observer.disconnect();
     }, []);
 
@@ -184,8 +194,8 @@ export default function LayananPage() {
                                             key={cat.id}
                                             onClick={() => setActiveCategory(cat.id)}
                                             className={`category-btn whitespace-nowrap px-6 py-3 rounded-xl text-left text-xs md:text-sm font-bold transition-all ${activeCategory === cat.id
-                                                    ? "bg-[#2a6ba7] text-white shadow-[0_10px_20px_rgba(42,107,167,0.2)]"
-                                                    : "hover:bg-gray-100"
+                                                ? "bg-[#2a6ba7] text-white shadow-[0_10px_20px_rgba(42,107,167,0.2)]"
+                                                : "hover:bg-gray-100"
                                                 }`}
                                         >
                                             {cat.label}
