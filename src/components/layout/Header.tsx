@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { usePathname } from "next/navigation"; // 1. Import usePathname
 
 const navLinks = [
     { href: "/layanan", label: "Layanan" },
@@ -14,6 +15,10 @@ const navLinks = [
 
 export default function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const pathname = usePathname(); // 2. Ambil path URL saat ini
+
+    // Helper sederhana untuk cek status aktif (bisa disesuaikan jika ingin support sub-menu)
+    const isActive = (path: string) => pathname === path;
 
     return (
         <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-[#e9edf1] transition-all duration-300">
@@ -38,10 +43,16 @@ export default function Header() {
                         <Link
                             key={link.href}
                             href={link.href}
-                            className="text-sm font-bold hover:text-[#2a6ba7] transition-all relative group py-2"
+                            // 3. Logika CSS: Jika aktif, warna biru. Jika tidak, warna default (hitam/abu).
+                            className={`text-sm font-bold transition-all relative group py-2 ${isActive(link.href) ? "text-[#2a6ba7]" : "text-gray-600 hover:text-[#2a6ba7]"
+                                }`}
                         >
                             {link.label}
-                            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#2a6ba7] transition-all group-hover:w-full" />
+                            {/* 4. Logika Garis Bawah: Jika aktif, lebar 100%. Jika tidak, lebar 0 (muncul saat hover). */}
+                            <span
+                                className={`absolute bottom-0 left-0 h-0.5 bg-[#2a6ba7] transition-all duration-300 ${isActive(link.href) ? "w-full" : "w-0 group-hover:w-full"
+                                    }`}
+                            />
                         </Link>
                     ))}
                 </nav>
@@ -50,7 +61,10 @@ export default function Header() {
                 <div className="flex items-center gap-4">
                     <Link
                         href="/dashboard"
-                        className="hidden lg:flex text-sm font-black text-[#2a6ba7] bg-[#2a6ba7]/10 px-4 py-2.5 rounded-xl hover:bg-[#2a6ba7] hover:text-white transition-all"
+                        className={`hidden lg:flex text-sm font-black px-4 py-2.5 rounded-xl transition-all ${isActive("/dashboard")
+                            ? "bg-[#2a6ba7] text-white"
+                            : "text-[#2a6ba7] bg-[#2a6ba7]/10 hover:bg-[#2a6ba7] hover:text-white"
+                            }`}
                     >
                         Dashboard
                     </Link>
@@ -91,7 +105,7 @@ export default function Header() {
             >
                 <div className="flex items-center justify-between mb-12">
                     <Image
-                        src="/images/logo-color.svg"
+                        src="/images/logo-color.svg" // Pastikan extension sesuai (png/svg)
                         alt="ALI Logo"
                         width={160}
                         height={40}
@@ -104,16 +118,19 @@ export default function Header() {
                         <span className="material-symbols-outlined">close</span>
                     </button>
                 </div>
-                <nav className="flex flex-col gap-6 text-xl font-black text-gray-900 mb-auto">
+                <nav className="flex flex-col gap-6 text-xl font-black mb-auto">
                     {navLinks.map((link) => (
                         <Link
                             key={link.href}
                             href={link.href}
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="flex items-center justify-between group py-2 border-b border-gray-100"
+                            // 5. Mobile Active State: Ubah warna teks jadi biru jika aktif
+                            className={`flex items-center justify-between group py-2 border-b border-gray-100 ${isActive(link.href) ? "text-[#2a6ba7]" : "text-gray-900"
+                                }`}
                         >
                             {link.label}
-                            <span className="material-symbols-outlined text-[#2a6ba7]">
+                            {/* Ubah juga warna panah jika aktif */}
+                            <span className={`material-symbols-outlined ${isActive(link.href) ? "text-[#2a6ba7]" : "text-gray-400"}`}>
                                 chevron_right
                             </span>
                         </Link>
@@ -121,7 +138,8 @@ export default function Header() {
                     <Link
                         href="/dashboard"
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="flex items-center justify-between group py-2 border-b border-gray-100 text-[#2a6ba7]"
+                        className={`flex items-center justify-between group py-2 border-b border-gray-100 ${isActive("/dashboard") ? "text-[#2a6ba7]" : "text-gray-900"
+                            }`}
                     >
                         Dashboard
                         <span className="material-symbols-outlined">dashboard</span>

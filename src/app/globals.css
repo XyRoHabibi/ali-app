@@ -69,6 +69,36 @@ body {
   background: linear-gradient(45deg, #f3b444, #2a6ba7);
 }
 
+/* ===== Featured Carousel ===== */
+.featured-slide {
+  transition: opacity 0.8s ease-in-out;
+}
+
+.duration-800 {
+  transition-duration: 800ms;
+}
+
+/* ===== Career Page Styles ===== */
+.job-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.job-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(42, 107, 167, 0.25);
+}
+
+.benefit-card:hover .benefit-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #2a6ba7 0%, #f3b444 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 /* ===== Custom Animations ===== */
 @keyframes float {
 
