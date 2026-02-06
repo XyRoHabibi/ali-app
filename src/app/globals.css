@@ -53,6 +53,22 @@ body {
   transform: translateY(0);
 }
 
+/* ===== Brand Gradients ===== */
+.text-gradient-brand {
+  background: linear-gradient(to right, #2a6ba7, #f3b444);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-gradient-brand {
+  background: linear-gradient(135deg, #2a6ba7 0%, #1a2c3d 100%);
+}
+
+.bg-gradient-border {
+  background: linear-gradient(45deg, #f3b444, #2a6ba7);
+}
+
 /* ===== Custom Animations ===== */
 @keyframes float {
 
