@@ -19,8 +19,29 @@ export default function CTA() {
             { threshold: 0.1 }
         );
 
+        // Observe the section itself if it has reveal-up
+        if (sectionRef.current?.classList.contains("reveal-up")) {
+            observer.observe(sectionRef.current);
+        }
+
         const revealElements = sectionRef.current?.querySelectorAll(".reveal-up");
         revealElements?.forEach((el) => observer.observe(el));
+
+        // Trigger immediately for elements already in viewport
+        setTimeout(() => {
+            if (sectionRef.current) {
+                const rect = sectionRef.current.getBoundingClientRect();
+                if (rect.top < window.innerHeight) {
+                    sectionRef.current.classList.add("active");
+                }
+            }
+            revealElements?.forEach((el) => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight) {
+                    el.classList.add("active");
+                }
+            });
+        }, 100);
 
         return () => observer.disconnect();
     }, []);
