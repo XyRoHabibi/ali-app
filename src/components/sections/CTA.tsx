@@ -51,7 +51,7 @@ export default function CTA() {
             <div className="max-w-[1200px] mx-auto px-0">
                 <div className="bg-gradient-to-br from-[#2a6ba7] to-[#1a2c3d] rounded-[3rem] p-10 md:p-20 text-white flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16 overflow-hidden relative shadow-2xl shadow-[#2a6ba7]/30">
                     {/* Decor */}
-                    <div className="absolute right-0 top-0 opacity-10 translate-x-1/4 -translate-y-1/4 animate-float pointer-events-none">
+                    <div className="absolute right-30 top-70 opacity-10 translate-x-1/4 -translate-y-1/4 animate-float pointer-events-none">
                         <Image
                             src="/images/logo-color.png"
                             alt="ALI Logo BG"
