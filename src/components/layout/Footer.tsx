@@ -99,7 +99,7 @@ export default function Footer() {
                                 location_on
                             </span>
                             <span className="leading-tight">
-                                Jl. Boulevard Raya No. 12, Jakarta Selatan, Indonesia
+                                Jl. A. P. Pettarani No.9, Sinrijala, Kec. Panakkukang, Kota Makassar, Sulawesi Selatan, Indonesia
                             </span>
                         </li>
                         <li className="flex items-center gap-3">

@@ -7,7 +7,7 @@ export default function FloatingWhatsApp() {
             target="_blank"
             className="fixed bottom-8 right-8 z-50 size-14 bg-green-500 text-white rounded-full flex items-center justify-center shadow-xl shadow-green-500/30 hover:scale-110 transition-transform active:scale-95"
         >
-            <span className="material-symbols-outlined text-3xl">chat</span>
+            <i className="fab fa-whatsapp text-3xl"></i>
         </Link>
     );
 }
