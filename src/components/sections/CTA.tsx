@@ -53,7 +53,7 @@ export default function CTA() {
                     {/* Decor */}
                     <div className="absolute right-0 top-0 opacity-10 translate-x-1/4 -translate-y-1/4 animate-float pointer-events-none">
                         <Image
-                            src="/images/logo-color.svg"
+                            src="/images/logo-color.png"
                             alt="ALI Logo BG"
                             width={500}
                             height={500}
