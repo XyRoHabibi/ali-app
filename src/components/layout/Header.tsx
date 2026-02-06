@@ -1,0 +1,147 @@
+"use client";
+
+import Link from "next/link";
+import Image from "next/image";
+import { useState } from "react";
+
+const navLinks = [
+    { href: "/layanan", label: "Layanan" },
+    { href: "/harga", label: "Harga" },
+    { href: "/tentang", label: "Tentang" },
+    { href: "/blog", label: "Blog" },
+    { href: "/karir", label: "Karir" },
+];
+
+export default function Header() {
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    return (
+        <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-[#e9edf1] transition-all duration-300">
+            <div className="max-w-[1200px] mx-auto px-6 h-20 flex items-center justify-between">
+                {/* Logo */}
+                <Link href="/" className="flex items-center gap-2 group shrink-0">
+                    <span className="text-2xl font-black tracking-tighter transition-all group-hover:scale-105">
+                        <Image
+                            src="/images/logo-color.png"
+                            alt="ALI Logo"
+                            width={200}
+                            height={50}
+                            className="h-24 w-auto object-contain"
+                            priority
+                        />
+                    </span>
+                </Link>
+
+                {/* Desktop Nav */}
+                <nav className="hidden md:flex items-center gap-8 lg:gap-10">
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.href}
+                            href={link.href}
+                            className="text-sm font-bold hover:text-[#2a6ba7] transition-all relative group py-2"
+                        >
+                            {link.label}
+                            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#2a6ba7] transition-all group-hover:w-full" />
+                        </Link>
+                    ))}
+                </nav>
+
+                {/* Actions */}
+                <div className="flex items-center gap-4">
+                    <Link
+                        href="/dashboard"
+                        className="hidden lg:flex text-sm font-black text-[#2a6ba7] bg-[#2a6ba7]/10 px-4 py-2.5 rounded-xl hover:bg-[#2a6ba7] hover:text-white transition-all"
+                    >
+                        Dashboard
+                    </Link>
+                    <Link
+                        href="https://wa.me/6285333338818"
+                        target="_blank"
+                        className="hidden sm:flex items-center justify-center rounded-xl h-11 px-6 bg-gradient-to-r from-[#2a6ba7] to-blue-600 text-white text-sm font-black transition-all hover:shadow-lg hover:shadow-[#2a6ba7]/30 hover:-translate-y-0.5 active:scale-95"
+                    >
+                        Mulai Sekarang
+                    </Link>
+
+                    {/* Language Toggle */}
+                    <button className="hidden md:flex items-center justify-center h-10 px-3 rounded-xl bg-gray-50 border border-gray-200 hover:bg-gray-100 transition-all cursor-pointer min-w-[70px]">
+                        <span className="lang-flag text-xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 20" width="18" height="18" role="img" aria-label="Indonesia">
+                                <rect width="28" height="20" fill="#fff" />
+                                <rect width="28" height="10" y="0" fill="#d80027" />
+                            </svg>
+                        </span>
+                        <span className="ml-2 text-sm font-bold">ID</span>
+                        <span className="material-symbols-outlined text-[10px] opacity-50">expand_more</span>
+                    </button>
+
+                    {/* Mobile Menu Toggle */}
+                    <button
+                        onClick={() => setIsMobileMenuOpen(true)}
+                        className="md:hidden size-11 flex items-center justify-center rounded-xl bg-gray-50 text-[#2a6ba7] transition-all hover:bg-gray-100"
+                    >
+                        <span className="material-symbols-outlined text-2xl">menu</span>
+                    </button>
+                </div>
+            </div>
+
+            {/* Mobile Menu Overlay */}
+            <div
+                className={`md:hidden fixed inset-0 z-[999] bg-white p-6 flex flex-col h-screen overflow-y-auto transition-transform duration-300 ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+                    }`}
+            >
+                <div className="flex items-center justify-between mb-12">
+                    <Image
+                        src="/images/logo-color.svg"
+                        alt="ALI Logo"
+                        width={160}
+                        height={40}
+                        className="h-10 w-auto"
+                    />
+                    <button
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="size-11 flex items-center justify-center rounded-xl bg-gray-50"
+                    >
+                        <span className="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <nav className="flex flex-col gap-6 text-xl font-black text-gray-900 mb-auto">
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.href}
+                            href={link.href}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="flex items-center justify-between group py-2 border-b border-gray-100"
+                        >
+                            {link.label}
+                            <span className="material-symbols-outlined text-[#2a6ba7]">
+                                chevron_right
+                            </span>
+                        </Link>
+                    ))}
+                    <Link
+                        href="/dashboard"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center justify-between group py-2 border-b border-gray-100 text-[#2a6ba7]"
+                    >
+                        Dashboard
+                        <span className="material-symbols-outlined">dashboard</span>
+                    </Link>
+                </nav>
+                <div className="flex flex-col gap-4 mt-8">
+                    <button className="w-full h-12 flex items-center justify-center bg-gray-50 rounded-xl font-bold">
+                        <span className="lang-flag text-xl mr-2">🇮🇩</span>
+                        Bahasa Indonesia
+                    </button>
+                    <Link
+                        href="https://wa.me/6285333338818"
+                        target="_blank"
+                        className="w-full h-14 bg-[#2a6ba7] text-white flex items-center justify-center rounded-2xl font-black gap-2 shadow-xl shadow-[#2a6ba7]/20"
+                    >
+                        <span className="material-symbols-outlined">chat</span>
+                        Chat Konsultan
+                    </Link>
+                </div>
+            </div>
+        </header>
+    );
+}

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100" width="400" height="100">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2a6ba7"/>
+      <stop offset="100%" style="stop-color:#1e4a7a"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Icon Box -->
+  <rect x="10" y="15" width="70" height="70" rx="15" fill="url(#logoGradient)"/>
+  
+  <!-- Shield Icon -->
+  <path d="M45 30 L60 35 L60 50 Q60 60 45 68 Q30 60 30 50 L30 35 Z" fill="white" opacity="0.9"/>
+  <path d="M40 50 L43 53 L52 44" stroke="#2a6ba7" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Text -->
+  <text x="95" y="45" font-family="Arial, sans-serif" font-size="28" font-weight="900" fill="#2a6ba7">AKSES</text>
+  <text x="95" y="75" font-family="Arial, sans-serif" font-size="28" font-weight="900" fill="#f3b444">LEGAL</text>
+  <text x="220" y="75" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#666">INDONESIA</text>
+</svg>

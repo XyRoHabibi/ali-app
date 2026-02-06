@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0f7ff"/>
+      <stop offset="100%" style="stop-color:#e0ecf7"/>
+    </linearGradient>
+    <linearGradient id="primaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2a6ba7"/>
+      <stop offset="100%" style="stop-color:#1e4a7a"/>
+    </linearGradient>
+    <linearGradient id="secondaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f3b444"/>
+      <stop offset="100%" style="stop-color:#d9982b"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="500" height="500" rx="40" fill="url(#bgGradient)"/>
+  
+  <!-- Decorative Elements -->
+  <circle cx="400" cy="100" r="80" fill="#2a6ba7" opacity="0.1"/>
+  <circle cx="100" cy="400" r="60" fill="#f3b444" opacity="0.15"/>
+  
+  <!-- Main Document Icon -->
+  <rect x="150" y="100" width="200" height="260" rx="20" fill="white" stroke="#e0e0e0" stroke-width="2"/>
+  
+  <!-- Document Header -->
+  <rect x="150" y="100" width="200" height="60" rx="20" fill="url(#primaryGradient)"/>
+  <rect x="150" y="140" width="200" height="20" fill="url(#primaryGradient)"/>
+  
+  <!-- Shield Icon on Document -->
+  <path d="M250 115 L280 125 L280 150 Q280 170 250 185 Q220 170 220 150 L220 125 Z" fill="white" opacity="0.9"/>
+  <path d="M238 150 L245 157 L262 140" stroke="#2a6ba7" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Document Lines -->
+  <rect x="175" y="190" width="150" height="12" rx="6" fill="#e8e8e8"/>
+  <rect x="175" y="215" width="120" height="12" rx="6" fill="#e8e8e8"/>
+  <rect x="175" y="240" width="140" height="12" rx="6" fill="#e8e8e8"/>
+  <rect x="175" y="265" width="100" height="12" rx="6" fill="#e8e8e8"/>
+  
+  <!-- Stamp/Seal -->
+  <circle cx="300" cy="310" r="35" fill="url(#secondaryGradient)" opacity="0.9"/>
+  <text x="300" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">LEGAL</text>
+  <text x="300" y="320" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">RESMI</text>
+  
+  <!-- Bottom Text -->
+  <text x="250" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="900" fill="#2a6ba7">Legalitas Bisnis</text>
+  <text x="250" y="450" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="600" fill="#666">Mudah &amp; Terpercaya</text>
+</svg>
