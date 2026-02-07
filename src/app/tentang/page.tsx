@@ -103,7 +103,7 @@ export default function TentangPage() {
                     {/* Background Logo */}
                     <div className="absolute right-0 top-0 opacity-10 translate-x-1/4 -translate-y-1/4">
                         <Image
-                            src="/images/logo-color.svg"
+                            src="/images/logo-color.png"
                             alt="ALI Logo BG"
                             width={800}
                             height={400}

@@ -275,7 +275,7 @@ export default function KarirPage() {
                     {/* Decorative Logo */}
                     <div className="absolute right-0 top-0 opacity-5 translate-x-1/4 -translate-y-1/4">
                         <Image
-                            src="/images/logo-color.svg"
+                            src="/images/logo-putih.png"
                             alt=""
                             width={600}
                             height={300}

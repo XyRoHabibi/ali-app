@@ -105,7 +105,7 @@ export default function DashboardPage() {
                 <div className="p-6">
                     <Link href="/" className="flex items-center gap-2 group">
                         <Image
-                            src="/images/logo-color.svg"
+                            src="/images/logo-color.png"
                             alt="ALI Logo"
                             width={160}
                             height={96}
@@ -120,8 +120,8 @@ export default function DashboardPage() {
                             key={item.href}
                             href={item.href}
                             className={`flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all ${item.active
-                                    ? "text-[#2a6ba7] bg-[#2a6ba7]/5"
-                                    : "text-slate-500 hover:bg-slate-50"
+                                ? "text-[#2a6ba7] bg-[#2a6ba7]/5"
+                                : "text-slate-500 hover:bg-slate-50"
                                 }`}
                         >
                             <span className="material-symbols-outlined">{item.icon}</span>
