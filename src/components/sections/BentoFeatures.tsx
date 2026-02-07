@@ -101,9 +101,6 @@ export default function BentoFeatures() {
                         <p className="text-white/60 text-sm relative z-10">
                             Enkripsi bank-grade untuk dokumen Anda.
                         </p>
-                        <span className="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl text-white/5">
-                            lock
-                        </span>
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" className="absolute -bottom-5 -right-4 w-[130px] h-[130px] text-white/5 group-hover:rotate-12 transition-transform duration-700 fill-current" width="24px" fill="#e3e3e3"><path d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920q83 0 141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80H240Zm0-80h480v-400H240v400Zm296.5-143.5Q560-327 560-360t-23.5-56.5Q513-440 480-440t-56.5 23.5Q400-393 400-360t23.5 56.5Q447-280 480-280t56.5-23.5ZM360-640h240v-80q0-50-35-85t-85-35q-50 0-85 35t-35 85v80ZM240-160v-400 400Z" /></svg>
                     </div>
                 </div>
