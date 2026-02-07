@@ -74,6 +74,16 @@ export default function BentoFeatures() {
                                 regulasi.
                             </p>
                         </div>
+
+                        <div className="mt-6 md:mt-8 space-y-4 relative z-10">
+                            <div className="flex items-center gap-4 bg-white/30 p-4 rounded-xl md:rounded-2xl backdrop-blur-sm border border-white/40">
+                                <div className="size-8 md:size-10 rounded-full bg-[#2a6ba7] flex items-center justify-center text-white">
+                                    <span className="material-symbols-outlined text-base md:text-xl italic">gavel</span>
+                                </div>
+                                <span className="text-[#2a6ba7] font-black text-xs md:text-sm" data-i18n="bento_2_badge">Jaminan Perlindungan Hukum</span>
+                            </div>
+                        </div>
+
                         <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/10 to-transparent" />
                     </div>
 
