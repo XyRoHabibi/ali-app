@@ -5,48 +5,48 @@ import Image from "next/image";
 
 const googleReviewsData = [
     {
-        author_name: "Dimas Anggara",
-        profile_photo_url: null,
+        author_name: "Widhi Raditya",
+        profile_photo_url: "https://lh3.googleusercontent.com/a-/ALV-UjXfX1BIePv5U99cLuUQTjG5clvGrAys4TsRHJzOoy5AAz85Tg=w72-h72-p-rp-mo-br100",
         rating: 5,
-        relative_time_description: "2 hari lalu",
-        text: "Pelayanan sangat memuaskan! Mengurus PT Perorangan ternyata semudah itu lewat Akses Legal. Admin fast respon dan sangat edukatif menjelaskan detailnya. Dokumen selesai tepat waktu sesuai janji.",
-        initial: "D",
+        relative_time_description: "2 bulan lalu",
+        text: "Terima kasih sudah membantu untuk proses Merek saya hingga beres. Super helpful dan satset. Sukses terus",
+        initial: "W",
         color: "bg-blue-500",
     },
     {
-        author_name: "Sarah Wijaya",
-        profile_photo_url: null,
+        author_name: "Safina Ferdy",
+        profile_photo_url: "https://lh3.googleusercontent.com/a-/ALV-UjVKFbTspX4FCHlXUNOh9oiPYP3hX6LCaj3brDjueRmtxRK_zzamHQ=w72-h72-p-rp-mo-br100",
         rating: 5,
-        relative_time_description: "1 minggu lalu",
-        text: "The best legal partner! Awalnya ragu karena online, tapi ternyata profesional banget. Dashboard monitoringnya sangat membantu buat tracking progres NIB. Sukses terus ALI!",
+        relative_time_description: "seminggu lalu",
+        text: "Pelayanan cepat dan memuaskan",
         initial: "S",
         color: "bg-purple-500",
     },
     {
-        author_name: "Budi Santoso",
-        profile_photo_url: null,
+        author_name: "Hairunniza",
+        profile_photo_url: "https://lh3.googleusercontent.com/a-/ALV-UjXUQ6zqwcxxg6IKe3w5vuqv6Pz35NncSrLxJrlSCHKCG8pvUFTiRA=w72-h72-p-rp-mo-br100",
         rating: 5,
-        relative_time_description: "3 minggu lalu",
-        text: "Harga paling masuk akal dibanding biro jasa lain. Transparan di awal, gak ada biaya tambahan aneh-aneh. Recommended buat UMKM yang mau naik kelas.",
-        initial: "B",
+        relative_time_description: "sebulan lalu",
+        text: "Pelayananya cepat, rekomended bgt✨💙 …",
+        initial: "H",
         color: "bg-green-500",
     },
     {
-        author_name: "Citra Lestari",
-        profile_photo_url: null,
+        author_name: "Dedes Fajriyanti",
+        profile_photo_url: "https://lh3.googleusercontent.com/a-/ALV-UjW_SoQBxeXdGvo5SzoNCiWHRNknuqKyN9x7wuixT-RPM5L5ptCd7Q=w72-h72-p-rp-mo-br100",
         rating: 5,
-        relative_time_description: "1 bulan lalu",
-        text: "Urus HAKI Brand lancar jaya. Tim legalnya sangat paham klasifikasi merek, jadi meminimalisir resiko ditolak DJKI. Terima kasih bantuannya!",
-        initial: "C",
+        relative_time_description: "Diedit seminggu lalu",
+        text: "satset banget. CS nya sangat membantu",
+        initial: "D",
         color: "bg-orange-500",
     },
     {
-        author_name: "Reza Rahardian",
-        profile_photo_url: null,
+        author_name: "aang andi",
+        profile_photo_url: "https://lh3.googleusercontent.com/a-/ALV-UjVvI9mFk6ma6lK5eUmTACmFcfay6IMouZXEUHfRYapaQH0HWEhD=w72-h72-p-rp-mo-ba6-br100",
         rating: 5,
-        relative_time_description: "1 bulan lalu",
-        text: "Sangat profesional. Konsultasi gratisnya daging banget, bukan sekadar jualan tapi kasih solusi buat struktur perusahaan saya. Mantap!",
-        initial: "R",
+        relative_time_description: "2 tahun lalu",
+        text: "pelayanan cukup memuaskan..",
+        initial: "A",
         color: "bg-red-500",
     },
 ];
@@ -140,7 +140,7 @@ export default function Testimonials() {
                             <span className="text-[#2a6ba7]">Yang Sudah Legal?</span>
                         </h2>
                         <div className="flex items-center gap-4">
-                            <span className="text-4xl font-black text-gray-900">4.9</span>
+                            <span className="text-4xl font-black text-gray-900">5.0</span>
                             <div className="flex flex-col">
                                 <div className="flex text-[#fbbf24]">
                                     {[...Array(5)].map((_, i) => (
@@ -153,7 +153,7 @@ export default function Testimonials() {
                                     ))}
                                 </div>
                                 <p className="text-sm text-gray-500 font-medium">
-                                    Berdasarkan 250+ Ulasan
+                                    Berdasarkan 34+ Ulasan
                                 </p>
                             </div>
                         </div>
@@ -189,11 +189,21 @@ export default function Testimonials() {
                             >
                                 <div className="flex items-start justify-between">
                                     <div className="flex items-center gap-3">
-                                        <div
-                                            className={`size-10 rounded-full ${review.color} text-white flex items-center justify-center font-bold text-lg`}
-                                        >
-                                            {review.initial}
-                                        </div>
+                                        {review.profile_photo_url ? (
+                                            <Image
+                                                src={review.profile_photo_url}
+                                                alt={review.author_name}
+                                                width={40}
+                                                height={40}
+                                                className="rounded-full object-cover size-10"
+                                            />
+                                        ) : (
+                                            <div
+                                                className={`size-10 rounded-full ${review.color} text-white flex items-center justify-center font-bold text-lg`}
+                                            >
+                                                {review.initial}
+                                            </div>
+                                        )}
                                         <div>
                                             <p className="font-bold text-gray-900 text-sm">
                                                 {review.author_name}

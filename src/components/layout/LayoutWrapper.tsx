@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import FloatingWhatsApp from "@/components/ui/FloatingWhatsApp";
+import { ReactLenis } from 'lenis/react';
 
 export default function LayoutWrapper({
     children,
@@ -23,6 +24,7 @@ export default function LayoutWrapper({
     // Default layout with Header and Footer
     return (
         <>
+            <ReactLenis root />
             <Header />
             <main className="relative">{children}</main>
             <Footer />

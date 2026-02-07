@@ -20,13 +20,13 @@ export default function Footer() {
         <footer className="bg-white border-t border-gray-100 py-16">
             <div className="max-w-[1200px] mx-auto px-6 grid md:grid-cols-4 gap-12">
                 {/* Brand & Social */}
-                <div className="space-y-6">
+                <div className="space-y-1">
                     <Image
-                        src="/images/logo-color.svg"
+                        src="/images/logo-color.png"
                         alt="ALI Logo Footer"
                         width={160}
                         height={40}
-                        className="h-10 w-auto object-contain"
+                        className="h-25 w-auto object-contain"
                     />
                     <p className="text-sm text-gray-500 font-medium leading-relaxed">
                         Partner legalitas bisnis terpercaya di Indonesia. Membantu UMKM naik
@@ -34,21 +34,21 @@ export default function Footer() {
                     </p>
 
                     {/* Social Icons */}
-                    <div className="flex gap-4 pt-2">
+                    <div className="flex gap-4 pt-6">
                         <Link
-                            href="#"
+                            href="https://www.instagram.com/akseslegal.id?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
                             className="size-10 rounded-full bg-gray-100 flex items-center justify-center text-[#2a6ba7] hover:bg-[#2a6ba7] hover:text-white transition-all"
                         >
                             <i className="fa-brands fa-instagram"></i>
                         </Link>
                         <Link
-                            href="#"
+                            href="https://www.facebook.com/akseslegal.id/"
                             className="size-10 rounded-full bg-gray-100 flex items-center justify-center text-[#2a6ba7] hover:bg-[#2a6ba7] hover:text-white transition-all"
                         >
                             <i className="fa-brands fa-facebook"></i>
                         </Link>
                         <Link
-                            href="#"
+                            href="https://www.tiktok.com/@akseslegal.id?is_from_webapp=1&sender_device=pc"
                             className="size-10 rounded-full bg-gray-100 flex items-center justify-center text-[#2a6ba7] hover:bg-[#2a6ba7] hover:text-white transition-all"
                         >
                             <i className="fa-brands fa-tiktok"></i>
