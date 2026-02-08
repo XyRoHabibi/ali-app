@@ -118,9 +118,8 @@ export default function Hero() {
                                     width={40}
                                     height={40}
                                 />
-                                <Image
+                                <img src="https://skksbu.akseslegal.id/img/testimoni1.jpg"
                                     className="w-10 h-10 rounded-full border-2 border-white"
-                                    src="https://storage.googleapis.com/download/storage/v1/b/akses-legal-indonesia.appspot.com/o/documents%2F1678338514875-74ff22d3-0537-4452-8627-e4f7173159fc.jpg?generation=1678338515641734&alt=media"
                                     alt="Client"
                                     width={40}
                                     height={40}
