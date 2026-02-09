@@ -26,7 +26,7 @@ export default function LayoutWrapper({
         <div className="flex flex-col min-h-screen w-full overflow-x-hidden">
             <ReactLenis root />
             <Header />
-            <main className="relative flex-grow w-full overflow-x-hidden">{children}</main>
+            <main className="relative flex-grow w-full overflow-x-hidden pt-20">{children}</main>
             <Footer />
             <FloatingWhatsApp />
         </div>
