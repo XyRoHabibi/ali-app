@@ -17,18 +17,27 @@ export default function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const pathname = usePathname(); // 2. Ambil path URL saat ini
 
-    // Lock body scroll when mobile menu is open
+    // Lock body scroll logic
     useEffect(() => {
         if (isMobileMenuOpen) {
+            // Lock regular scroll
             document.body.style.overflow = "hidden";
+            document.body.style.touchAction = "none"; // Prevent touch scrolling
             document.body.style.paddingRight = "var(--removed-body-scroll-width)"; // Handle scrollbar jump if any
+            // Lock Lenis scroll if it's active on the html/body
+            document.documentElement.classList.add('lenis-stopped');
         } else {
             document.body.style.overflow = "";
+            document.body.style.touchAction = "";
             document.body.style.paddingRight = "";
+            document.documentElement.classList.remove('lenis-stopped');
         }
+
         return () => {
             document.body.style.overflow = "";
+            document.body.style.touchAction = "";
             document.body.style.paddingRight = "";
+            document.documentElement.classList.remove('lenis-stopped');
         };
     }, [isMobileMenuOpen]);
 
@@ -115,7 +124,8 @@ export default function Header() {
 
             {/* Mobile Menu Overlay */}
             <div
-                className={`md:hidden fixed inset-0 z-[999] bg-white p-6 flex flex-col h-screen overflow-y-auto transition-all duration-300 ${isMobileMenuOpen
+                data-lenis-prevent
+                className={`md:hidden fixed inset-0 z-[9999] bg-white p-6 flex flex-col h-[100dvh] overflow-y-auto overscroll-none transition-all duration-300 ${isMobileMenuOpen
                         ? "translate-x-0 opacity-100 visible"
                         : "translate-x-full opacity-0 invisible pointer-events-none"
                     }`}
