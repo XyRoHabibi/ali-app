@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation"; // 1. Import usePathname
 
 const navLinks = [
@@ -16,6 +16,21 @@ const navLinks = [
 export default function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const pathname = usePathname(); // 2. Ambil path URL saat ini
+
+    // Lock body scroll when mobile menu is open
+    useEffect(() => {
+        if (isMobileMenuOpen) {
+            document.body.style.overflow = "hidden";
+            document.body.style.paddingRight = "var(--removed-body-scroll-width)"; // Handle scrollbar jump if any
+        } else {
+            document.body.style.overflow = "";
+            document.body.style.paddingRight = "";
+        }
+        return () => {
+            document.body.style.overflow = "";
+            document.body.style.paddingRight = "";
+        };
+    }, [isMobileMenuOpen]);
 
     // Helper sederhana untuk cek status aktif (bisa disesuaikan jika ingin support sub-menu)
     const isActive = (path: string) => pathname === path;
@@ -100,7 +115,9 @@ export default function Header() {
 
             {/* Mobile Menu Overlay */}
             <div
-                className={`md:hidden fixed inset-0 z-[999] bg-white p-6 flex flex-col h-screen overflow-y-auto transition-transform duration-300 ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+                className={`md:hidden fixed inset-0 z-[999] bg-white p-6 flex flex-col h-screen overflow-y-auto transition-all duration-300 ${isMobileMenuOpen
+                        ? "translate-x-0 opacity-100 visible"
+                        : "translate-x-full opacity-0 invisible pointer-events-none"
                     }`}
             >
                 <div className="flex items-center justify-between mb-6">
