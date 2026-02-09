@@ -235,7 +235,6 @@ export default function Roadmap() {
                                 {roadmapSteps.map((s, index) => (
                                     <div
                                         key={s.id}
-                                        onClick={() => handleStepClick(index)} // Optional: Enable click to scroll
                                         className={`flex items-center gap-4 p-4 rounded-xl border-l-4 transition-all duration-200 cursor-pointer ${index === currentStep
                                             ? "bg-white !border-l-[#f3b444] shadow-[0_15px_35px_-10px_rgba(0,0,0,0.1)] scale-[1.05] !opacity-100 z-10"
                                             : "border-l-transparent opacity-20 grayscale hover:opacity-100 hover:grayscale-0"
