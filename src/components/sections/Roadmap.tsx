@@ -156,10 +156,11 @@ export default function Roadmap() {
     useEffect(() => {
         if (!contentRef.current) return;
 
+        // Start from 0.8 opacity to ensure the "active" card is always bright and never looks "faded" while scrolling
         gsap.fromTo(
             contentRef.current,
-            { opacity: 0, y: 20, scale: 0.98 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power2.out" }
+            { opacity: 0.8, y: 10, scale: 0.99 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.2, ease: "power2.out" }
         );
     }, [currentStep]);
 
@@ -208,14 +209,14 @@ export default function Roadmap() {
                     <div className="hidden lg:grid grid-cols-12 gap-8 items-stretch h-[600px]">
                         {/* Roadmap Sidebar */}
                         <div className="col-span-4 flex flex-col h-full">
-                            <div className="roadmap-container overflow-y-auto pr-3 space-y-2 pb-4 h-full scrollbar-thin scrollbar-thumb-gray-200">
+                            <div className="roadmap-container overflow-y-auto px-6 py-4 space-y-4 h-full scrollbar-thin scrollbar-thumb-gray-200">
                                 {roadmapSteps.map((s, index) => (
                                     <div
                                         key={s.id}
                                         onClick={() => handleStepClick(index)}
-                                        className={`roadmap-card flex items-center gap-4 p-4 rounded-2xl border transition-all duration-300 cursor-pointer ${index === currentStep
-                                            ? "bg-white border-[#2a6ba7] shadow-xl scale-[1.02] opacity-100 ring-4 ring-[#2a6ba7]/10"
-                                            : "bg-transparent border-transparent opacity-50 hover:opacity-80 hover:bg-white/50 grayscale hover:grayscale-0"
+                                        className={`flex items-center gap-4 p-4 rounded-xl border-l-4 transition-all duration-200 cursor-pointer ${index === currentStep
+                                            ? "bg-white !border-l-[#f3b444] shadow-[0_15px_35px_-10px_rgba(0,0,0,0.1)] scale-[1.05] !opacity-100 z-10"
+                                            : "border-l-transparent opacity-20 grayscale hover:opacity-100 hover:grayscale-0"
                                             }`}
                                     >
                                         <div
@@ -323,8 +324,8 @@ export default function Roadmap() {
 
                         {roadmapSteps.map((s, index) => (
                             <div key={s.id} className="mobile-card relative pl-8">
-                                {/* Dot on timeline (Added 'mobile-dot' class for animation target) */}
-                                <div className={`mobile-dot absolute left-0 top-6 -translate-x-1/2 size-8 rounded-full border-4 border-[#F9FAFB] flex items-center justify-center z-10 ${index <= 8 ? "bg-[#2a6ba7] text-white" : "bg-white text-gray-400 border-gray-200"
+                                {/* Dot on timeline */}
+                                <div className={`absolute left-0 top-6 -translate-x-1/2 size-8 rounded-full border-4 border-[#F9FAFB] flex items-center justify-center z-10 ${index <= 8 ? "bg-[#2a6ba7] text-white" : "bg-white text-gray-400 border-gray-200"
                                     }`}>
                                     <span className="text-[10px]  font-bold">{index + 1}</span>
                                 </div>
