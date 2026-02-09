@@ -1,0 +1,3342 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Pendirian PT Perorangan - PT Akses Legal Indonesia</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2a6ba7",
+                        "accent": "#F3B444",
+                        "background-light": "#f9fafb",
+                        "background-dark": "#1a2c3d",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .step-card:hover .step-icon {
+            transform: scale(1.1);
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-[#101519] dark:text-gray-100 overflow-x-hidden">
+    <!-- Top Navigation Bar -->
+    <header
+        class="sticky top-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-[#e9edf1] dark:border-gray-800 transition-all duration-300">
+        <div class="max-w-[1200px] mx-auto px-6 h-20 flex items-center justify-between">
+            <a class="flex items-center gap-2 group shrink-0" href="index.html">
+                <span class="text-2xl font-black tracking-tighter transition-all group-hover:scale-105">
+                    <img src="assets/images/logo-color.png" alt="ALI Logo" class="h-24 w-auto">
+                </span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center gap-10">
+                <a class="text-sm font-bold text-primary transition-all relative group py-2" href="layanan.html">
+                    Layanan
+                    <span class="absolute bottom-0 left-0 w-full h-0.5 bg-primary transition-all"></span>
+                </a>
+                <a class="text-sm font-bold hover:text-primary transition-all relative group py-2" href="harga.html">
+                    Harga
+                    <span
+                        class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+                </a>
+                <a class="text-sm font-bold hover:text-primary transition-all relative group py-2" href="about.html">
+                    Tentang Kami
+                    <span
+                        class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+                </a>
+                <a class="text-sm font-bold hover:text-primary transition-all relative group py-2" href="blog.html">
+                    Blog
+                    <span
+                        class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+                </a>
+                <a class="text-sm font-black text-accent bg-accent/10 px-4 py-2 rounded-xl border border-accent/20 hover:bg-accent/20 transition-all"
+                    href="dashboard.html">
+                    Dashboard
+                </a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-4">
+                <a href="https://wa.me/6285333338818?text=Halo%20Akses%20Legal,%20saya%20ingin%20tahu%20lebih%20lanjut%20tentang%20PT%20Perorangan..."
+                    target="_blank"
+                    class="hidden sm:flex items-center justify-center rounded-xl h-11 px-6 bg-primary text-white text-sm font-black transition-all hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/30 active:scale-95">
+                    Konsultasi Gratis
+                </a>
+
+                <!-- Mobile Menu Toggle -->
+                <button id="mobile-menu-toggle"
+                    class="md:hidden size-11 flex items-center justify-center rounded-xl bg-gray-50 dark:bg-gray-800 text-primary transition-all hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <span class="material-symbols-outlined text-2xl">menu</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu"
+            class="md:hidden fixed inset-0 z-[999] bg-white dark:bg-background-dark p-6 flex flex-col h-screen overflow-y-auto transition-transform duration-300 translate-x-full">
+            <div class="flex items-center justify-between mb-12">
+                <a class="flex items-center gap-2 group shrink-0" href="index.html">
+                    <span class="text-2xl font-black tracking-tighter transition-all group-hover:scale-105">
+                        <img src="assets/images/logo-color.png" alt="ALI Logo" class="h-24 w-auto">
+                    </span>
+                </a>
+                <button id="mobile-menu-close"
+                    class="size-11 flex items-center justify-center rounded-xl bg-gray-50 dark:bg-gray-800">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <nav class="flex flex-col gap-8 text-2xl font-black text-gray-900 dark:text-white mb-auto">
+                <a href="layanan.html" class="flex items-center justify-between group">Layanan <span
+                        class="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform">arrow_forward</span></a>
+                <a href="harga.html" class="flex items-center justify-between group">Harga <span
+                        class="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform">arrow_forward</span></a>
+                <a href="about.html" class="flex items-center justify-between group">Tentang Kami <span
+                        class="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform">arrow_forward</span></a>
+                <a href="blog.html" class="flex items-center justify-between group">Blog <span
+                        class="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform">arrow_forward</span></a>
+                <a href="dashboard.html" class="flex items-center justify-between group text-accent">Dashboard <span
+                        class="material-symbols-outlined text-accent group-hover:translate-x-2 transition-transform">dashboard</span></a>
+            </nav>
+            <a href="https://wa.me/6285333338818" target="_blank"
+                class="w-full h-16 bg-primary text-white flex items-center justify-center rounded-2xl font-black gap-2 shadow-xl shadow-primary/20 mt-12">
+                <span class="material-symbols-outlined">chat</span> Chat Konsultan
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-[1200px] mx-auto">
+        <!-- Hero Section -->
+        <section class="px-6 py-12 md:py-20">
+            <div class="flex flex-col lg:flex-row gap-12 items-center">
+                <div class="flex-1 space-y-6">
+                    <div
+                        class="inline-flex items-center gap-2 bg-accent/10 text-accent px-4 py-1.5 rounded-full border border-accent/20">
+                        <span class="material-symbols-outlined text-sm">verified</span>
+                        <span class="text-xs font-bold uppercase tracking-wider">Garansi Harga Terendah</span>
+                    </div>
+                    <h1 id="hero-title" class="text-3xl sm:text-5xl md:text-6xl font-black leading-[1.1] tracking-tighter">
+                        Pendirian PT Perorangan: <br class="hidden md:block" />
+                        <span class="text-primary">Cepat, Murah, &amp; Resmi.</span>
+                    </h1>
+                    <p id="hero-desc" class="text-base md:text-lg text-gray-600 dark:text-gray-400 max-w-xl leading-relaxed">
+                        Solusi legalitas terbaik untuk UMKM Indonesia. Proses kilat dengan harga paling terjangkau.
+                        Mulai langkah besar usaha Anda hari ini dengan pendampingan profesional.
+                    </p>
+                    <div class="flex flex-wrap gap-4 pt-4">
+                        <a href="#paket-harga"
+                            class="bg-primary text-white text-base font-bold px-8 py-4 rounded-xl hover:scale-105 transition-transform flex items-center justify-center gap-2">
+                            <span>Mulai Sekarang</span>
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </a>
+                        <a href="#paket-harga"
+                            class="bg-white dark:bg-gray-800 text-primary border border-primary/20 text-base font-bold px-8 py-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center">
+                            Lihat Paket
+                        </a>
+                    </div>
+                </div>
+                <div class="flex-1 w-full max-w-[500px]">
+                    <div class="relative">
+                        <div class="absolute -inset-4 bg-primary/10 rounded-3xl blur-2xl"></div>
+                        <div
+                            class="relative bg-white dark:bg-gray-800 p-4 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-xl overflow-hidden aspect-video group">
+                            <div class="w-full h-full bg-cover bg-center rounded-2xl"
+                                style="background-image: url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
+                                <div
+                                    class="absolute inset-0 bg-primary/20 group-hover:bg-transparent transition-colors duration-500">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature Section -->
+        <section
+            class="px-6 py-12 md:py-16 bg-white/50 dark:bg-gray-900/50 rounded-[2rem] md:rounded-[2.5rem] my-4 md:my-8 border border-[#e9edf1] dark:border-gray-800">
+            <div class="text-center mb-8 md:mb-12">
+                <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight mb-4 text-gray-900 dark:text-white">Kenapa
+                    Memilih PT Akses Legal Indonesia?</h2>
+                <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Kami memberikan layanan terbaik untuk
+                    membantu legalitas bisnis Anda berkembang lebih cepat tanpa repot.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Feature 1 -->
+                <div
+                    class="p-8 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-primary/30 transition-all">
+                    <div class="size-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-3xl">bolt</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Proses Kilat</h3>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Selesai dalam 1-3 hari kerja
+                        tanpa hambatan birokrasi yang rumit.</p>
+                </div>
+                <!-- Feature 2 -->
+                <div
+                    class="p-8 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-primary/30 transition-all">
+                    <div class="size-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-3xl">receipt_long</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Harga Transparan</h3>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Tanpa biaya tersembunyi. Semua
+                        biaya dijelaskan secara jujur sejak awal konsultasi.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div
+                    class="p-8 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-primary/30 transition-all">
+                    <div class="size-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-3xl">shield_person</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Tim Ahli</h3>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Didampingi konsultan hukum dan
+                        notaris berpengalaman selama proses pendirian.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Alur Pendirian Section - Enhanced Animation -->
+        <section id="alur-pembuatan" class="px-6 py-20 overflow-hidden">
+            <div class="text-center mb-12">
+                <h2 id="alur-title" class="text-3xl md:text-4xl font-black tracking-tight mb-4">Alur Pendirian PT</h2>
+                <p id="alur-desc" class="text-gray-600 dark:text-gray-400">Proses transparan dari awal hingga legalitas Anda terbit.</p>
+            </div>
+
+            <!-- Mobile Progress Indicator -->
+            <div class="md:hidden flex justify-center mb-8">
+                
+            </div>
+
+            <!-- Timeline Container -->
+            <div class="relative max-w-5xl mx-auto">
+                <!-- Desktop Progress Line -->
+                <div class="absolute left-8 md:left-1/2 top-0 bottom-0 w-1 md:-translate-x-1/2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div id="progress-fill" class="progress-line w-full rounded-full"></div>
+                </div>
+
+                <!-- Steps Container -->
+                <div class="space-y-6 md:space-y-0 md:grid md:grid-cols-2 md:gap-y-12" id="timeline-steps">
+                    
+                    <!-- Step 1 -->
+                    <div class="timeline-step pl-20 md:pl-0 md:text-right md:pr-16 relative md:z-10" data-step="1">
+                        <div class="step-connector absolute left-8 md:left-auto md:right-0 top-1/2 -translate-y-1/2 md:translate-x-1/2">
+                            <div class="step-badge size-14 bg-white dark:bg-gray-800 rounded-2xl border-4 border-gray-300 shadow-lg flex items-center justify-center transition-all duration-500">
+                                <span class="step-number text-gray-400 font-black text-xl transition-all duration-500">1</span>
+                            </div>
+                        </div>
+                        <div class="step-card p-5 bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-100 dark:border-gray-700 shadow-lg transition-all duration-500 relative overflow-hidden">
+                            <!-- Decorative corner -->
+                            <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-500/10 to-transparent rounded-bl-[3rem]"></div>
+                            <div class="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-primary/5 to-transparent rounded-tr-[2rem]"></div>
+                            <!-- Content -->
+                            <div class="relative z-10">
+                                <div class="flex items-center gap-3 md:justify-end mb-3">
+                                    <div class="step-icon-wrapper size-12 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center">
+                                        <span class="step-icon material-symbols-outlined text-2xl text-blue-500 transition-all duration-500">support_agent</span>
+                                    </div>
+                                </div>
+                                <h3 class="step-title text-lg font-bold mb-1 dark:text-white transition-all duration-500">Konsultasi</h3>
+                                <p class="step-desc text-xs text-gray-500 dark:text-gray-400 mb-2 leading-relaxed">Diskusi kebutuhan legalitas Anda</p>
+                                <div class="flex items-center gap-2 md:justify-end">
+                                    <span class="inline-flex items-center gap-1 text-[10px] font-bold text-blue-500 bg-blue-50 dark:bg-blue-900/20 px-2 py-1 rounded-full">
+                                        <span class="material-symbols-outlined text-xs">schedule</span>
+                                        15-30 menit
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="timeline-step pl-20 md:pl-16 relative md:z-10" data-step="2">
+                        <div class="step-connector absolute left-8 md:left-0 top-1/2 -translate-y-1/2 md:-translate-x-1/2">
+                            <div class="step-badge size-14 bg-white dark:bg-gray-800 rounded-2xl border-4 border-gray-300 shadow-lg flex items-center justify-center transition-all duration-500">
+                                <span class="step-number text-gray-400 font-black text-xl transition-all duration-500">2</span>
+                            </div>
+                        </div>
+                        <div class="step-card p-5 bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-100 dark:border-gray-700 shadow-lg transition-all duration-500 relative overflow-hidden">
+                            <!-- Decorative corner -->
+                            <div class="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-purple-500/10 to-transparent rounded-br-[3rem]"></div>
+                            <div class="absolute bottom-0 right-0 w-16 h-16 bg-gradient-to-tl from-purple-500/5 to-transparent rounded-tl-[2rem]"></div>
+                            <!-- Content -->
+                            <div class="relative z-10">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div class="step-icon-wrapper size-12 rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 dark:from-purple-900/30 dark:to-purple-800/20 flex items-center justify-center">
+                                        <span class="step-icon material-symbols-outlined text-2xl text-purple-500 transition-all duration-500">fact_check</span>
+                                    </div>
+                                </div>
+                                <h3 class="step-title text-lg font-bold mb-1 dark:text-white transition-all duration-500">Validasi Dokumen</h3>
+                                <p class="step-desc text-xs text-gray-500 dark:text-gray-400 mb-2 leading-relaxed">Pemeriksaan kelengkapan berkas</p>
+                                <div class="flex items-center gap-2">
+                                    <span class="inline-flex items-center gap-1 text-[10px] font-bold text-purple-500 bg-purple-50 dark:bg-purple-900/20 px-2 py-1 rounded-full">
+                                        <span class="material-symbols-outlined text-xs">description</span>
+                                        KTP, NPWP
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="timeline-step pl-20 md:pl-0 md:text-right md:pr-16 relative md:z-10" data-step="3">
+                        <div class="step-connector absolute left-8 md:left-auto md:right-0 top-1/2 -translate-y-1/2 md:translate-x-1/2">
+                            <div class="step-badge size-14 bg-white dark:bg-gray-800 rounded-2xl border-4 border-gray-300 shadow-lg flex items-center justify-center transition-all duration-500">
+                                <span class="step-number text-gray-400 font-black text-xl transition-all duration-500">3</span>
+                            </div>
+                        </div>
+                        <div class="step-card p-5 bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-100 dark:border-gray-700 shadow-lg transition-all duration-500 relative overflow-hidden">
+                            <!-- Decorative corner -->
+                            <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-amber-500/10 to-transparent rounded-bl-[3rem]"></div>
+                            <div class="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-amber-500/5 to-transparent rounded-tr-[2rem]"></div>
+                            <!-- Content -->
+                            <div class="relative z-10">
+                                <div class="flex items-center gap-3 md:justify-end mb-3">
+                                    <div class="step-icon-wrapper size-12 rounded-xl bg-gradient-to-br from-amber-100 to-amber-50 dark:from-amber-900/30 dark:to-amber-800/20 flex items-center justify-center">
+                                        <span class="step-icon material-symbols-outlined text-2xl text-amber-500 transition-all duration-500">bookmark_added</span>
+                                    </div>
+                                </div>
+                                <h3 class="step-title text-lg font-bold mb-1 dark:text-white transition-all duration-500">Booking Nama</h3>
+                                <p class="step-desc text-xs text-gray-500 dark:text-gray-400 mb-2 leading-relaxed">Reservasi nama PT di Kemenkumham</p>
+                                <div class="flex items-center gap-2 md:justify-end">
+                                    <span class="inline-flex items-center gap-1 text-[10px] font-bold text-amber-600 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded-full">
+                                        <span class="material-symbols-outlined text-xs">hourglass_top</span>
+                                        1-2 hari
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="timeline-step pl-20 md:pl-16 relative md:z-10" data-step="4">
+                        <div class="step-connector absolute left-8 md:left-0 top-1/2 -translate-y-1/2 md:-translate-x-1/2">
+                            <div class="step-badge size-14 bg-white dark:bg-gray-800 rounded-2xl border-4 border-gray-300 shadow-lg flex items-center justify-center transition-all duration-500">
+                                <span class="step-number text-gray-400 font-black text-xl transition-all duration-500">4</span>
+                            </div>
+                        </div>
+                        <div class="step-card p-5 bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-100 dark:border-gray-700 shadow-lg transition-all duration-500 relative overflow-hidden">
+                            <!-- Decorative corner -->
+                            <div class="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-rose-500/10 to-transparent rounded-br-[3rem]"></div>
+                            <div class="absolute bottom-0 right-0 w-16 h-16 bg-gradient-to-tl from-rose-500/5 to-transparent rounded-tl-[2rem]"></div>
+                            <!-- Content -->
+                            <div class="relative z-10">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div class="step-icon-wrapper size-12 rounded-xl bg-gradient-to-br from-rose-100 to-rose-50 dark:from-rose-900/30 dark:to-rose-800/20 flex items-center justify-center">
+                                        <span class="step-icon material-symbols-outlined text-2xl text-rose-500 transition-all duration-500">history_edu</span>
+                                    </div>
+                                </div>
+                                <h3 class="step-title text-lg font-bold mb-1 dark:text-white transition-all duration-500">Akta Notaris</h3>
+                                <p class="step-desc text-xs text-gray-500 dark:text-gray-400 mb-2 leading-relaxed">Pembuatan akta pendirian resmi</p>
+                                <div class="flex items-center gap-2">
+                                    <span class="inline-flex items-center gap-1 text-[10px] font-bold text-rose-500 bg-rose-50 dark:bg-rose-900/20 px-2 py-1 rounded-full">
+                                        <span class="material-symbols-outlined text-xs">gavel</span>
+                                        Notaris Resmi
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="timeline-step pl-20 md:pl-0 md:text-right md:pr-16 relative md:z-10" data-step="5">
+                        <div class="step-connector absolute left-8 md:left-auto md:right-0 top-1/2 -translate-y-1/2 md:translate-x-1/2">
+                            <div class="step-badge size-14 bg-white dark:bg-gray-800 rounded-2xl border-4 border-gray-300 shadow-lg flex items-center justify-center transition-all duration-500">
+                                <span class="step-number text-gray-400 font-black text-xl transition-all duration-500">5</span>
+                            </div>
+                        </div>
+                        <div class="step-card p-5 bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-100 dark:border-gray-700 shadow-lg transition-all duration-500 relative overflow-hidden">
+                            <!-- Decorative corner -->
+                            <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-emerald-500/10 to-transparent rounded-bl-[3rem]"></div>
+                            <div class="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-emerald-500/5 to-transparent rounded-tr-[2rem]"></div>
+                            <!-- Content -->
+                            <div class="relative z-10">
+                                <div class="flex items-center gap-3 md:justify-end mb-3">
+                                    <div class="step-icon-wrapper size-12 rounded-xl bg-gradient-to-br from-emerald-100 to-emerald-50 dark:from-emerald-900/30 dark:to-emerald-800/20 flex items-center justify-center">
+                                        <span class="step-icon material-symbols-outlined text-2xl text-emerald-500 transition-all duration-500">verified</span>
+                                    </div>
+                                </div>
+                                <h3 class="step-title text-lg font-bold mb-1 dark:text-white transition-all duration-500">SK Kemenkumham</h3>
+                                <p class="step-desc text-xs text-gray-500 dark:text-gray-400 mb-2 leading-relaxed">Pengesahan badan hukum PT</p>
+                                <div class="flex items-center gap-2 md:justify-end">
+                                    <span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-1 rounded-full">
+                                        <span class="material-symbols-outlined text-xs">verified_user</span>
+                                        Resmi
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 6 -->
+                    <div class="timeline-step pl-20 md:pl-16 relative md:z-10" data-step="6">
+                        <div class="step-connector absolute left-8 md:left-0 top-1/2 -translate-y-1/2 md:-translate-x-1/2">
+                            <div class="step-badge size-14 bg-white dark:bg-gray-800 rounded-2xl border-4 border-gray-300 shadow-lg flex items-center justify-center transition-all duration-500">
+                                <span class="step-number text-gray-400 font-black text-xl transition-all duration-500">6</span>
+                            </div>
+                        </div>
+                        <div class="step-card p-5 bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-100 dark:border-gray-700 shadow-lg transition-all duration-500 relative overflow-hidden">
+                            <!-- Decorative corner -->
+                            <div class="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-cyan-500/10 to-transparent rounded-br-[3rem]"></div>
+                            <div class="absolute bottom-0 right-0 w-16 h-16 bg-gradient-to-tl from-cyan-500/5 to-transparent rounded-tl-[2rem]"></div>
+                            <!-- Content -->
+                            <div class="relative z-10">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div class="step-icon-wrapper size-12 rounded-xl bg-gradient-to-br from-cyan-100 to-cyan-50 dark:from-cyan-900/30 dark:to-cyan-800/20 flex items-center justify-center">
+                                        <span class="step-icon material-symbols-outlined text-2xl text-cyan-500 transition-all duration-500">account_balance</span>
+                                    </div>
+                                </div>
+                                <h3 class="step-title text-lg font-bold mb-1 dark:text-white transition-all duration-500">NPWP Perusahaan</h3>
+                                <p class="step-desc text-xs text-gray-500 dark:text-gray-400 mb-2 leading-relaxed">Pendaftaran pajak badan usaha</p>
+                                <div class="flex items-center gap-2">
+                                    <span class="inline-flex items-center gap-1 text-[10px] font-bold text-cyan-600 bg-cyan-50 dark:bg-cyan-900/20 px-2 py-1 rounded-full">
+                                        <span class="material-symbols-outlined text-xs">receipt_long</span>
+                                        DJP Online
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 7 -->
+                    <div class="timeline-step pl-20 md:pl-0 md:text-right md:pr-16 relative md:z-10" data-step="7">
+                        <div class="step-connector absolute left-8 md:left-auto md:right-0 top-1/2 -translate-y-1/2 md:translate-x-1/2">
+                            <div class="step-badge size-14 bg-white dark:bg-gray-800 rounded-2xl border-4 border-gray-300 shadow-lg flex items-center justify-center transition-all duration-500">
+                                <span class="step-number text-gray-400 font-black text-xl transition-all duration-500">7</span>
+                            </div>
+                        </div>
+                        <div class="step-card p-5 bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-100 dark:border-gray-700 shadow-lg transition-all duration-500 relative overflow-hidden">
+                            <!-- Decorative corner -->
+                            <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-indigo-500/10 to-transparent rounded-bl-[3rem]"></div>
+                            <div class="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-indigo-500/5 to-transparent rounded-tr-[2rem]"></div>
+                            <!-- Content -->
+                            <div class="relative z-10">
+                                <div class="flex items-center gap-3 md:justify-end mb-3">
+                                    <div class="step-icon-wrapper size-12 rounded-xl bg-gradient-to-br from-indigo-100 to-indigo-50 dark:from-indigo-900/30 dark:to-indigo-800/20 flex items-center justify-center">
+                                        <span class="step-icon material-symbols-outlined text-2xl text-indigo-500 transition-all duration-500">badge</span>
+                                    </div>
+                                </div>
+                                <h3 class="step-title text-lg font-bold mb-1 dark:text-white transition-all duration-500">NIB & Izin</h3>
+                                <p class="step-desc text-xs text-gray-500 dark:text-gray-400 mb-2 leading-relaxed">Nomor Induk Berusaha via OSS</p>
+                                <div class="flex items-center gap-2 md:justify-end">
+                                    <span class="inline-flex items-center gap-1 text-[10px] font-bold text-indigo-600 bg-indigo-50 dark:bg-indigo-900/20 px-2 py-1 rounded-full">
+                                        <span class="material-symbols-outlined text-xs">public</span>
+                                        OSS RBA
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 8 - Final -->
+                    <div class="timeline-step pl-20 md:pl-16 relative md:z-10" data-step="8">
+                        <div class="step-connector absolute left-8 md:left-0 top-1/2 -translate-y-1/2 md:-translate-x-1/2">
+                            <div class="step-badge size-14 bg-white dark:bg-gray-800 rounded-2xl border-4 border-gray-300 shadow-lg flex items-center justify-center transition-all duration-500">
+                                <span class="step-number text-gray-400 font-black text-xl transition-all duration-500">8</span>
+                            </div>
+                        </div>
+                        <div class="step-card p-5 bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-100 dark:border-gray-700 shadow-lg transition-all duration-500 relative overflow-hidden">
+                            <!-- Decorative corner - special for final -->
+                            <div class="absolute top-0 left-0 w-24 h-24 bg-gradient-to-br from-primary/15 via-accent/10 to-transparent rounded-br-[4rem]"></div>
+                            <div class="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-tl from-accent/10 via-primary/5 to-transparent rounded-tl-[3rem]"></div>
+                            <div class="absolute top-2 right-2 text-xl opacity-20">🎉</div>
+                            <!-- Content -->
+                            <div class="relative z-10">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div class="step-icon-wrapper size-12 rounded-xl bg-gradient-to-br from-primary/20 to-accent/10 dark:from-primary/30 dark:to-accent/20 flex items-center justify-center">
+                                        <span class="step-icon material-symbols-outlined text-2xl text-primary transition-all duration-500">celebration</span>
+                                    </div>
+                                </div>
+                                <h3 class="step-title text-lg font-bold mb-1 dark:text-white transition-all duration-500">Legalitas Terbit</h3>
+                                <p class="step-desc text-xs text-gray-500 dark:text-gray-400 mb-2 leading-relaxed">PT Anda resmi terdaftar! 🎊</p>
+                                <div class="flex items-center gap-2">
+                                    <span class="inline-flex items-center gap-1 text-[10px] font-bold text-primary bg-primary/10 px-2 py-1 rounded-full">
+                                        <span class="material-symbols-outlined text-xs">star</span>
+                                        Selesai!
+                                    </span>
+                                    <span class="inline-flex items-center gap-1 text-[10px] font-bold text-accent bg-accent/10 px-2 py-1 rounded-full">
+                                        <span class="material-symbols-outlined text-xs">download</span>
+                                        Siap Unduh
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <style>
+            /* Progress Line with traveling particle */
+            .progress-line {
+                height: 0%;
+                background: linear-gradient(180deg, #2a6ba7, #F3B444, #2a6ba7);
+                transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+                position: relative;
+            }
+
+            .progress-line::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 16px;
+                height: 16px;
+                background: radial-gradient(circle, #F3B444, #e5a030);
+                border-radius: 50%;
+                box-shadow: 0 0 20px #F3B444, 0 0 40px #F3B444, 0 0 60px rgba(243, 180, 68, 0.5);
+                animation: particlePulse 1s ease-in-out infinite;
+            }
+
+            @keyframes particlePulse {
+                0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; }
+                50% { transform: translateX(-50%) scale(1.3); opacity: 0.8; }
+            }
+
+            /* Glassmorphism step cards */
+            .timeline-step .step-card {
+                position: relative;
+                overflow: hidden;
+                backdrop-filter: blur(10px);
+                background: rgba(255, 255, 255, 0.9) !important;
+                transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .dark .timeline-step .step-card {
+                background: rgba(31, 41, 55, 0.9) !important;
+            }
+
+            /* Fix step badge alignment untuk mobile - pastikan sejajar dengan garis progress */
+            @media (max-width: 767px) {
+                /* Garis progress di mobile: left-8 (32px) dengan lebar w-1 (4px), jadi tengah di 34px */
+                /* Step badge size-14 (56px), perlu diposisikan agar tengahnya tepat di tengah garis (34px) */
+                .timeline-step .step-connector {
+                    left: 34px !important; /* Tengah garis progress: 32px (left-8) + 2px (setengah lebar w-1) */
+                    transform: translateX(-50%) translateY(-50%) !important; /* Tengahkan badge horizontal dan vertikal */
+                }
+            }
+
+            /* Fix step badge z-index dan visibility untuk mencegah overlap */
+            @media (min-width: 768px) {
+                /* Step badge yang belum aktif/completed: sembunyikan sepenuhnya agar tidak menutupi step aktif */
+                .timeline-step:not(.active):not(.completed) .step-connector { 
+                    opacity: 0;
+                    visibility: hidden;
+                    pointer-events: none;
+                }
+                
+                /* Base z-index untuk step yang belum aktif/completed: step yang lebih rendah memiliki z-index lebih tinggi */
+                .timeline-step:not(.active):not(.completed)[data-step="1"] .step-connector { z-index: 30 !important; }
+                .timeline-step:not(.active):not(.completed)[data-step="2"] .step-connector { z-index: 29 !important; }
+                .timeline-step:not(.active):not(.completed)[data-step="3"] .step-connector { z-index: 28 !important; }
+                .timeline-step:not(.active):not(.completed)[data-step="4"] .step-connector { z-index: 27 !important; }
+                .timeline-step:not(.active):not(.completed)[data-step="5"] .step-connector { z-index: 26 !important; }
+                .timeline-step:not(.active):not(.completed)[data-step="6"] .step-connector { z-index: 25 !important; }
+                .timeline-step:not(.active):not(.completed)[data-step="7"] .step-connector { z-index: 24 !important; }
+                .timeline-step:not(.active):not(.completed)[data-step="8"] .step-connector { z-index: 23 !important; }
+                
+                /* Step yang completed: step yang lebih rendah (nomor lebih kecil) memiliki z-index lebih tinggi */
+                .timeline-step.completed[data-step="1"] .step-connector { 
+                    z-index: 30 !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                }
+                .timeline-step.completed[data-step="2"] .step-connector { 
+                    z-index: 29 !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                }
+                .timeline-step.completed[data-step="3"] .step-connector { 
+                    z-index: 28 !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                }
+                .timeline-step.completed[data-step="4"] .step-connector { 
+                    z-index: 27 !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                }
+                .timeline-step.completed[data-step="5"] .step-connector { 
+                    z-index: 26 !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                }
+                .timeline-step.completed[data-step="6"] .step-connector { 
+                    z-index: 25 !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                }
+                .timeline-step.completed[data-step="7"] .step-connector { 
+                    z-index: 24 !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                }
+                .timeline-step.completed[data-step="8"] .step-connector { 
+                    z-index: 23 !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                }
+                
+                /* Step yang aktif HARUS selalu di atas semua step lainnya dan fully visible */
+                /* Tapi tetap di bawah navbar (z-50) */
+                .timeline-step.active .step-connector { 
+                    z-index: 40 !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                }
+            }
+
+            /* 3D tilt effect on hover */
+            .timeline-step:hover .step-card {
+                transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) translateY(-5px);
+            }
+
+            /* Active Step Styles - Enhanced */
+            .timeline-step.active .step-badge {
+                border-color: #2a6ba7 !important;
+                background: linear-gradient(135deg, #2a6ba7, #3b82f6) !important;
+                transform: scale(1.2) rotate(5deg);
+                box-shadow: 
+                    0 0 0 6px rgba(42, 107, 167, 0.15),
+                    0 0 0 12px rgba(42, 107, 167, 0.1),
+                    0 15px 50px rgba(42, 107, 167, 0.4);
+                animation: badgeFloat 2s ease-in-out infinite;
+            }
+
+            @keyframes badgeFloat {
+                0%, 100% { transform: scale(1.2) rotate(5deg) translateY(0); }
+                50% { transform: scale(1.2) rotate(5deg) translateY(-5px); }
+            }
+
+            .timeline-step.active .step-number {
+                color: white !important;
+                text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            }
+
+            .timeline-step.active .step-card {
+                border-color: #2a6ba7 !important;
+                background: linear-gradient(135deg, rgba(42, 107, 167, 0.1), rgba(59, 130, 246, 0.05)) !important;
+                transform: perspective(1000px) translateY(-8px) scale(1.03);
+                box-shadow: 
+                    0 25px 50px rgba(42, 107, 167, 0.25),
+                    0 0 0 1px rgba(42, 107, 167, 0.2),
+                    inset 0 1px 0 rgba(255,255,255,0.5);
+            }
+
+            .timeline-step.active .step-icon {
+                color: #2a6ba7 !important;
+                animation: iconBounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+                filter: drop-shadow(0 4px 8px rgba(42, 107, 167, 0.3));
+            }
+
+            .timeline-step.active .step-title {
+                color: #2a6ba7 !important;
+                text-shadow: 0 1px 2px rgba(42, 107, 167, 0.1);
+            }
+
+            /* Completed Step Styles - Enhanced */
+            .timeline-step.completed .step-badge {
+                border-color: #22c55e !important;
+                background: linear-gradient(135deg, #22c55e, #16a34a) !important;
+                animation: completedPop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            }
+
+            @keyframes completedPop {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.2); }
+                100% { transform: scale(1); }
+            }
+
+            .timeline-step.completed .step-number {
+                color: white !important;
+            }
+
+            .timeline-step.completed .step-card {
+                border-color: rgba(34, 197, 94, 0.4) !important;
+                background: linear-gradient(135deg, rgba(34, 197, 94, 0.08), rgba(22, 163, 74, 0.03)) !important;
+            }
+
+            .timeline-step.completed .step-icon {
+                color: #22c55e !important;
+            }
+
+            /* Enhanced Icon Animation */
+            @keyframes iconBounce {
+                0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+                25% { transform: translateY(-10px) rotate(-8deg) scale(1.1); }
+                50% { transform: translateY(-5px) rotate(0deg) scale(1.05); }
+                75% { transform: translateY(-8px) rotate(8deg) scale(1.1); }
+            }
+
+            /* Multiple Pulse Rings for Active Badge */
+            .timeline-step.active .step-badge::before,
+            .timeline-step.active .step-badge::after {
+                content: '';
+                position: absolute;
+                inset: -8px;
+                border: 2px solid #2a6ba7;
+                border-radius: 1rem;
+                animation: pulseRing 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            }
+
+            .timeline-step.active .step-badge::after {
+                animation-delay: 0.5s;
+                border-color: #3b82f6;
+            }
+
+            @keyframes pulseRing {
+                0% { transform: scale(1); opacity: 0.8; }
+                100% { transform: scale(1.6); opacity: 0; }
+            }
+
+            /* Enhanced Shimmer Effect */
+            .timeline-step.active .step-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -150%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(
+                    100deg,
+                    transparent 20%,
+                    rgba(255,255,255,0.6) 50%,
+                    transparent 80%
+                );
+                animation: shimmerEnhanced 2s ease-in-out infinite;
+            }
+
+            @keyframes shimmerEnhanced {
+                0% { left: -150%; }
+                100% { left: 150%; }
+            }
+
+            /* Sparkle particles on active card */
+            .timeline-step.active .step-card::after {
+                content: '✦';
+                position: absolute;
+                font-size: 12px;
+                color: #F3B444;
+                animation: sparkle 1.5s ease-in-out infinite;
+                top: 10px;
+                right: 15px;
+            }
+
+            @keyframes sparkle {
+                0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+                50% { opacity: 1; transform: scale(1) rotate(180deg); }
+            }
+
+            /* Final step special effects */
+            .timeline-step[data-step="8"].active .step-card {
+                background: linear-gradient(135deg, #2a6ba7, #1e40af, #7c3aed) !important;
+                animation: gradientShift 3s ease infinite;
+                background-size: 200% 200%;
+            }
+
+            @keyframes gradientShift {
+                0%, 100% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+            }
+
+            .timeline-step[data-step="8"].active .step-card * {
+                color: white !important;
+            }
+
+            .timeline-step[data-step="8"].active .step-badge {
+                background: linear-gradient(135deg, #F3B444, #f59e0b, #ef4444) !important;
+                border-color: #F3B444 !important;
+                animation: badgeFloat 1s ease-in-out infinite, rainbowGlow 2s ease infinite;
+            }
+
+            @keyframes rainbowGlow {
+                0%, 100% { box-shadow: 0 0 30px #F3B444, 0 0 60px rgba(243, 180, 68, 0.5); }
+                50% { box-shadow: 0 0 40px #ef4444, 0 0 80px rgba(239, 68, 68, 0.5); }
+            }
+
+            /* Celebration icon dance */
+            .timeline-step[data-step="8"].active .step-icon {
+                animation: celebrateDance 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+            }
+
+            @keyframes celebrateDance {
+                0%, 100% { transform: rotate(-15deg) scale(1); }
+                25% { transform: rotate(15deg) scale(1.2); }
+                50% { transform: rotate(-10deg) scale(1.1); }
+                75% { transform: rotate(10deg) scale(1.15); }
+            }
+
+            /* Confetti container */
+            .confetti-container {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                overflow: hidden;
+            }
+
+            .confetti {
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                opacity: 0;
+            }
+
+            .timeline-step[data-step="8"].active .confetti {
+                animation: confettiFall 2s ease-out infinite;
+            }
+
+            .confetti:nth-child(1) { left: 10%; animation-delay: 0s; background: #F3B444; }
+            .confetti:nth-child(2) { left: 20%; animation-delay: 0.2s; background: #ef4444; border-radius: 50%; }
+            .confetti:nth-child(3) { left: 30%; animation-delay: 0.4s; background: #22c55e; }
+            .confetti:nth-child(4) { left: 40%; animation-delay: 0.1s; background: #3b82f6; border-radius: 50%; }
+            .confetti:nth-child(5) { left: 50%; animation-delay: 0.3s; background: #a855f7; }
+            .confetti:nth-child(6) { left: 60%; animation-delay: 0.5s; background: #F3B444; border-radius: 50%; }
+            .confetti:nth-child(7) { left: 70%; animation-delay: 0.15s; background: #ef4444; }
+            .confetti:nth-child(8) { left: 80%; animation-delay: 0.35s; background: #22c55e; border-radius: 50%; }
+            .confetti:nth-child(9) { left: 90%; animation-delay: 0.25s; background: #3b82f6; }
+            .confetti:nth-child(10) { left: 95%; animation-delay: 0.45s; background: #a855f7; border-radius: 50%; }
+
+            @keyframes confettiFall {
+                0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+                100% { transform: translateY(100px) rotate(720deg); opacity: 0; }
+            }
+
+            /* Mobile Progress Dots */
+            .mobile-progress-dots {
+                display: flex;
+                justify-content: center;
+                gap: 8px;
+            }
+
+            .progress-dot {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background: #e5e7eb;
+                transition: all 0.3s ease;
+            }
+
+            .progress-dot.active {
+                background: linear-gradient(135deg, #2a6ba7, #3b82f6);
+                transform: scale(1.3);
+                box-shadow: 0 0 10px rgba(42, 107, 167, 0.5);
+            }
+
+            .progress-dot.completed {
+                background: #22c55e;
+            }
+
+            /* Mobile card slide animation */
+            @media (max-width: 768px) {
+                .timeline-step {
+                    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+                }
+
+                .timeline-step.active {
+                    transform: scale(1.02);
+                }
+
+                .timeline-step.active .step-card {
+                    transform: translateX(5px);
+                }
+            }
+
+            /* Floating background particles */
+            .timeline-section-bg {
+                position: absolute;
+                inset: 0;
+                overflow: hidden;
+                pointer-events: none;
+            }
+
+            .bg-particle {
+                position: absolute;
+                width: 6px;
+                height: 6px;
+                background: rgba(42, 107, 167, 0.1);
+                border-radius: 50%;
+                animation: floatParticle 15s linear infinite;
+            }
+
+            .bg-particle:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 12s; }
+            .bg-particle:nth-child(2) { left: 25%; animation-delay: 2s; animation-duration: 18s; }
+            .bg-particle:nth-child(3) { left: 40%; animation-delay: 4s; animation-duration: 14s; }
+            .bg-particle:nth-child(4) { left: 55%; animation-delay: 1s; animation-duration: 16s; }
+            .bg-particle:nth-child(5) { left: 70%; animation-delay: 3s; animation-duration: 20s; }
+            .bg-particle:nth-child(6) { left: 85%; animation-delay: 5s; animation-duration: 13s; }
+
+            @keyframes floatParticle {
+                0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+                10% { opacity: 1; }
+                90% { opacity: 1; }
+                100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+            }
+        </style>
+
+        <script>
+            // Enhanced Animated Timeline with Particles & Effects
+            document.addEventListener('DOMContentLoaded', () => {
+                // Check if service ID is in URL - if so, skip default animation (will be handled by service update)
+                const urlParams = new URLSearchParams(window.location.search);
+                const serviceId = urlParams.get('id');
+                if (serviceId) {
+                    // Animation will be handled by updateFlowSteps function
+                    return;
+                }
+
+                const steps = document.querySelectorAll('.timeline-step');
+                const progressFill = document.getElementById('progress-fill');
+                const mobileStepIndicator = document.getElementById('current-step-mobile');
+                const totalSteps = steps.length;
+                let currentStep = 0;
+                const stepDuration = 1800; // Slightly longer for better visual
+
+                // Add confetti elements to step 8
+                const step8 = document.querySelector('.timeline-step[data-step="8"] .step-card');
+                if (step8) {
+                    const confettiContainer = document.createElement('div');
+                    confettiContainer.className = 'confetti-container';
+                    for (let i = 0; i < 10; i++) {
+                        const confetti = document.createElement('div');
+                        confetti.className = 'confetti';
+                        confettiContainer.appendChild(confetti);
+                    }
+                    step8.appendChild(confettiContainer);
+                }
+
+                // Add floating background particles
+                const section = document.getElementById('alur-pembuatan');
+                if (section) {
+                    const bgContainer = document.createElement('div');
+                    bgContainer.className = 'timeline-section-bg';
+                    for (let i = 0; i < 6; i++) {
+                        const particle = document.createElement('div');
+                        particle.className = 'bg-particle';
+                        bgContainer.appendChild(particle);
+                    }
+                    section.insertBefore(bgContainer, section.firstChild);
+                }
+
+                // Create mobile progress dots
+                
+
+                function updateMobileDots(stepIndex) {
+                    
+                }
+
+                function animateToStep(stepIndex) {
+                    // Update progress bar
+                    const progressPercent = ((stepIndex + 1) / totalSteps) * 100;
+                    progressFill.style.height = progressPercent + '%';
+
+                    // Update mobile indicator
+                    
+
+                    // Update mobile dots
+                    updateMobileDots(stepIndex);
+
+                    // Update all steps with staggered timing
+                    steps.forEach((step, index) => {
+                        step.classList.remove('active', 'completed');
+                        
+                        if (index < stepIndex) {
+                            step.classList.add('completed');
+                        } else if (index === stepIndex) {
+                            // Small delay for active step for better visual
+                            setTimeout(() => {
+                                step.classList.add('active');
+                            }, 100);
+                        }
+                    });
+
+                    // Scroll active step into view on mobile
+                    if (window.innerWidth < 768) {
+                        const activeStep = steps[stepIndex];
+                        if (activeStep) {
+                            
+                        }
+                    }
+                }
+
+                function runAnimation() {
+                    animateToStep(currentStep);
+                    currentStep++;
+                    
+                    if (currentStep >= totalSteps) {
+                        // Hold longer on final step for celebration effect
+                        setTimeout(() => {
+                            currentStep = 0;
+                            // Fade out effect
+                            steps.forEach(step => {
+                                step.style.opacity = '0.5';
+                            });
+                            
+                            setTimeout(() => {
+                                steps.forEach(step => {
+                                    step.classList.remove('active', 'completed');
+                                    step.style.opacity = '1';
+                                });
+                                progressFill.style.height = '0%';
+                                updateMobileDots(-1);
+                                
+                                setTimeout(runAnimation, 300);
+                            }, 400);
+                        }, 2500);
+                    } else {
+                        setTimeout(runAnimation, stepDuration);
+                    }
+                }
+
+                // Start the animation loop
+                setTimeout(runAnimation, 800);
+            });
+        </script>
+
+        <!-- UMK Focus Section -->
+        <section class="px-6 py-12 md:py-24">
+            <div class="max-w-[1200px] mx-auto">
+                <div class="bg-primary/5 rounded-[3rem] p-8 md:p-16 border border-primary/10 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-12 opacity-10">
+                        <span class="material-symbols-outlined text-[10rem]">storefront</span>
+                    </div>
+                    <div class="max-w-2xl relative z-10 space-y-6">
+                        <div id="umk-badge"
+                            class="inline-flex items-center gap-2 bg-primary text-white px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest">
+                            Fokus Skala Usaha UMK
+                        </div>
+                        <h2 id="umk-title" class="text-3xl md:text-5xl font-black text-gray-900 dark:text-white leading-tight">Solusi
+                            Legalitas <br>Terbaik untuk <span class="text-primary">UMK</span></h2>
+                        <p id="umk-desc" class="text-lg text-gray-500 font-medium leading-relaxed">
+                            PT Perorangan dirancang khusus oleh pemerintah untuk memudahkan pelaku Usaha Mikro dan Kecil
+                            (UMK) memiliki badan hukum dengan <b>tanggung jawab terbatas</b> tanpa perlu partner/pendiri
+                            lain.
+                        </p>
+                        <div id="umk-features" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="flex items-center gap-3 font-bold text-gray-700 dark:text-gray-300">
+                                <span class="material-symbols-outlined text-primary">check_circle</span>
+                                Pendiri Cukup 1 Orang
+                            </div>
+                            <div class="flex items-center gap-3 font-bold text-gray-700 dark:text-gray-300">
+                                <span class="material-symbols-outlined text-primary">check_circle</span>
+                                Modal Sangat Terjangkau
+                            </div>
+                            <div class="flex items-center gap-3 font-bold text-gray-700 dark:text-gray-300">
+                                <span class="material-symbols-outlined text-primary">check_circle</span>
+                                Pemisahan Harta Pribadi
+                            </div>
+                            <div class="flex items-center gap-3 font-bold text-gray-700 dark:text-gray-300">
+                                <span class="material-symbols-outlined text-primary">check_circle</span>
+                                Akses Modal Perbankan
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+<!-- Detailed Feature Table -->
+        <div class="px-6 pb-20">
+            <div class="max-w-[1200px] mx-auto space-y-10">
+                <div class="flex flex-col md:flex-row md:items-center gap-4">
+                    <h3 id="feature-table-title" class="text-2xl font-black tracking-tight dark:text-white">Detail Perbandingan Fitur</h3>
+                    <div class="h-px flex-1 bg-gradient-to-r from-gray-200 to-transparent dark:from-gray-800"></div>
+                </div>
+
+                <div
+                    class="overflow-x-auto rounded-[2rem] border border-gray-200 dark:border-gray-800 shadow-sm no-scrollbar">
+                    <table class="w-full text-left border-collapse bg-white dark:bg-gray-800/50">
+                        <thead id="feature-table-head">
+                            <tr class="bg-gray-50/50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-800">
+                                <th class="p-8 text-xs font-black uppercase tracking-widest text-gray-400">Fitur Layanan
+                                </th>
+                                <th class="p-8 text-center text-sm font-black text-primary bg-primary/5">
+                                    Paket Legal
+                                    <span class="block text-[11px] font-bold text-gray-500 mt-1">Rp1.999.000</span>
+                                </th>
+                                <th class="p-8 text-center text-sm font-black text-primary bg-primary/10">
+                                    Paket Business
+                                    <span class="block text-[11px] font-bold text-gray-500 mt-1">Rp2.499.000</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="feature-table-body" class="divide-y divide-gray-100 dark:divide-gray-800">
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-900/50 transition-colors">
+                                <td class="p-8 text-sm font-bold text-gray-700 dark:text-gray-200">Akta Notaris</td>
+                                <td class="p-8 text-center bg-primary/5">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                                <td class="p-8 text-center bg-primary/10">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-900/50 transition-colors">
+                                <td class="p-8 text-sm font-bold text-gray-700 dark:text-gray-200">Free 10 KBLI Pada Akta Notaris*</td>
+                                <td class="p-8 text-center bg-primary/5">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                                <td class="p-8 text-center bg-primary/10">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-900/50 transition-colors">
+                                <td class="p-8 text-sm font-bold text-gray-700 dark:text-gray-200">SK Menteri</td>
+                                <td class="p-8 text-center bg-primary/5">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                                <td class="p-8 text-center bg-primary/10">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-900/50 transition-colors">
+                                <td class="p-8 text-sm font-bold text-gray-700 dark:text-gray-200">Akun Coretax</td>
+                                <td class="p-8 text-center bg-primary/5">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                                <td class="p-8 text-center bg-primary/10">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-900/50 transition-colors">
+                                <td class="p-8 text-sm font-bold text-gray-700 dark:text-gray-200">NPWP Perusahaan</td>
+                                <td class="p-8 text-center bg-primary/5">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                                <td class="p-8 text-center bg-primary/10">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-900/50 transition-colors">
+                                <td class="p-8 text-sm font-bold text-gray-700 dark:text-gray-200">Akun OSS*</td>
+                                <td class="p-8 text-center bg-primary/5">
+                                    <span class="material-symbols-outlined text-gray-300">remove</span>
+                                </td>
+                                <td class="p-8 text-center bg-primary/10">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-900/50 transition-colors">
+                                <td class="p-8 text-sm font-bold text-gray-700 dark:text-gray-200">NIB Perusahaan*</td>
+                                <td class="p-8 text-center bg-primary/5">
+                                    <span class="material-symbols-outlined text-gray-300">remove</span>
+                                </td>
+                                <td class="p-8 text-center bg-primary/10">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-900/50 transition-colors">
+                                <td class="p-8 text-sm font-bold text-gray-700 dark:text-gray-200">Free 5 KBLI pada NIB*</td>
+                                <td class="p-8 text-center bg-primary/5">
+                                    <span class="material-symbols-outlined text-gray-300">remove</span>
+                                </td>
+                                <td class="p-8 text-center bg-primary/10">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-900/50 transition-colors">
+                                <td class="p-8 text-sm font-bold text-gray-700 dark:text-gray-200">Konsultasi Legalitas</td>
+                                <td class="p-8 text-center bg-primary/5">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                                <td class="p-8 text-center bg-primary/10">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-900/50 transition-colors">
+                                <td class="p-8 text-sm font-bold text-gray-700 dark:text-gray-200">Free 50 Draft Perjanjian</td>
+                                <td class="p-8 text-center bg-primary/5">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                                <td class="p-8 text-center bg-primary/10">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-900/50 transition-colors">
+                                <td class="p-8 text-sm font-bold text-gray-700 dark:text-gray-200">Desain Logo</td>
+                                <td class="p-8 text-center bg-primary/5">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                                <td class="p-8 text-center bg-primary/10">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-900/50 transition-colors">
+                                <td class="p-8 text-sm font-bold text-gray-700 dark:text-gray-200">Desain Stempel</td>
+                                <td class="p-8 text-center bg-primary/5">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                                <td class="p-8 text-center bg-primary/10">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-900/50 transition-colors">
+                                <td class="p-8 text-sm font-bold text-gray-700 dark:text-gray-200">Desain Kartu Nama</td>
+                                <td class="p-8 text-center bg-primary/5">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                                <td class="p-8 text-center bg-primary/10">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-900/50 transition-colors">
+                                <td class="p-8 text-sm font-bold text-gray-700 dark:text-gray-200">Desain Kop Surat</td>
+                                <td class="p-8 text-center bg-primary/5">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                                <td class="p-8 text-center bg-primary/10">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-900/50 transition-colors">
+                                <td class="p-8 text-sm font-bold text-gray-700 dark:text-gray-200">Email Perusahaan</td>
+                                <td class="p-8 text-center bg-primary/5">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                                <td class="p-8 text-center bg-primary/10">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-900/50 transition-colors">
+                                <td class="p-8 text-sm font-bold text-gray-700 dark:text-gray-200">Pembukaan Rekening*</td>
+                                <td class="p-8 text-center bg-primary/5">
+                                    <span class="material-symbols-outlined text-gray-300">remove</span>
+                                </td>
+                                <td class="p-8 text-center bg-primary/10">
+                                    <span class="material-symbols-outlined text-green-500 fill-1">check_circle</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bank Partners Section -->
+        <div class="px-6 pb-24">
+            <div class="max-w-[1200px] mx-auto text-center">
+                <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-8">Rekanan Bank Resmi</p>
+                <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50 hover:opacity-100 transition-opacity duration-500">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/f/fa/Bank_Mandiri_logo.svg" alt="Bank Mandiri" class="h-8 md:h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/f0/Bank_Negara_Indonesia_logo_%282004%29.svg" alt="Bank BNI" class="h-8 md:h-10 w-auto object-contain grayscale hover:grayscale-0 transition-all">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Bank_Syariah_Indonesia.svg" alt="Bank BSI" class="h-8 md:h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg" alt="Bank BRI" class="h-8 md:h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all">
+                </div>
+            </div>
+        </div>
+
+        <!-- Pricing Section -->
+        <section id="paket-harga" class="px-6 py-12 md:py-24 bg-white dark:bg-gray-900/50 my-12">
+            <div class="max-w-[1200px] mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-5xl font-black tracking-tight mb-6">Paket Investasi Tunggal</h2>
+                    <p class="text-base md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto font-medium">Satu
+                        harga transparan untuk kemudahan legalitas UMK Anda.</p>
+                </div>
+
+                <div id="pricing-cards-container" class="max-w-3xl mx-auto space-y-8">
+                    <!-- Twin Package: Paket Standard -->
+                    <div
+                        class="relative flex flex-col md:flex-row items-center gap-12 p-8 md:p-16 rounded-[3rem] border-2 border-primary bg-white dark:bg-gray-800 shadow-2xl overflow-hidden group">
+                        <div class="absolute top-0 right-0 bg-primary px-10 py-3 rounded-bl-3xl">
+                            <span class="text-white text-xs font-black uppercase tracking-widest text-[10px]">Best Value
+                                for UMK</span>
+                        </div>
+
+                        <div class="flex-1 space-y-8">
+                            <div>
+                                <h3 id="package-name-1" class="text-2xl font-black mb-2 dark:text-white">Paket Standard</h3>
+                                <p class="text-gray-500 font-medium text-sm">Semua fitur legalitas dasar untuk mulai usaha.</p>
+                            </div>
+                            <ul class="space-y-4">
+                                <li class="flex items-start gap-3 text-sm font-bold text-gray-900 dark:text-white">
+                                    <span class="material-symbols-outlined text-primary">verified</span>
+                                    Akta Notaris
+                                </li>
+                                <li class="flex items-start gap-3 text-sm font-bold text-gray-900 dark:text-white">
+                                    <span class="material-symbols-outlined text-primary">verified</span>
+                                    Free 10 KBLI pada Akta Notaris*
+                                </li>
+                                <li class="flex items-start gap-3 text-sm font-bold text-gray-900 dark:text-white">
+                                    <span class="material-symbols-outlined text-primary">verified</span>
+                                    SK Menteri
+                                </li>
+                                <li class="flex items-start gap-3 text-sm font-bold text-gray-900 dark:text-white">
+                                    <span class="material-symbols-outlined text-primary">verified</span>
+                                    Akun Coretax
+                                </li>
+                                <li class="flex items-start gap-3 text-sm font-bold text-gray-900 dark:text-white">
+                                    <span class="material-symbols-outlined text-primary">verified</span>
+                                    NPWP Perusahaan
+                                </li>
+                                <li class="flex items-start gap-3 text-sm font-bold text-gray-900 dark:text-white">
+                                    <span class="material-symbols-outlined text-primary">verified</span>
+                                    Konsultasi Legalitas
+                                </li>
+                                <li class="flex items-start gap-3 text-sm font-bold text-gray-900 dark:text-white">
+                                    <span class="material-symbols-outlined text-primary">verified</span>
+                                    Free 50 Draft Perjanjian
+                                </li>
+                                <li class="flex items-start gap-3 text-sm font-bold text-gray-900 dark:text-white">
+                                    <span class="material-symbols-outlined text-primary">verified</span>
+                                    Desain Logo, Stempel, Kartu Nama &amp; Kop Surat
+                                </li>
+                                <li class="flex items-start gap-3 text-sm font-bold text-gray-900 dark:text-white">
+                                    <span class="material-symbols-outlined text-primary">verified</span>
+                                    Email Perusahaan
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div
+                            class="flex flex-col items-center gap-6 p-10 bg-primary/5 rounded-[2rem] border border-primary/10">
+                            <div class="text-center">
+                                <span
+                                    class="text-xs font-black text-gray-400 uppercase tracking-widest block mb-2">Total
+                                    Investasi</span>
+                                <span id="package-price-1" class="text-5xl font-black text-primary tracking-tighter">Rp 999<span
+                                        class="text-lg">K</span></span>
+                            </div>
+                            <a href="javascript:void(0)" onclick="return false;" aria-disabled="true"
+                                class="w-full bg-primary text-white hover:bg-primary/90 font-black py-4 px-10 rounded-2xl text-center transition-all shadow-xl shadow-primary/20 whitespace-nowrap">
+                                Daftar Sekarang
+                            </a>
+                            <a data-wa-template="package"
+                                href="https://wa.me/6285333338818?text=Halo%20admin,%20Saya%20dari%20website%20mau%20Pendirian%20PT%20Perorangan%20-%20paket%20standard"
+                                target="_blank"
+                                class="w-full bg-white dark:bg-gray-800 text-primary border border-primary/20 hover:bg-gray-50 dark:hover:bg-gray-700 font-black py-4 px-10 rounded-2xl text-center transition-all whitespace-nowrap">
+                                Konsultasi sekarang
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Twin Package: Paket Lengkap + VO -->
+                    <div
+                        class="relative flex flex-col md:flex-row items-center gap-12 p-8 md:p-10 rounded-[2rem] border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm hover:shadow-xl transition-all duration-500 group">
+                        <div class="absolute top-0 right-0 bg-primary/10 px-6 py-2 rounded-bl-2xl">
+                            <span class="text-primary text-[10px] font-black uppercase tracking-widest">Recommended</span>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 id="package-name-2" class="text-xl font-black dark:text-white">Paket Lengkap + VO</h3>
+                                    <p class="text-gray-500 font-medium text-xs mt-1">Legalitas + Kantor 1 Thn</p>
+                                </div>
+                            </div>
+                            <div class="flex items-baseline gap-1 mb-6">
+                                <span id="package-price-2" class="text-4xl font-black text-primary">Rp 1.999K</span>
+                                <span class="text-xs text-gray-400 font-bold uppercase tracking-wider">All-in</span>
+                            </div>
+                            <ul class="space-y-4">
+                                <li class="flex items-start gap-3 text-sm font-medium text-gray-600 dark:text-gray-300">
+                                    <span class="material-symbols-outlined text-primary text-xl">stars</span>
+                                    Semua Fitur Paket Standard
+                                </li>
+                                <li class="flex items-start gap-3 text-sm font-medium text-gray-600 dark:text-gray-300">
+                                    <span class="material-symbols-outlined text-primary text-xl">app_registration</span>
+                                    Akun OSS* &amp; NIB Perusahaan* (termasuk Free 5 KBLI pada NIB*)
+                                </li>
+                                <li class="flex items-start gap-3 text-sm font-medium text-gray-600 dark:text-gray-300">
+                                    <span class="material-symbols-outlined text-primary text-xl">account_balance</span>
+                                    Pembukaan Rekening* mitra bank pilihan
+                                </li>
+                                <li class="flex items-start gap-3 text-sm font-medium text-gray-600 dark:text-gray-300">
+                                    <span class="material-symbols-outlined text-primary text-xl">location_city</span>
+                                    Penggunaan Alamat Kantor (1 Tahun)
+                                </li>
+                                <li class="flex items-start gap-3 text-sm font-bold text-primary">
+                                    <span class="material-symbols-outlined text-primary text-xl">verified_user</span>
+                                    Alamat Bisnis Prestigious (Makassar/Kendari/Palu)
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="w-full md:w-auto">
+                            <a data-wa-template="package"
+                                href="https://wa.me/6285333338818?text=Halo%20admin,%20Saya%20dari%20website%20mau%20Pendirian%20PT%20Perorangan%20-%20paket%20lengkap%20%2B%20vo"
+                                target="_blank"
+                                class="block w-full md:w-auto bg-gray-50 dark:bg-gray-700 text-primary hover:bg-primary hover:text-white font-black py-4 px-8 rounded-xl text-center transition-all">
+                                Pilih Paket Lengkap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+
+        <!-- Final CTA Section -->
+        <section class="px-6 py-20 text-center">
+            <div class="bg-primary p-12 md:p-16 rounded-[3rem] text-white space-y-8 relative overflow-hidden">
+                <div
+                    class="absolute top-0 right-0 size-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl">
+                </div>
+                <div
+                    class="absolute bottom-0 left-0 size-48 bg-accent/20 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl">
+                </div>
+                <h2 class="text-2xl md:text-5xl font-black tracking-tight relative z-10">Siap Naik Kelas Bareng <br
+                        class="md:hidden" /> PT Akses Legal Indonesia?</h2>
+                <p
+                    class="text-sm md:text-lg text-accent bg-white/10 inline-block px-4 md:px-6 py-2 rounded-full font-bold md:font-medium relative z-10">
+                    Dapatkan Konsultasi Gratis Sekarang!</p>
+                <div class="flex justify-center relative z-10">
+                    <a href="https://wa.me/6285333338818?text=Halo%20Akses%20Legal,%20saya%20siap%20mendirikan%20PT%20Perorangan."
+                        target="_blank"
+                        class="bg-white text-primary text-lg font-black px-12 py-5 rounded-2xl hover:bg-gray-50 hover:shadow-xl transition-all flex items-center justify-center gap-3 group">
+                        <span>Hubungi Legal Kami</span>
+                        <span
+                            class="material-symbols-outlined group-hover:translate-x-1 transition-transform">headset_mic</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-background-dark border-t border-gray-100 dark:border-gray-800 py-20">
+        <div class="max-w-[1200px] mx-auto px-6 grid md:grid-cols-4 gap-16">
+            <div class="space-y-8">
+                <div class="flex flex-col gap-4">
+                    <img src="assets/images/logo-color.png" alt="ALI Logo Footer"
+                        class="h-14 w-auto object-contain self-start">
+                    <p class="text-base text-gray-500 font-medium leading-relaxed">
+                        Solusi terdepan untuk legalitas bisnis UMK di Indonesia. Profesional, Transparan, dan
+                        Terpercaya.
+                    </p>
+                </div>
+                <div class="flex gap-4">
+                    <a class="size-12 rounded-2xl bg-gray-50 dark:bg-gray-800 flex items-center justify-center hover:bg-primary hover:text-white transition-all border border-gray-100 dark:border-gray-700"
+                        href="https://www.facebook.com/akseslegal.id" target="_blank">
+                        <span class="material-symbols-outlined">public</span>
+                    </a>
+                    <a class="size-12 rounded-2xl bg-gray-50 dark:bg-gray-800 flex items-center justify-center hover:bg-primary hover:text-white transition-all border border-gray-100 dark:border-gray-700"
+                        href="https://www.instagram.com/akseslegal.id" target="_blank">
+                        <span class="material-symbols-outlined text-lg">share</span>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-black mb-8 text-gray-900 dark:text-white uppercase text-xs tracking-[0.2em]">Layanan
+                    Utama</h4>
+                <ul class="space-y-4 text-sm font-bold text-gray-400">
+                    <li><a class="hover:text-primary transition-colors" href="layanan-pt.html">Pendirian PT
+                            Perorangan</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="layanan-cv.html">Pendaftaran CV</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="layanan-haki.html">Hak Kekayaan
+                            Intelektual</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="layanan-halal.html">Sertifikasi Halal &
+                            PIRT</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-black mb-8 text-gray-900 dark:text-white uppercase text-xs tracking-[0.2em]">Perusahaan
+                </h4>
+                <ul class="space-y-4 text-sm font-bold text-gray-400">
+                    <li><a class="hover:text-primary transition-colors" href="about.html">Tentang Kami</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="blog.html">Blog & Edukasi</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="kontak.html">Hubungi Kami</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="syarat-ketentuan.html">Syarat &
+                            Ketentuan</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="kebijakan-privasi.html">Kebijakan
+                            Privasi</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-black mb-8 text-gray-900 dark:text-white uppercase text-xs tracking-[0.2em]">Hubungi
+                    Kami</h4>
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4 text-sm text-gray-600 font-bold">
+                        <div class="size-10 rounded-xl bg-primary/5 flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined text-xl">mail</span>
+                        </div>
+                        info.akseslegal.id
+                    </div>
+                    <div class="flex items-center gap-4 text-sm text-gray-600 font-bold">
+                        <div class="size-10 rounded-xl bg-primary/5 flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined text-xl">call</span>
+                        </div>
+                        +62 852-5151-9925
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-[1200px] mx-auto px-6 mt-20 pt-10 border-t border-gray-100 dark:border-gray-800 text-center">
+            <p class="text-xs font-black text-gray-400 uppercase tracking-[0.2em]">© 2025 PT Akses Legal Indonesia.
+                Seluruh Hak Cipta Dilindungi.</p>
+        </div>
+    </footer>
+
+    <!-- Floating WA Widget -->
+    <a class="fixed bottom-8 right-8 z-50 size-14 bg-green-500 text-white rounded-full flex items-center justify-center shadow-xl shadow-green-500/30 hover:scale-110 transition-transform active:scale-95"
+        href="https://wa.me/6285333338818?text=Halo%20Akses%20Legal,%20saya%20butuh%20bantuan%20cepat." target="_blank">
+        <span class="material-symbols-outlined text-3xl">chat</span>
+    </a>
+
+    <script src="assets/js/i18n.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/services.js"></script>
+    <script>
+        // Step configurations for different service types
+        const serviceFlowConfigs = {
+            // Alur standar untuk semua layanan pendirian (PT, CV, UD, Koperasi, dll)
+            // Semua menggunakan alur yang sama
+            default: [
+                { title: "Konsultasi", desc: "Diskusi kebutuhan legalitas Anda", icon: "support_agent", color: "blue", time: "15-30 menit" },
+                { title: "Validasi Dokumen", desc: "Pemeriksaan kelengkapan berkas", icon: "fact_check", color: "purple", detail: "KTP, NPWP" },
+                { title: "Booking Nama", desc: "Reservasi nama di Kemenkumham", icon: "bookmark_added", color: "amber", time: "1-2 hari" },
+                { title: "Akta Notaris", desc: "Pembuatan akta pendirian resmi", icon: "history_edu", color: "rose", detail: "Notaris Resmi" },
+                { title: "SK Kemenkumham", desc: "Pengesahan badan hukum", icon: "verified", color: "emerald", detail: "Resmi" },
+                { title: "NPWP Perusahaan", desc: "Pendaftaran pajak badan usaha", icon: "account_balance", color: "cyan", detail: "DJP Online" },
+                { title: "NIB & Izin", desc: "Nomor Induk Berusaha via OSS", icon: "badge", color: "indigo", detail: "OSS RBA" },
+                { title: "Legalitas Terbit", desc: "Legalitas Anda resmi terdaftar! 🎊", icon: "celebration", color: "primary", detail: "Selesai!" }
+            ],
+            // Alur khusus untuk Yayasan berdasarkan UU No. 28 Tahun 2004
+            yayasan: [
+                { title: "Pengecekan Nama", desc: "Pemesanan nama yayasan melalui SABH Kemenkumham oleh Notaris", icon: "search", color: "blue", detail: "Min. 3 Suku Kata" },
+                { title: "Pembuatan Akta", desc: "Penandatanganan AD/ART yang memuat modal awal dan struktur organisasi", icon: "edit_note", color: "purple", detail: "Dihadapan Notaris" },
+                { title: "SK Pengesahan", desc: "Terbitnya Keputusan Menteri Hukum dan HAM sebagai legalitas badan hukum", icon: "gavel", color: "emerald", detail: "Resmi Badan Hukum" },
+                { title: "NPWP Yayasan", desc: "Pendaftaran identitas perpajakan atas nama yayasan di KPP setempat", icon: "payments", color: "amber", detail: "Identitas Pajak" },
+                { title: "Pendaftaran NIB", desc: "Pengurusan Nomor Induk Berusaha melalui portal OSS Risk Based Approach", icon: "app_registration", color: "cyan", detail: "Akses Berusaha" },
+                { title: "Izin Operasional", desc: "Pengesahan izin khusus sesuai bidang kegiatan (Dinsos/Kemenag)", icon: "verified_user", color: "blue", detail: "Siap Beroperasi", isSpecial: true }
+            ],
+            // Alur khusus untuk Perkumpulan
+            perkumpulan: [
+                { title: "Rapat Pendirian", desc: "Penyusunan nama perkumpulan dan kesepakatan AD/ART oleh para pendiri", icon: "forum", color: "indigo", detail: "Min. 3 Orang" },
+                { title: "Akta Notaris", desc: "Formalisasi Berita Acara Rapat ke dalam Akta Notaris yang sah secara hukum", icon: "history_edu", color: "blue", detail: "Legalitas Notaril" },
+                { title: "SK Badan Hukum", desc: "Penerbitan SK Pengesahan dari Menkumham sebagai subjek hukum mandiri", icon: "workspace_premium", color: "emerald", detail: "SABH Online" },
+                { title: "NPWP Perkumpulan", desc: "Pendaftaran identitas pajak perkumpulan untuk kebutuhan pembukaan rekening bank", icon: "account_balance_wallet", color: "orange", detail: "Kewajiban Pajak" },
+                { title: "Nomor Induk Berusaha", desc: "Pendaftaran identitas organisasi pada portal OSS untuk legalitas operasional", icon: "badge", color: "cyan", detail: "Legalitas OSS" },
+                { title: "SKT / Izin Khusus", desc: "Pelaporan ke Kesbangpol atau instansi sektoral terkait sesuai tujuan organisasi", icon: "how_to_reg", color: "indigo", detail: "Legalitas Selesai", isSpecial: true }
+            ]
+        };
+
+        function getServiceFlowType(serviceName) {
+            const name = serviceName.toLowerCase();
+            // Deteksi Yayasan
+            if (name.includes('yayasan')) {
+                return 'yayasan';
+            }
+            // Deteksi Perkumpulan
+            if (name.includes('perkumpulan')) {
+                return 'perkumpulan';
+            }
+            // Semua layanan pendirian lainnya menggunakan alur default yang sama
+            return 'default';
+        }
+
+        // Feature comparison table (Hardcoded from JSON)
+        const pricingPackagesData = [
+    {
+      "id": "pendirian-cv",
+      "comparisonTable": {
+        "title": "Detail Perbandingan Fitur",
+        "headers": [
+          {
+            "key": "legal",
+            "label": "Paket Legal",
+            "price": "Rp1.999.000",
+            "subLabel": "Best Value",
+            "cssClass": "bg-primary/5"
+          },
+          {
+            "key": "business",
+            "label": "Paket Business",
+            "price": "Rp2.499.000",
+            "subLabel": "Recommended",
+            "cssClass": "bg-primary/10"
+          }
+        ],
+        "features": [
+          {
+            "name": "Akta Notaris",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Free 10 KBLI Pada Akta Notaris*",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "SK Menteri",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Akun Coretax",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "NPWP Perusahaan",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Akun OSS*",
+            "status": {
+              "legal": false,
+              "business": true
+            }
+          },
+          {
+            "name": "NIB Perusahaan*",
+            "status": {
+              "legal": false,
+              "business": true
+            }
+          },
+          {
+            "name": "Free 5 KBLI pada NIB*",
+            "status": {
+              "legal": false,
+              "business": true
+            }
+          },
+          {
+            "name": "Konsultasi Legalitas",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Free 50 Draft Perjanjian",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Desain Logo",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Desain Stempel",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Desain Kartu Nama",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Desain Kop Surat",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Email Perusahaan",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Pembukaan Rekening*",
+            "status": {
+              "legal": false,
+              "business": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "pendirian-perkumpulan",
+      "comparisonTable": {
+        "title": "Detail Perbandingan Fitur",
+        "headers": [
+          {
+            "key": "legal",
+            "label": "Paket Legal",
+            "price": "Rp4.000.000",
+            "subLabel": "Best Value",
+            "cssClass": "bg-primary/5"
+          },
+          {
+            "key": "business",
+            "label": "Paket Business",
+            "price": "Rp4.499.000",
+            "subLabel": "Recommended",
+            "cssClass": "bg-primary/10"
+          }
+        ],
+        "features": [
+          {
+            "name": "Akta Notaris",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Free 10 KBLI Pada Akta Notaris*",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "SK Menteri",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Akun Coretax",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "NPWP Perusahaan",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Akun OSS*",
+            "status": {
+              "legal": false,
+              "business": true
+            }
+          },
+          {
+            "name": "NIB Perusahaan*",
+            "status": {
+              "legal": false,
+              "business": true
+            }
+          },
+          {
+            "name": "Free 5 KBLI pada NIB*",
+            "status": {
+              "legal": false,
+              "business": true
+            }
+          },
+          {
+            "name": "Konsultasi Legalitas",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Free 50 Draft Perjanjian",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Desain Logo",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Desain Stempel",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Desain Kartu Nama",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Desain Kop Surat",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Email Perusahaan",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Pembukaan Rekening*",
+            "status": {
+              "legal": false,
+              "business": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "pendirian-pt-perorangan",
+      "comparisonTable": {
+        "title": "Detail Perbandingan Fitur",
+        "headers": [
+          {
+            "key": "standard",
+            "label": "Paket Standard",
+            "price": "Rp999.000",
+            "subLabel": "Hanya Legalitas",
+            "cssClass": "bg-primary/5"
+          },
+          {
+            "key": "bundle",
+            "label": "Paket Lengkap + VO",
+            "price": "Rp1.999.000",
+            "subLabel": "Legalitas + Kantor 1 Thn",
+            "cssClass": "bg-primary/10"
+          }
+        ],
+        "features": [
+          {
+            "name": "Surat Pernyataan",
+            "status": { "standard": true, "bundle": true }
+          },
+          {
+            "name": "Free 10 KBLI Pada Surat Pernyataan*",
+            "status": { "standard": true, "bundle": true }
+          },
+          {
+            "name": "SK Menteri",
+            "status": { "standard": true, "bundle": true }
+          },
+          {
+            "name": "Akun Coretax",
+            "status": { "standard": true, "bundle": true }
+          },
+          {
+            "name": "NPWP Perusahaan",
+            "status": { "standard": true, "bundle": true }
+          },
+          {
+            "name": "Akun OSS*",
+            "status": { "standard": true, "bundle": true }
+          },
+          {
+            "name": "NIB Perusahaan*",
+            "status": { "standard": true, "bundle": true }
+          },
+          {
+            "name": "Free 5 KBLI pada NIB*",
+            "status": { "standard": true, "bundle": true }
+          },
+          {
+            "name": "Konsultasi Legalitas",
+            "status": { "standard": true, "bundle": true }
+          },
+          {
+            "name": "Free 50 Draft Perjanjian",
+            "status": { "standard": true, "bundle": true }
+          },
+          {
+            "name": "Desain Logo",
+            "status": { "standard": true, "bundle": true }
+          },
+          {
+            "name": "Desain Stempel",
+            "status": { "standard": true, "bundle": true }
+          },
+          {
+            "name": "Desain Kartu Nama",
+            "status": { "standard": false, "bundle": false }
+          },
+          {
+            "name": "Desain Kop Surat",
+            "status": { "standard": false, "bundle": false }
+          },
+          {
+            "name": "Email Perusahaan",
+            "status": { "standard": true, "bundle": true }
+          },
+          {
+            "name": "Pembukaan Rekening*",
+            "status": { "standard": true, "bundle": true }
+          },
+          {
+            "name": "Penggunaan Alamat Kantor (Makassar/Kendari/Palu)",
+            "status": { "standard": false, "bundle": true }
+          }
+        ]
+      }
+    },
+    {
+      "id": "pendirian-pt-pma",
+      "comparisonTable": {
+        "title": "Detail Perbandingan Fitur",
+        "headers": [
+          {
+            "key": "legal",
+            "label": "Paket Legal",
+            "price": "Rp8.999.000",
+            "subLabel": "Best Value",
+            "cssClass": "bg-primary/5"
+          },
+          {
+            "key": "business",
+            "label": "Paket Business",
+            "price": "Rp9.499.000",
+            "subLabel": "Recommended",
+            "cssClass": "bg-primary/10"
+          }
+        ],
+        "features": [
+          {
+            "name": "Akta Notaris",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Free 10 KBLI Pada Akta Notaris*",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "SK Menteri",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Akun Coretax",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "NPWP Perusahaan",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Akun OSS*",
+            "status": {
+              "legal": false,
+              "business": true
+            }
+          },
+          {
+            "name": "NIB Perusahaan*",
+            "status": {
+              "legal": false,
+              "business": true
+            }
+          },
+          {
+            "name": "Free 5 KBLI pada NIB*",
+            "status": {
+              "legal": false,
+              "business": true
+            }
+          },
+          {
+            "name": "Konsultasi Legalitas",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Free 50 Draft Perjanjian",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Desain Logo",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Desain Stempel",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Desain Kartu Nama",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Desain Kop Surat",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Email Perusahaan",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Pembukaan Rekening*",
+            "status": {
+              "legal": false,
+              "business": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "pendirian-pt-umum",
+      "comparisonTable": {
+        "title": "Detail Perbandingan Fitur",
+        "headers": [
+          {
+            "key": "legal",
+            "label": "Paket Legal",
+            "price": "Rp3.999.000",
+            "subLabel": "Best Value",
+            "cssClass": "bg-primary/5"
+          },
+          {
+            "key": "business",
+            "label": "Paket Business",
+            "price": "Rp4.499.000",
+            "subLabel": "Recommended",
+            "cssClass": "bg-primary/10"
+          }
+        ],
+        "features": [
+          {
+            "name": "Akta Notaris",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Free 10 KBLI Pada Akta Notaris*",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "SK Menteri",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Akun Coretax",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "NPWP Perusahaan",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Akun OSS*",
+            "status": {
+              "legal": false,
+              "business": true
+            }
+          },
+          {
+            "name": "NIB Perusahaan*",
+            "status": {
+              "legal": false,
+              "business": true
+            }
+          },
+          {
+            "name": "Free 5 KBLI pada NIB*",
+            "status": {
+              "legal": false,
+              "business": true
+            }
+          },
+          {
+            "name": "Konsultasi Legalitas",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Free 50 Draft Perjanjian",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Desain Logo",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Desain Stempel",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Desain Kartu Nama",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Desain Kop Surat",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Email Perusahaan",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Pembukaan Rekening*",
+            "status": {
+              "legal": false,
+              "business": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "pendirian-yayasan",
+      "comparisonTable": {
+        "title": "Detail Perbandingan Fitur",
+        "headers": [
+          {
+            "key": "legal",
+            "label": "Paket Legal",
+            "price": "Rp3.499.000",
+            "subLabel": "Best Value",
+            "cssClass": "bg-primary/5"
+          },
+          {
+            "key": "business",
+            "label": "Paket Business",
+            "price": "Rp3.999.000",
+            "subLabel": "Recommended",
+            "cssClass": "bg-primary/10"
+          }
+        ],
+        "features": [
+          {
+            "name": "Akta Notaris",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Free 10 KBLI Pada Akta Notaris*",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "SK Menteri",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Akun Coretax",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "NPWP Perusahaan",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Akun OSS*",
+            "status": {
+              "legal": false,
+              "business": true
+            }
+          },
+          {
+            "name": "NIB Perusahaan*",
+            "status": {
+              "legal": false,
+              "business": true
+            }
+          },
+          {
+            "name": "Free 5 KBLI pada NIB*",
+            "status": {
+              "legal": false,
+              "business": true
+            }
+          },
+          {
+            "name": "Konsultasi Legalitas",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Free 50 Draft Perjanjian",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Desain Logo",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Desain Stempel",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Desain Kartu Nama",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Desain Kop Surat",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Email Perusahaan",
+            "status": {
+              "legal": true,
+              "business": true
+            }
+          },
+          {
+            "name": "Pembukaan Rekening*",
+            "status": {
+              "legal": false,
+              "business": true
+            }
+          }
+        ]
+      }
+    }
+  ];
+
+        function getComparisonTableKey(serviceName) {
+            const name = (serviceName || '').toLowerCase().trim();
+            if (name === 'cv') return 'pendirian-cv';
+            if (name === 'perkumpulan') return 'pendirian-perkumpulan';
+            if (name.includes('pt perorangan')) return 'pendirian-pt-perorangan';
+            if (name.includes('pt pma')) return 'pendirian-pt-pma';
+            if (name === 'pt umum') return 'pendirian-pt-umum';
+            if (name === 'yayasan') return 'pendirian-yayasan';
+            return null;
+        }
+
+        function renderFeatureComparisonTable(tableData) {
+            const titleEl = document.getElementById('feature-table-title');
+            const theadEl = document.getElementById('feature-table-head');
+            const tbodyEl = document.getElementById('feature-table-body');
+            if (!theadEl || !tbodyEl) return;
+
+            if (titleEl && tableData?.title) titleEl.textContent = tableData.title;
+
+            const headers = tableData?.headers || [];
+            const features = tableData?.features || [];
+
+            // Build header row
+            theadEl.innerHTML = `
+                <tr class="bg-gray-50/50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-800">
+                    <th class="p-8 text-xs font-black uppercase tracking-widest text-gray-400">Fitur Layanan</th>
+                    ${headers.map(h => `
+                        <th class="p-8 text-center text-sm font-black text-primary ${h.cssClass || ''}">
+                            ${h.label || ''}
+                            ${h.price ? `<span class="block text-[11px] font-bold text-gray-500 mt-1">${h.price}</span>` : ''}
+                        </th>
+                    `).join('')}
+                </tr>
+            `;
+
+            // Build body rows
+            tbodyEl.innerHTML = features.map(f => {
+                const status = f.status || {};
+                const tds = headers.map(h => {
+                    const enabled = !!status[h.key];
+                    const icon = enabled ? 'check_circle' : 'remove';
+                    const iconClass = enabled ? 'text-green-500 fill-1' : 'text-gray-300';
+                    return `
+                        <td class="p-8 text-center ${h.cssClass || ''}">
+                            <span class="material-symbols-outlined ${iconClass}">${icon}</span>
+                        </td>
+                    `;
+                }).join('');
+
+                return `
+                    <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-900/50 transition-colors">
+                        <td class="p-8 text-sm font-bold text-gray-700 dark:text-gray-200">${f.name || ''}</td>
+                        ${tds}
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updateFeatureComparisonTableForService(serviceName) {
+            const key = getComparisonTableKey(serviceName);
+            if (!key) return; // fallback: keep default static table
+            
+            const pkg = pricingPackagesData.find(p => p.id === key);
+            if (pkg?.comparisonTable) {
+                renderFeatureComparisonTable(pkg.comparisonTable);
+            }
+        }
+
+        function renderPricingCards(serviceName) {
+            const key = getComparisonTableKey(serviceName);
+            if (!key) return; 
+
+            const pkgData = pricingPackagesData.find(p => p.id === key);
+            if (!pkgData || !pkgData.comparisonTable) return;
+
+            const container = document.getElementById('pricing-cards-container');
+            if (!container) return;
+
+            const { headers, features } = pkgData.comparisonTable;
+            const heroTitle = (() => {
+                const el = document.getElementById('hero-title');
+                const raw = (el?.innerText || el?.textContent || '').replace(/\s+/g, ' ').trim();
+                const main = raw.split(':')[0]?.trim(); // ambil judul utama sebelum tagline
+                return main || serviceName || '';
+            })();
+            
+            let cardsHTML = '';
+
+            headers.forEach((header, index) => {
+                const pkgShort = (header?.label || '').replace(/^Paket\s+/i, '').trim().toLowerCase();
+                // Semua fitur yang aktif untuk paket ini
+                const enabledFeatures = features.filter(f => f.status && f.status[header.key]);
+                
+                if (index === 0) {
+                     // First Card Style
+                     cardsHTML += `
+                    <div class="relative flex flex-col md:flex-row items-center gap-12 p-8 md:p-16 rounded-[3rem] border-2 border-primary bg-white dark:bg-gray-800 shadow-2xl overflow-hidden group">
+                        <div class="absolute top-0 right-0 bg-primary px-10 py-3 rounded-bl-3xl">
+                            <span class="text-white text-xs font-black uppercase tracking-widest text-[10px]">${header.subLabel || 'Best Value'}</span>
+                        </div>
+
+                        <div class="flex-1 space-y-8">
+                            <div>
+                                <h3 class="text-2xl font-black mb-2 dark:text-white">${header.label}</h3>
+                                <p class="text-gray-500 font-medium text-sm">${header.subLabel || ''}</p>
+                            </div>
+                            <ul class="space-y-4">
+                                ${enabledFeatures.map(f => `
+                                <li class="flex items-start gap-3 text-sm font-bold text-gray-900 dark:text-white">
+                                    <span class="material-symbols-outlined text-primary">verified</span>
+                                    ${f.name}
+                                </li>`).join('')}
+                            </ul>
+                        </div>
+
+                        <div class="flex flex-col items-center gap-6 p-10 bg-primary/5 rounded-[2rem] border border-primary/10">
+                            <div class="text-center">
+                                <span class="text-xs font-black text-gray-400 uppercase tracking-widest block mb-2">Total Investasi</span>
+                                <span class="text-4xl font-black text-primary tracking-tighter">${header.price}</span>
+                            </div>
+                            <a href="javascript:void(0)" onclick="return false;" class="w-full bg-primary text-white hover:bg-primary/90 font-black py-4 px-10 rounded-2xl text-center transition-all shadow-xl shadow-primary/20 whitespace-nowrap flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined">rocket_launch</span>
+                                <span>Daftar Sekarang</span>
+                            </a>
+                            <a data-wa-template="package" href="https://wa.me/6285333338818?text=${encodeURIComponent('Halo admin, Saya dari website mau ' + heroTitle + ' - paket ' + (pkgShort || header.label))}" target="_blank" class="w-full bg-white dark:bg-gray-800 text-primary border border-primary/20 hover:bg-gray-50 dark:hover:bg-gray-700 font-black py-4 px-10 rounded-2xl text-center transition-all whitespace-nowrap flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l121.7-31.9c32.4 17.8 68.9 27.2 106.4 27.2h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-4-10.5-6.7z"/></svg>
+                                <span>Konsultasi sekarang</span>
+                            </a>
+                        </div>
+                    </div>`;
+                } else {
+                    // Second Card Style
+                     cardsHTML += `
+                    <div class="relative flex flex-col md:flex-row items-center gap-12 p-8 md:p-10 rounded-[2rem] border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm hover:shadow-xl transition-all duration-500 group overflow-hidden group">
+                        <div class="absolute top-0 right-0 bg-primary/10 px-6 py-2 rounded-bl-2xl">
+                            <span class="text-primary text-[10px] font-black uppercase tracking-widest">${header.subLabel || 'Recommended'}</span>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="text-xl font-black dark:text-white">${header.label}</h3>
+                                    <p class="text-gray-500 font-medium text-xs mt-1">${header.subLabel || ''}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-baseline gap-1 mb-6">
+                                <span class="text-4xl font-black text-primary">${header.price}</span>
+                            </div>
+                            <ul class="space-y-4">
+                                ${enabledFeatures.map(f => `
+                                <li class="flex items-start gap-3 text-sm font-medium text-gray-600 dark:text-gray-300">
+                                    <span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+                                    ${f.name}
+                                </li>`).join('')}
+                            </ul>
+                        </div>
+                        <div class="flex flex-col gap-4 w-full md:w-auto min-w-[200px]">
+                            <a href="javascript:void(0)" onclick="return false;" class="block w-full bg-primary text-white hover:bg-primary/90 font-black py-4 px-8 rounded-2xl text-center transition-all shadow-xl shadow-primary/20 whitespace-nowrap flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined">rocket_launch</span>
+                                <span>Daftar Sekarang</span>
+                            </a>
+                            <a data-wa-template="package" href="https://wa.me/6285333338818?text=${encodeURIComponent('Halo admin, Saya dari website mau ' + heroTitle + ' - paket ' + (pkgShort || header.label))}" target="_blank" class="block w-full bg-gray-50 dark:bg-gray-700 text-primary border border-gray-100 dark:border-gray-600 hover:bg-primary hover:text-white font-black py-4 px-8 rounded-2xl text-center transition-all whitespace-nowrap flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l121.7-31.9c32.4 17.8 68.9 27.2 106.4 27.2h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-4-10.5-6.7z"/></svg>
+                                <span>Konsultasi sekarang</span>
+                            </a>
+                        </div>
+                    </div>`;
+                }
+            });
+
+            container.innerHTML = cardsHTML;
+        }
+
+        // UMK Data from JSON
+        const umkData = {
+  "pendirian_cv": {
+    "umk-badge": "Badan Usaha Terpopuler",
+    "umk-title": "Solusi Usaha <br>Hemat & <span class='text-primary'>Fleksibel</span>",
+    "umk-desc": "CV adalah pilihan ideal bagi UMK yang ingin membangun bisnis bersama mitra dengan modal terjangkau namun memiliki legalitas yang diakui perbankan.",
+    "umk-features": [
+      "Pendiri Minimal 2 Orang",
+      "Tanpa Minimal Modal Setor",
+      "Sistem Sekutu Aktif & Pasif",
+      "Manajemen Pajak Lebih Efisien"
+    ]
+  },
+  "rups_cv_perubahan": {
+    "umk-badge": "Update Legalitas CV",
+    "umk-title": "Penyesuaian Struktur <br><span class='text-primary'>Bisnis CV Anda</span>",
+    "umk-desc": "Layanan perubahan CV untuk pembaharuan data pengurus, modal, atau anggaran dasar agar tetap relevan dengan perkembangan bisnis Anda.",
+    "umk-features": [
+      "Perubahan Pengurus & Pesero",
+      "Penyesuaian Modal Usaha",
+      "Update Anggaran Dasar",
+      "Proses Cepat & Akurat"
+    ]
+  },
+  "pendirian_pt_umum": {
+    "umk-badge": "Standar Bisnis Profesional",
+    "umk-title": "Badan Hukum <br><span class='text-primary'>Pilihan Investor</span>",
+    "umk-desc": "Bangun kredibilitas tertinggi dengan PT Umum. Struktur organisasi yang solid siap membawa bisnis Anda memenangkan tender besar dan pendanaan investor.",
+    "umk-features": [
+      "Minimal 2 Pendiri/Pemegang Saham",
+      "Pemisahan Harta & Aset Pribadi",
+      "Akses Tender & Proyek Besar",
+      "Reputasi Bisnis Bonafide"
+    ]
+  },
+  "cv_to_pt_umum": {
+    "umk-badge": "Scale Up Bisnis",
+    "umk-title": "Transformasi CV <br>Menjadi <span class='text-primary'>PT Umum</span>",
+    "umk-desc": "Tingkatkan kelas bisnis Anda dari CV ke PT Umum untuk fleksibilitas operasional yang lebih besar dan perlindungan hukum yang lebih kuat.",
+    "umk-features": [
+      "Meningkatkan Status Hukum",
+      "Kapasitas Modal Lebih Besar",
+      "Keamanan Aset Pemilik",
+      "Siap Ekspansi Nasional"
+    ]
+  },
+  "bundling_pt_vo": {
+    "umk-badge": "Paket Hemat Eksklusif",
+    "umk-title": "Bundling PT <br>& <span class='text-primary'>Virtual Office</span>",
+    "umk-desc": "Solusi cerdas bagi UMK. Miliki badan hukum PT sekaligus alamat bisnis bergengsi di lokasi strategis tanpa biaya sewa kantor yang mahal.",
+    "umk-features": [
+      "Legalitas PT Lengkap",
+      "Alamat Kantor Strategis",
+      "Layanan Domisili Resmi",
+      "Lebih Hemat & Efisien"
+    ]
+  },
+  "rups_pt_pengurus": {
+    "umk-badge": "Manajemen Perusahaan",
+    "umk-title": "Perubahan Struktur <br>& <span class='text-primary'>Oper Saham</span>",
+    "umk-desc": "Layanan RUPS profesional untuk perubahan jajaran direksi, komisaris, atau pengalihan kepemilikan saham secara transparan dan legal.",
+    "umk-features": [
+      "Pengalihan Saham Legal",
+      "Ganti Direksi & Komisaris",
+      "Berita Acara RUPS Resmi",
+      "Update SK Kemenkumham"
+    ]
+  },
+  "rups_pt_kbli": {
+    "umk-badge": "Update Operasional",
+    "umk-title": "Penyesuaian <br><span class='text-primary'>Data & Bidang PT</span>",
+    "umk-desc": "Pastikan PT Anda tetap patuh pada regulasi terbaru. Sesuaikan KBLI, Nama PT, Kedudukan, atau penambahan modal dengan mudah.",
+    "umk-features": [
+      "Update KBLI Tahun Terbaru",
+      "Perubahan Nama & Kedudukan",
+      "Peningkatan Modal Disetor",
+      "Sesuai Regulasi OSS RBA"
+    ]
+  },
+  "pendirian_pt_pma": {
+    "umk-badge": "Foreign Direct Investment",
+    "umk-title": "Go Global with <br><span class='text-primary'>PT PMA</span>",
+    "umk-desc": "Solusi legalitas bagi investor asing yang ingin mendirikan bisnis di Indonesia dengan perlindungan hukum dan standar internasional.",
+    "umk-features": [
+      "Kepemilikan Modal Asing",
+      "Fasilitas KITAS Investor",
+      "Perlindungan Hukum Investasi",
+      "Akses Pasar Internasional"
+    ]
+  },
+  "pt_pma_nib_pkkpr": {
+    "umk-badge": "Izin Investasi Lengkap",
+    "umk-title": "PT PMA Lengkap <br><span class='text-primary'>NIB & PKKPR</span>",
+    "umk-desc": "Paket lengkap pendirian PT PMA hingga pengurusan izin lokasi (PKKPR) dan NIB agar operasional bisnis bisa segera berjalan.",
+    "umk-features": [
+      "Izin Lokasi (PKKPR) Resmi",
+      "Akses Akun OSS RBA Asing",
+      "Kesesuaian Tata Ruang",
+      "Pendampingan Izin Sektoral"
+    ]
+  },
+  "rups_pt_pma": {
+    "umk-badge": "Corporate Maintenance",
+    "umk-title": "RUPS & Perubahan <br><span class='text-primary'>PT PMA</span>",
+    "umk-desc": "Layanan RUPS khusus PT PMA untuk perubahan modal asing, struktur pengurus asing, atau penyesuaian regulasi investasi.",
+    "umk-features": [
+      "Pelaporan LKPM Terpadu",
+      "Update Data Pemegang Saham",
+      "Perubahan Modal Asing",
+      "Kepatuhan Regulasi BKPM"
+    ]
+  },
+  "pendirian_koperasi": {
+    "umk-badge": "Ekonomi Kerakyatan",
+    "umk-title": "Maju Bersama <br>dalam <span class='text-primary'>Koperasi</span>",
+    "umk-desc": "Bangun kekuatan ekonomi bersama melalui Koperasi dengan prinsip kekeluargaan untuk meningkatkan kesejahteraan seluruh anggota.",
+    "umk-features": [
+      "Asas Kekeluargaan & Adil",
+      "Permodalan dari Anggota",
+      "Demokrasi Rapat Anggota",
+      "Sistem SHU yang Transparan"
+    ]
+  },
+  "pendirian_ud": {
+    "umk-badge": "Langkah Awal Bisnis",
+    "umk-title": "Usaha Dagang <br><span class='text-primary'>Mandiri</span>",
+    "umk-desc": "Bentuk usaha paling praktis untuk memulai bisnis dagang secara mandiri dengan biaya operasional dan pendirian yang sangat murah.",
+    "umk-features": [
+      "Pemilik Tunggal Mandiri",
+      "Modal Bebas Sesuai Kemampuan",
+      "Kendali Penuh di Tangan Anda",
+      "Proses Cepat & Administrasi Mudah"
+    ]
+  },
+  "pendirian_yayasan": {
+    "umk-badge": "Badan Hukum Sosial",
+    "umk-title": "Legalitas Resmi <br>untuk <span class='text-primary'>Yayasan</span>",
+    "umk-desc": "Wujudkan visi sosial, pendidikan, atau keagamaan Anda melalui Yayasan dengan struktur organisasi yang akuntabel dan berstatus badan hukum.",
+    "umk-features": [
+      "Fokus Kegiatan Non-Profit",
+      "Struktur Pembina, Pengurus, Pengawas",
+      "Badan Hukum Sah Kemenkumham",
+      "Kredibilitas untuk Donasi"
+    ]
+  },
+  "perubahan_yayasan": {
+    "umk-badge": "Update Organ Yayasan",
+    "umk-title": "Perubahan Data <br><span class='text-primary'>& Organ Yayasan</span>",
+    "umk-desc": "Layanan pembaharuan struktur Pembina, Pengurus, atau Pengawas Yayasan serta penyesuaian Anggaran Dasar sesuai aturan terbaru.",
+    "umk-features": [
+      "Perubahan Susunan Pengurus",
+      "Update Anggaran Dasar",
+      "Proses Transparan & Legal",
+      "Sesuai UU Yayasan Terbaru"
+    ]
+  },
+  "penutupan_pt_perorangan": {
+    "umk-badge": "Likuidasi Bisnis",
+    "umk-title": "Pembubaran Resmi <br><span class='text-primary'>PT Perorangan</span>",
+    "umk-desc": "Proses penutupan badan hukum PT Perorangan secara legal untuk menghindari kewajiban pajak atau administratif di masa depan.",
+    "umk-features": [
+      "Penghapusan Status Hukum",
+      "Pencabutan Izin Usaha",
+      "Pelaporan Pajak Akhir",
+      "Bebas Tanggungan Admin"
+    ]
+  },
+  "akta_cabang_pt": {
+    "umk-badge": "Ekspansi Wilayah",
+    "umk-title": "Pembukaan <br><span class='text-primary'>Kantor Cabang PT</span>",
+    "umk-desc": "Perluas jangkauan bisnis Anda dengan pembukaan cabang resmi yang terdaftar di Kemenkumham dan memiliki legalitas operasional.",
+    "umk-features": [
+      "Akta Notaris Kantor Cabang",
+      "SK Sah Kemenkumham",
+      "NIB Khusus Cabang",
+      "Legalitas Operasional Lokal"
+    ]
+  },
+  "akta_cabang_cv": {
+    "umk-badge": "Ekspansi Wilayah",
+    "umk-title": "Pembukaan <br><span class='text-primary'>Kantor Cabang CV</span>",
+    "umk-desc": "Mudahkan operasional CV di berbagai lokasi dengan pendaftaran cabang resmi untuk memperkuat jaringan bisnis bersama mitra.",
+    "umk-features": [
+      "Pendaftaran Cabang Resmi",
+      "Legalitas Terpercaya",
+      "Proses Cepat & Transparan",
+      "Dukungan Ekspansi Bisnis"
+    ]
+  },
+  "nib_pt_pma": {
+    "umk-badge": "Izin Investasi Asing",
+    "umk-title": "Registrasi <br><span class='text-primary'>NIB PT PMA</span>",
+    "umk-desc": "Pengurusan Nomor Induk Berusaha khusus perusahaan modal asing untuk memastikan operasional bisnis sesuai regulasi investasi Indonesia.",
+    "umk-features": [
+      "Akses OSS RBA Internasional",
+      "Izin Usaha Sektoral",
+      "Legalitas Penanaman Modal",
+      "Standar Operasional Global"
+    ]
+  },
+  "pengumuman_koran": {
+    "umk-badge": "Kewajiban Publikasi",
+    "umk-title": "Layanan <br><span class='text-primary'>Pengumuman Koran</span>",
+    "umk-desc": "Penuhi persyaratan legal untuk pembubaran, merger, atau perubahan modal melalui publikasi resmi di media cetak nasional.",
+    "umk-features": [
+      "Media Cetak Terakreditasi",
+      "Bukti Fisik Iklan Resmi",
+      "Proses Cepat & Murah",
+      "Sesuai UU Perseroan Terbatas"
+    ]
+  },
+  "nib_badan": {
+    "umk-badge": "Identitas Bisnis",
+    "umk-title": "Nomor Induk Berusaha <br><span class='text-primary'>(NIB) Badan</span>",
+    "umk-desc": "Dapatkan identitas tunggal untuk operasional bisnis badan usaha Anda sebagai syarat mutlak perizinan berusaha berbasis risiko.",
+    "umk-features": [
+      "Berlaku Seumur Hidup",
+      "Syarat Utama Izin Usaha",
+      "Akses Fasilitas Investasi",
+      "Legalitas di Sistem OSS"
+    ]
+  },
+  "nib_pribadi": {
+    "umk-badge": "Legalitas Perorangan",
+    "umk-title": "NIB Untuk <br><span class='text-primary'>Usaha Mandiri</span>",
+    "umk-desc": "Solusi praktis bagi pemilik usaha mikro perorangan untuk memiliki izin resmi guna meningkatkan kepercayaan pembeli dan perbankan.",
+    "umk-features": [
+      "Proses Kilat 1 Hari",
+      "Syarat Pinjaman Bank",
+      "Izin Operasional Resmi",
+      "Bebas Biaya Administrasi"
+    ]
+  },
+  "pendirian_iumk": {
+    "umk-badge": "Izin Usaha Mikro",
+    "umk-title": "Sertifikasi <br><span class='text-primary'>Legalitas IUMK</span>",
+    "umk-desc": "Tanda legalitas bagi pelaku usaha mikro dan kecil untuk memberikan kepastian hukum dan sarana pemberdayaan dalam mengembangkan usaha.",
+    "umk-features": [
+      "Sertifikat Izin Resmi",
+      "Akses Program Pemerintah",
+      "Pendampingan Usaha",
+      "Legalitas Lokasi Usaha"
+    ]
+  },
+  "pendirian_tdp": {
+    "umk-badge": "Registrasi Perusahaan",
+    "umk-title": "Tanda Daftar <br><span class='text-primary'>Perusahaan (TDP)</span>",
+    "umk-desc": "Pengurusan pendaftaran perusahaan sebagai bukti sah bahwa unit usaha Anda telah terdaftar dan memenuhi kewajiban wajib daftar perusahaan.",
+    "umk-features": [
+      "Bukti Sah Perusahaan",
+      "Kelengkapan Dokumen Lelang",
+      "Validasi Data Bisnis",
+      "Registrasi Instansi Terkait"
+    ]
+  },
+  "pendirian_siup": {
+    "umk-badge": "Izin Dagang",
+    "umk-title": "Surat Izin Usaha <br><span class='text-primary'>Perdagangan (SIUP)</span>",
+    "umk-desc": "Izin resmi untuk menjalankan kegiatan usaha perdagangan bagi perusahaan, koperasi, atau perorangan agar operasional legal.",
+    "umk-features": [
+      "Izin Niaga Terpercaya",
+      "Klasifikasi Bidang Usaha",
+      "Syarat Transaksi B2B",
+      "Legalitas Operasional Sah"
+    ]
+  },
+  "pendirian_situ": {
+    "umk-badge": "Izin Lokasi",
+    "umk-title": "Surat Izin <br><span class='text-primary'>Tempat Usaha (SITU)</span>",
+    "umk-desc": "Izin tempat usaha yang diberikan kepada perorangan atau badan usaha di lokasi tertentu yang tidak menimbulkan gangguan lingkungan.",
+    "umk-features": [
+      "Legalitas Lokasi Fisik",
+      "Izin Tata Ruang Daerah",
+      "Persetujuan Lingkungan",
+      "Keamanan Domisili Bisnis"
+    ]
+  },
+  "pendirian_ho": {
+    "umk-badge": "Izin Gangguan",
+    "umk-title": "Izin Gangguan <br><span class='text-primary'>(HO/Hinderordonnantie)</span>",
+    "umk-desc": "Pernyataan tidak keberatan dari lingkungan sekitar terhadap operasional bisnis yang memiliki potensi risiko gangguan atau kebisingan.",
+    "umk-features": [
+      "Izin Lingkungan Sosial",
+      "Sertifikat Bebas Gangguan",
+      "Kepatuhan Perda Setempat",
+      "Perlindungan Operasional"
+    ]
+  },
+  "izin_toko_retail": {
+    "umk-badge": "Izin Retail",
+    "umk-title": "Izin Usaha <br><span class='text-primary'>Toko Modern/Retail</span>",
+    "umk-desc": "Layanan legalitas khusus untuk operasional toko retail atau swalayan agar sesuai dengan zonasi perdagangan dan regulasi ritel.",
+    "umk-features": [
+      "Zonasi Perdagangan Sah",
+      "Syarat Kerjasama Supplier",
+      "Kepatuhan Standar Ritel",
+      "Izin Operasional Lengkap"
+    ]
+  },
+  "pendirian_perkumpulan": {
+    "umk-badge": "Legalitas Organisasi",
+    "umk-title": "Wadah Resmi <br><span class='text-primary'>Komunitas Anda</span>",
+    "umk-desc": "Bentuk badan hukum non-profit yang ideal untuk komunitas, hobi, atau asosiasi profesi agar memiliki identitas hukum yang sah.",
+    "umk-features": [
+      "Berbasis Keanggotaan",
+      "Wadah Hobi & Profesi",
+      "Badan Hukum Sah Kemenkumham",
+      "Manajemen Organisasi Teratur"
+    ]
+  }
+};
+
+        function getUMKDataKey(serviceName) {
+            const name = serviceName.toLowerCase();
+            
+            // Map exact names first based on services.js
+            if (name === "cv") return "pendirian_cv";
+            if (name === "rups cv (perubahan)") return "rups_cv_perubahan";
+            if (name === "pt umum") return "pendirian_pt_umum";
+            if (name === "cv to pt umum") return "cv_to_pt_umum";
+            if (name === "bundling pt dan vo") return "bundling_pt_vo";
+            if (name.includes("rups pt (pengurus")) return "rups_pt_pengurus";
+            if (name.includes("rups pt (kbli")) return "rups_pt_kbli";
+            if (name === "pt pma (pt asing)") return "pendirian_pt_pma";
+            if (name.includes("pt pma + nib")) return "pt_pma_nib_pkkpr";
+            if (name.includes("rups pt pma")) return "rups_pt_pma";
+            if (name === "koperasi") return "pendirian_koperasi";
+            if (name.includes("ud (usaha dagang)")) return "pendirian_ud";
+            if (name === "yayasan") return "pendirian_yayasan";
+            if (name === "perubahan yayasan") return "perubahan_yayasan";
+            if (name === "penutupan pt perorangan") return "penutupan_pt_perorangan";
+            if (name === "akta cabang pt") return "akta_cabang_pt";
+            if (name === "akta cabang cv") return "akta_cabang_cv";
+            if (name === "nib pt pma") return "nib_pt_pma";
+            if (name === "pengumuman koran") return "pengumuman_koran";
+            if (name.includes("nib badan")) return "nib_badan";
+            if (name.includes("nib pribadi")) return "nib_pribadi";
+            if (name.includes("iumk")) return "pendirian_iumk";
+            if (name.includes("tdp")) return "pendirian_tdp";
+            if (name.includes("siup")) return "pendirian_siup";
+            if (name.includes("situ")) return "pendirian_situ";
+            if (name.includes("ho (izin")) return "pendirian_ho";
+            if (name.includes("toko retail")) return "izin_toko_retail";
+            if (name === "perkumpulan") return "pendirian_perkumpulan";
+            
+            // Fuzzy match fallbacks
+            if (name.includes("cv") && !name.includes("pt") && !name.includes("cabang") && !name.includes("perubahan") && !name.includes("rups")) return "pendirian_cv";
+            
+            return null;
+        }
+
+        function getUMKDescription(serviceName) {
+            const name = serviceName.toLowerCase();
+            
+            // PT Perorangan
+            if (name.includes('pt perorangan') && !name.includes('penutupan')) {
+                return `${serviceName} PT Perorangan adalah entitas hukum resmi yang memungkinkan Anda menjadi <b>Direktur sekaligus Pemilik Tunggal</b> dengan perlindungan aset penuh.`;
+            }
+            
+            // Upgrade ke PT Umum
+            if (name.includes('upgrade') && name.includes('pt')) {
+                return `Solusi transformatif untuk mengubah PT Perorangan menjadi <b>PT Persekutuan Modal</b> guna membuka peluang investasi, tender besar, dan kerjasama strategis.`;
+            }
+            
+            // Try JSON lookup
+            const key = getUMKDataKey(serviceName);
+            if (key && umkData[key]) {
+                 return umkData[key]['umk-desc'];
+            }
+            
+            // Default fallback
+            return `${serviceName} memberikan solusi legalitas terbaik untuk UMK Indonesia dengan proses yang <b>cepat, transparan, dan terjangkau</b>. Dapatkan pendampingan profesional untuk memastikan legalitas bisnis Anda terdaftar dengan benar.`;
+        }
+
+        function getUMKFeatures(serviceName) {
+            const name = serviceName.toLowerCase();
+            
+            // PT Perorangan
+            if (name.includes('pt perorangan') && !name.includes('penutupan')) {
+                return [
+                    "100% Kendali di Tangan Anda",
+                    "Modal Sangat Terjangkau",
+                    "Pemisahan Harta Pribadi",
+                    "Legalitas Resmi Standar Bank"
+                ];
+            }
+            
+            // Upgrade ke PT Umum
+            if (name.includes('upgrade') && name.includes('pt')) {
+                 return [
+                    "Meningkatkan Status Hukum",
+                    "Kapasitas Modal Lebih Besar",
+                    "Keamanan Aset Pemilik",
+                    "Siap Ekspansi Nasional"
+                ];
+            }
+            
+            // Try JSON lookup
+            const key = getUMKDataKey(serviceName);
+            if (key && umkData[key]) {
+                 return umkData[key]['umk-features'];
+            }
+
+            // Default fallback
+            return [
+                "Proses Cepat",
+                "Harga Transparan",
+                "Konsultasi Gratis",
+                "Legalitas Sah di Kemenkumham"
+            ];
+        }
+
+        function getUMKHeader(serviceName) {
+            const name = serviceName.toLowerCase();
+            
+            // PT Perorangan
+            if (name.includes('pt perorangan') && !name.includes('penutupan')) {
+                return {
+                    badge: "Fokus Skala Usaha UMK",
+                    title: `Solusi Legalitas <br>Terbaik untuk <span class="text-primary">UMK</span>`
+                };
+            }
+            
+            // Upgrade ke PT Umum
+            if (name.includes('upgrade') && name.includes('pt')) {
+                 return {
+                    badge: "SIAP UNTUK EKSPANSI",
+                    title: `Tingkatkan Status <br>Bisnis ke <span class="text-primary">PT Umum</span>`
+                };
+            }
+
+            // Try JSON lookup
+            const key = getUMKDataKey(serviceName);
+            if (key && umkData[key]) {
+                 return {
+                     badge: umkData[key]['umk-badge'],
+                     title: umkData[key]['umk-title']
+                 };
+            }
+
+            // Default fallback
+            return {
+                badge: "SIAP UNTUK EKSPANSI",
+                title: `Tingkatkan Status <br>Bisnis ke <span class="text-primary">PT Umum</span>`
+            };
+        }
+
+        function updateFlowSteps(flowType, serviceName = '') {
+            let steps = serviceFlowConfigs[flowType] || serviceFlowConfigs.default;
+            // Clone steps array untuk menghindari modifikasi original
+            steps = steps.map(step => ({ ...step }));
+            
+            // Update deskripsi langkah terakhir dengan nama layanan jika ada
+            if (serviceName && steps.length > 0) {
+                const lastStep = steps[steps.length - 1];
+                if (lastStep.title === "Legalitas Terbit") {
+                    lastStep.desc = `${serviceName} Anda resmi terdaftar! 🎊`;
+                }
+            }
+            
+            const timelineContainer = document.getElementById('timeline-steps');
+            if (!timelineContainer) return;
+
+            // Color mapping with full Tailwind classes
+            const colorMap = {
+                blue: { 
+                    bg: "from-blue-100 to-blue-50", 
+                    dark: "from-blue-900/30 to-blue-800/20", 
+                    text: "text-blue-500", 
+                    badge: "text-blue-500 bg-blue-50 dark:bg-blue-900/20",
+                    corner: "from-blue-500/10",
+                    corner2: "from-primary/5"
+                },
+                purple: { 
+                    bg: "from-purple-100 to-purple-50", 
+                    dark: "from-purple-900/30 to-purple-800/20", 
+                    text: "text-purple-500", 
+                    badge: "text-purple-500 bg-purple-50 dark:bg-purple-900/20",
+                    corner: "from-purple-500/10",
+                    corner2: "from-purple-500/5"
+                },
+                amber: { 
+                    bg: "from-amber-100 to-amber-50", 
+                    dark: "from-amber-900/30 to-amber-800/20", 
+                    text: "text-amber-500", 
+                    badge: "text-amber-600 bg-amber-50 dark:bg-amber-900/20",
+                    corner: "from-amber-500/10",
+                    corner2: "from-amber-500/5"
+                },
+                rose: { 
+                    bg: "from-rose-100 to-rose-50", 
+                    dark: "from-rose-900/30 to-rose-800/20", 
+                    text: "text-rose-500", 
+                    badge: "text-rose-500 bg-rose-50 dark:bg-rose-900/20",
+                    corner: "from-rose-500/10",
+                    corner2: "from-rose-500/5"
+                },
+                emerald: { 
+                    bg: "from-emerald-100 to-emerald-50", 
+                    dark: "from-emerald-900/30 to-emerald-800/20", 
+                    text: "text-emerald-500", 
+                    badge: "text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20",
+                    corner: "from-emerald-500/10",
+                    corner2: "from-emerald-500/5"
+                },
+                cyan: { 
+                    bg: "from-cyan-100 to-cyan-50", 
+                    dark: "from-cyan-900/30 to-cyan-800/20", 
+                    text: "text-cyan-500", 
+                    badge: "text-cyan-600 bg-cyan-50 dark:bg-cyan-900/20",
+                    corner: "from-cyan-500/10",
+                    corner2: "from-cyan-500/5"
+                },
+                indigo: { 
+                    bg: "from-indigo-100 to-indigo-50", 
+                    dark: "from-indigo-900/30 to-indigo-800/20", 
+                    text: "text-indigo-500", 
+                    badge: "text-indigo-600 bg-indigo-50 dark:bg-indigo-900/20",
+                    corner: "from-indigo-500/10",
+                    corner2: "from-indigo-500/5"
+                },
+                orange: { 
+                    bg: "from-orange-100 to-orange-50", 
+                    dark: "from-orange-900/30 to-orange-800/20", 
+                    text: "text-orange-500", 
+                    badge: "text-orange-600 bg-orange-50 dark:bg-orange-900/20",
+                    corner: "from-orange-500/10",
+                    corner2: "from-orange-500/5"
+                },
+                primary: { 
+                    bg: "from-primary/20 to-accent/10", 
+                    dark: "from-primary/30 to-accent/20", 
+                    text: "text-primary", 
+                    badge: "text-primary bg-primary/10",
+                    corner: "from-primary/15",
+                    corner2: "from-accent/10"
+                }
+            };
+
+            let stepsHTML = '';
+            steps.forEach((step, index) => {
+                const stepNum = index + 1;
+                const isEven = stepNum % 2 === 0;
+                const isLast = stepNum === steps.length;
+                const colors = colorMap[step.color] || colorMap.primary;
+                const alignClass = isEven ? "md:pl-16" : "md:pl-0 md:text-right md:pr-16";
+                const iconAlign = isEven ? "" : "md:justify-end";
+                const badgeAlign = isEven ? "" : "md:justify-end";
+                const cornerPos = isEven ? "top-0 left-0 rounded-br-[3rem]" : "top-0 right-0 rounded-bl-[3rem]";
+                const cornerPos2 = isEven ? "bottom-0 right-0 rounded-tl-[2rem]" : "bottom-0 left-0 rounded-tr-[2rem]";
+                const connectorPos = isEven ? "md:left-0 md:-translate-x-1/2" : "md:left-auto md:right-0 md:translate-x-1/2";
+                
+                // Handle special styling for special steps (Yayasan/Perkumpulan last step)
+                const isSpecial = step.isSpecial || false;
+                const specialColor = step.color || 'blue';
+                let borderClass, iconWrapperClass, badgeClass;
+                
+                if (isSpecial) {
+                    if (specialColor === 'indigo') {
+                        borderClass = "border-2 border-indigo-500/20";
+                        iconWrapperClass = "size-12 rounded-xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-200";
+                        badgeClass = "text-white bg-indigo-600";
+                    } else {
+                        borderClass = "border-2 border-blue-500/20";
+                        iconWrapperClass = "size-12 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-200";
+                        badgeClass = "text-white bg-blue-600";
+                    }
+                } else {
+                    borderClass = "border-2 border-gray-100 dark:border-gray-700";
+                    iconWrapperClass = `size-12 rounded-xl bg-gradient-to-br ${colors.bg} dark:${colors.dark} flex items-center justify-center`;
+                    badgeClass = colors.badge;
+                }
+                
+                const iconClass = isSpecial ? "text-2xl text-white" : `text-2xl ${colors.text} transition-all duration-500`;
+                const cornerSize = isSpecial ? "w-24 h-24" : "w-20 h-20";
+                const cornerSize2 = isSpecial ? "w-20 h-20" : "w-16 h-16";
+                const cornerRadius = isSpecial ? "rounded-br-[4rem]" : (isEven ? "rounded-br-[3rem]" : "rounded-bl-[3rem]");
+
+                stepsHTML += `
+                    <div class="timeline-step pl-20 ${alignClass} relative ${isEven ? '' : 'md:z-10'}" data-step="${stepNum}">
+                        <div class="step-connector absolute left-8 ${connectorPos} top-1/2 -translate-y-1/2">
+                            <div class="step-badge size-14 bg-white dark:bg-gray-800 rounded-2xl border-4 border-gray-300 shadow-lg flex items-center justify-center transition-all duration-500">
+                                <span class="step-number text-gray-400 font-black text-xl transition-all duration-500">${stepNum}</span>
+                            </div>
+                        </div>
+                        <div class="step-card p-5 bg-white dark:bg-gray-800 rounded-2xl ${borderClass} shadow-lg transition-all duration-500 relative overflow-hidden">
+                            ${isSpecial ? 
+                                (specialColor === 'indigo' ? 
+                                    `<div class="absolute ${cornerPos} ${cornerSize} bg-gradient-to-br from-indigo-500/10 to-transparent ${cornerRadius}"></div>` :
+                                    `<div class="absolute ${cornerPos} ${cornerSize} bg-gradient-to-br from-blue-500/10 to-transparent ${cornerRadius}"></div>`
+                                ) :
+                                `<div class="absolute ${cornerPos} ${cornerSize} bg-gradient-to-br ${colors.corner} to-transparent ${cornerRadius}"></div>`
+                            }
+                            ${!isSpecial ? `<div class="absolute ${cornerPos2} ${cornerSize2} bg-gradient-to-tr ${colors.corner2} to-transparent"></div>` : ''}
+                            ${isLast && !isSpecial ? '<div class="absolute top-2 right-2 text-xl opacity-20">🎉</div>' : ''}
+                            <div class="relative z-10">
+                                <div class="flex items-center gap-3 ${iconAlign} mb-3">
+                                    <div class="${iconWrapperClass}">
+                                        <span class="step-icon material-symbols-outlined ${iconClass}">${step.icon}</span>
+                                    </div>
+                                </div>
+                                <h3 class="step-title text-lg font-bold mb-1 dark:text-white transition-all duration-500">${step.title}</h3>
+                                <p class="step-desc text-xs text-gray-500 dark:text-gray-400 mb-2 leading-relaxed">${step.desc}</p>
+                                <div class="flex items-center gap-2 ${badgeAlign}">
+                                    ${step.time ? `
+                                        <span class="inline-flex items-center gap-1 text-[10px] font-bold ${badgeClass} px-2 py-1 rounded-full">
+                                            <span class="material-symbols-outlined text-xs">schedule</span>
+                                            ${step.time}
+                                        </span>
+                                    ` : ''}
+                                    ${step.detail ? `
+                                        <span class="inline-flex items-center gap-1 text-[10px] font-bold ${badgeClass} px-2 py-1 rounded-full">
+                                            <span class="material-symbols-outlined text-xs">${step.detail.includes('Resmi') || step.detail.includes('Online') || step.detail.includes('RBA') || step.detail.includes('Beroperasi') ? 'verified_user' : step.detail.includes('Selesai') ? 'star' : 'description'}</span>
+                                            ${step.detail}
+                                        </span>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            timelineContainer.innerHTML = stepsHTML;
+            
+            // Add confetti to final step
+            const finalStep = document.querySelector(`.timeline-step[data-step="${steps.length}"] .step-card`);
+            if (finalStep && !finalStep.querySelector('.confetti-container')) {
+                const confettiContainer = document.createElement('div');
+                confettiContainer.className = 'confetti-container';
+                for (let i = 0; i < 10; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confettiContainer.appendChild(confetti);
+                }
+                finalStep.appendChild(confettiContainer);
+            }
+
+            // Add floating background particles if not already added
+            const section = document.getElementById('alur-pembuatan');
+            if (section && !section.querySelector('.timeline-section-bg')) {
+                const bgContainer = document.createElement('div');
+                bgContainer.className = 'timeline-section-bg';
+                for (let i = 0; i < 6; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'bg-particle';
+                    bgContainer.appendChild(particle);
+                }
+                section.insertBefore(bgContainer, section.firstChild);
+            }
+            
+            // Reinitialize animation after updating steps
+            setTimeout(() => {
+                const steps = document.querySelectorAll('.timeline-step');
+                const progressFill = document.getElementById('progress-fill');
+                const totalSteps = steps.length;
+                let currentStep = 0;
+                const stepDuration = 1800;
+
+                function animateToStep(stepIndex) {
+                    const progressPercent = ((stepIndex + 1) / totalSteps) * 100;
+                    if (progressFill) progressFill.style.height = progressPercent + '%';
+
+                    steps.forEach((step, index) => {
+                        step.classList.remove('active', 'completed');
+                        if (index < stepIndex) {
+                            step.classList.add('completed');
+                        } else if (index === stepIndex) {
+                            setTimeout(() => {
+                                step.classList.add('active');
+                            }, 100);
+                        }
+                    });
+                }
+
+                function runAnimation() {
+                    animateToStep(currentStep);
+                    currentStep++;
+                    if (currentStep >= totalSteps) {
+                        setTimeout(() => {
+                            currentStep = 0;
+                            steps.forEach(step => {
+                                step.style.opacity = '0.5';
+                            });
+                            setTimeout(() => {
+                                steps.forEach(step => {
+                                    step.classList.remove('active', 'completed');
+                                    step.style.opacity = '1';
+                                });
+                                if (progressFill) progressFill.style.height = '0%';
+                                setTimeout(runAnimation, 300);
+                            }, 400);
+                        }, 2500);
+                    } else {
+                        setTimeout(runAnimation, stepDuration);
+                    }
+                }
+
+                setTimeout(runAnimation, 800);
+            }, 100);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const serviceId = urlParams.get('id');
+            if (serviceId) {
+                const service = allServices.find(s => s.id == serviceId);
+                if (service) {
+                    // Update Page Title
+                    document.title = `${service.name} - PT Akses Legal Indonesia`;
+                    
+                    // Intelligent Title Formatting
+                    const exclusions = ["RUPS", "Upgrade", "Perubahan", "Penutupan", "Akta", "NIB", "Pengumuman", "Bundling", "CV to"];
+                    const shouldAddPendirian = !exclusions.some(exc => service.name.includes(exc));
+                    const titlePrefix = shouldAddPendirian ? "Pendirian " : "";
+
+                    // Update Hero
+                    const titleEl = document.getElementById('hero-title');
+                    if (titleEl) titleEl.innerHTML = `${titlePrefix}${service.name}: <br class="hidden md:block" /> <span class="text-primary">Cepat, Murah, &amp; Resmi.</span>`;
+                    
+                    const descEl = document.getElementById('hero-desc');
+                    if (descEl) descEl.textContent = service.description || "Solusi legalitas terbaik untuk UMKM Indonesia. Proses kilat dengan harga paling terjangkau. Mulai langkah besar usaha Anda hari ini dengan pendampingan profesional.";
+                    
+                    // Update Flow Title - dinamis berdasarkan nama layanan
+                    const flowTitleEl = document.getElementById('alur-title');
+                    if (flowTitleEl) {
+                        // Format judul alur berdasarkan nama layanan
+                        flowTitleEl.textContent = `Alur ${shouldAddPendirian ? 'Pendirian ' : ''}${service.name}`;
+                    }
+
+                    // Update Flow Description - dinamis berdasarkan jenis layanan
+                    const flowDescEl = document.getElementById('alur-desc');
+                    if (flowDescEl) {
+                        const flowType = getServiceFlowType(service.name);
+                        if (flowType === 'yayasan') {
+                            flowDescEl.textContent = "Proses legalitas berdasarkan UU No. 28 Tahun 2004 tentang Yayasan.";
+                        } else if (flowType === 'perkumpulan') {
+                            flowDescEl.textContent = "Proses legalitas organisasi, asosiasi, atau komunitas menjadi Badan Hukum resmi.";
+                        } else {
+                            flowDescEl.textContent = "Proses transparan dari awal hingga legalitas Anda terbit.";
+                        }
+                    }
+
+                    // Update Flow Steps
+                    const flowType = getServiceFlowType(service.name);
+                    updateFlowSteps(flowType, service.name);
+                    
+                    // Update Package Info
+                    const pkgNameEl = document.getElementById('package-name');
+                    if (pkgNameEl) pkgNameEl.textContent = `${service.name} All-in`;
+                    
+                    const priceEl = document.getElementById('package-price');
+                    if (priceEl) {
+                        // Format price to match design if possible, or just display raw
+                        priceEl.textContent = service.price;
+                    }
+
+                    // Update feature comparison table (CV / Perkumpulan)
+                    updateFeatureComparisonTableForService(service.name);
+
+                    // Update UMK Description & Features & Header
+                    const umkDescEl = document.getElementById('umk-desc');
+                    const umkFeaturesEl = document.getElementById('umk-features');
+                    const umkBadgeEl = document.getElementById('umk-badge');
+                    const umkTitleEl = document.getElementById('umk-title');
+
+                    if (umkDescEl) {
+                        umkDescEl.innerHTML = getUMKDescription(service.name);
+                    }
+                    
+                    if (umkBadgeEl && umkTitleEl) {
+                        const headerContent = getUMKHeader(service.name);
+                        umkBadgeEl.textContent = headerContent.badge;
+                        umkTitleEl.innerHTML = headerContent.title;
+                    }
+
+                    if (umkFeaturesEl) {
+                        const features = getUMKFeatures(service.name);
+                        umkFeaturesEl.innerHTML = features.map(feature => `
+                            <div class="flex items-center gap-3 font-bold text-gray-700 dark:text-gray-300">
+                                <span class="material-symbols-outlined text-primary">check_circle</span>
+                                ${feature}
+                            </div>
+                        `).join('');
+                    }
+
+                    // Update WA Links (skip pricing card links yang sudah spesifik)
+                    // HARUS dipanggil SEBELUM renderPricingCards agar tidak menimpa link spesifik paket
+                    const waMessage = encodeURIComponent(`Halo Akses Legal, saya ingin konsultasi mengenai ${service.name} (${service.price}).`);
+                    document.querySelectorAll('a[href^="https://wa.me"]').forEach(a => {
+                        // Skip link pricing/package yang sudah punya template sendiri
+                        if (a?.dataset?.waTemplate === 'package') return;
+                        let currentUrl = new URL(a.href);
+                        currentUrl.searchParams.set('text', `Halo Akses Legal, saya ingin konsultasi mengenai ${service.name} (${service.price}).`);
+                        a.href = currentUrl.toString();
+                    });
+
+                    // Update pricing cards - HARUS dipanggil TERAKHIR agar link spesifik paket tidak tertimpa
+                    renderPricingCards(service.name);
+                }
+            } else {
+                // Default case: Update UMK Description untuk PT Perorangan (default)
+                const umkDescEl = document.getElementById('umk-desc');
+                if (umkDescEl) {
+                    umkDescEl.innerHTML = getUMKDescription('PT Perorangan');
+                }
+                const umkFeaturesEl = document.getElementById('umk-features');
+                if (umkFeaturesEl) {
+                    const features = getUMKFeatures('PT Perorangan');
+                    umkFeaturesEl.innerHTML = features.map(feature => `
+                        <div class="flex items-center gap-3 font-bold text-gray-700 dark:text-gray-300">
+                            <span class="material-symbols-outlined text-primary">check_circle</span>
+                            ${feature}
+                        </div>
+                    `).join('');
+                }
+                // Ensure header is set for default view
+                const umkBadgeEl = document.getElementById('umk-badge');
+                const umkTitleEl = document.getElementById('umk-title');
+                if (umkBadgeEl && umkTitleEl) {
+                    const headerContent = getUMKHeader('PT Perorangan');
+                    umkBadgeEl.textContent = headerContent.badge;
+                    umkTitleEl.innerHTML = headerContent.title;
+                }
+                
+                // Ensure default view is consistent (Feature Table + Pricing)
+                updateFeatureComparisonTableForService('PT Perorangan');
+                renderPricingCards('PT Perorangan');
+            }
+        });
+    </script>
+</body>
+
+</html>
