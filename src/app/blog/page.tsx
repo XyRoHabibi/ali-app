@@ -44,16 +44,16 @@ const allArticles = [
         category: "pendirian",
         categoryLabel: "Tips Bisnis",
         excerpt: "Ketahui perbedaan mendasar dan keuntungan masing-masing badan usaha untuk skala bisnis Anda.",
-        image: "https://images.unsplash.com/photo-1450175804616-78ff2360eb39?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=800&q=80",
     },
     {
         id: 2,
         slug: "haki-brand",
         title: "Kenapa Brand Anda Harus Didaftarkan HAKI Sejak Dini?",
-        category: "lainnya",
+        category: "perizinan",
         categoryLabel: "HAKI",
         excerpt: "Perlindungan aset tak berwujud sangat krusial untuk mencegah plagiarisme di masa depan.",
-        image: "https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=800&q=80",
     },
     {
         id: 3,
@@ -62,7 +62,7 @@ const allArticles = [
         category: "perizinan",
         categoryLabel: "Sertifikasi",
         excerpt: "Langkah demi langkah mendaftarkan produk kuliner Anda melalui skema Sertifikasi Halal Gratis.",
-        image: "https://images.unsplash.com/photo-1434626958693-3941b2623bd1?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1556745753-b2904692b3cd?auto=format&fit=crop&w=800&q=80",
     },
     {
         id: 4,
@@ -71,7 +71,7 @@ const allArticles = [
         category: "perizinan",
         categoryLabel: "Regulasi",
         excerpt: "Nomor Induk Berusaha kini mandatory. Simak syarat dan prosedur pendaftaran NIB secara online.",
-        image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80",
     },
     {
         id: 5,
@@ -80,7 +80,7 @@ const allArticles = [
         category: "pendirian",
         categoryLabel: "Pendirian",
         excerpt: "PT dan CV punya ketentuan beda. Pelajari kapan wajib notaris dan kapan bisa pakai akta di bawah tangan.",
-        image: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=800&q=80",
     },
     {
         id: 6,
@@ -89,7 +89,7 @@ const allArticles = [
         category: "perizinan",
         categoryLabel: "Sertifikasi",
         excerpt: "Agar produk pangan legal dijual, pahami beda PIRT, Halal, dan skema MBR serta alur pengurusannya.",
-        image: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80",
     },
     {
         id: 7,
@@ -98,25 +98,25 @@ const allArticles = [
         category: "perizinan",
         categoryLabel: "Regulasi",
         excerpt: "Kriteria produk yang harus BPOM dan yang cukup PIRT, plus tips percepat proses pengajuan.",
-        image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1513135065346-a098a63a71ee?auto=format&fit=crop&w=800&q=80",
     },
     {
         id: 8,
         slug: "uu-umkm",
         title: "UU UMKM Terbaru: Hak dan Kewajiban yang Perlu Anda Tahu",
-        category: "lainnya",
+        category: "perizinan",
         categoryLabel: "Legal Update",
         excerpt: "Ringkasan perubahan UU UMKM dan dampaknya bagi pelaku usaha mikro, kecil, dan menengah.",
-        image: "https://images.unsplash.com/photo-1556761175-b413da2bafaa?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1554224155-1696413565d3?auto=format&fit=crop&w=800&q=80",
     },
     {
         id: 9,
         slug: "merek-dagang",
         title: "Daftar Merek Dagang Sendiri vs Pakai Konsultan: Mana Lebih Efisien?",
-        category: "lainnya",
+        category: "pendirian",
         categoryLabel: "HAKI",
         excerpt: "Perbandingan biaya, waktu, dan risiko saat daftar merek mandiri vs melalui konsultan HKI.",
-        image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=800&q=80",
     },
     {
         id: 10,
@@ -125,7 +125,7 @@ const allArticles = [
         category: "perizinan",
         categoryLabel: "Legal Update",
         excerpt: "Ringkasan update OSS RBA dan dampaknya bagi pendirian usaha serta perizinan berusaha.",
-        image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=800&q=80",
     },
     {
         id: 11,
@@ -134,7 +134,7 @@ const allArticles = [
         category: "pendirian",
         categoryLabel: "Pendirian",
         excerpt: "Checklist lengkap dokumen serta persyaratan sebelum mengajukan pendirian PT perorangan.",
-        image: "https://images.unsplash.com/photo-1486406146926-c888a6c2c0b0?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=800&q=80",
     },
     {
         id: 12,
@@ -143,7 +143,7 @@ const allArticles = [
         category: "pendirian",
         categoryLabel: "Tips Bisnis",
         excerpt: "Kapan bisnis Anda siap naik kelas ke PT dan langkah konversi CV ke PT yang perlu Anda ketahui.",
-        image: "https://images.unsplash.com/photo-1497366216544-37526070297c?auto=format&fit=crop&w=600&q=80",
+        image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=800&q=80",
     },
 ];
 
@@ -154,7 +154,7 @@ const categories = [
     { id: "perizinan", label: "Perizinan" },
 ];
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 3;
 
 export default function BlogPage() {
     const [activeSlide, setActiveSlide] = useState(0);
@@ -163,7 +163,7 @@ export default function BlogPage() {
     const sectionRef = useRef<HTMLDivElement>(null);
     const carouselRef = useRef<NodeJS.Timeout | null>(null);
 
-    // Reveal animation
+    // Reveal animation - re-trigger when page or category changes
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
@@ -190,7 +190,7 @@ export default function BlogPage() {
         }, 100);
 
         return () => observer.disconnect();
-    }, []);
+    }, [currentPage, activeCategory]);
 
     // Featured carousel auto-scroll
     useEffect(() => {
@@ -221,18 +221,18 @@ export default function BlogPage() {
         }, 5500);
     };
 
-    // Filter articles by category
-    const filteredArticles =
+    // Filter articles by category and sort by newest first
+    const filteredArticles = (
         activeCategory === "semua"
             ? allArticles
-            : allArticles.filter((a) => a.category === activeCategory);
+            : allArticles.filter((a) => a.category === activeCategory)
+    ).sort((a, b) => b.id - a.id);
 
-    // Pagination
+    // Pagination (exactly 3 items per page to make 4 pages with 12 items)
     const totalPages = Math.ceil(filteredArticles.length / ITEMS_PER_PAGE);
-    const paginatedArticles = filteredArticles.slice(
-        (currentPage - 1) * ITEMS_PER_PAGE,
-        currentPage * ITEMS_PER_PAGE
-    );
+    const paginatedArticles = filteredArticles
+        .slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
+        .reverse(); // Reverse specific page items so newest is on the right of the grid
 
     // Handle category change
     const handleCategoryChange = (cat: string) => {
@@ -321,8 +321,8 @@ export default function BlogPage() {
                                 type="button"
                                 onClick={() => goToSlide(index)}
                                 className={`size-2.5 rounded-full transition-all ${index === activeSlide
-                                        ? "bg-[#2a6ba7]"
-                                        : "bg-[#2a6ba7]/40 hover:bg-[#2a6ba7]/70"
+                                    ? "bg-[#2a6ba7]"
+                                    : "bg-[#2a6ba7]/40 hover:bg-[#2a6ba7]/70"
                                     }`}
                                 aria-label={`Slide ${index + 1}`}
                             />
@@ -338,8 +338,8 @@ export default function BlogPage() {
                             type="button"
                             onClick={() => handleCategoryChange(cat.id)}
                             className={`px-5 py-2.5 rounded-xl font-black text-sm transition-all ${activeCategory === cat.id
-                                    ? "bg-[#2a6ba7] text-white"
-                                    : "bg-white border border-gray-200 text-gray-700 hover:border-[#2a6ba7]/50 hover:text-[#2a6ba7]"
+                                ? "bg-[#2a6ba7] text-white"
+                                : "bg-white border border-gray-200 text-gray-700 hover:border-[#2a6ba7]/50 hover:text-[#2a6ba7]"
                                 }`}
                         >
                             {cat.label}
@@ -392,19 +392,29 @@ export default function BlogPage() {
                             <span className="material-symbols-outlined">chevron_left</span>
                         </button>
 
-                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                            <button
-                                key={page}
-                                type="button"
-                                onClick={() => handlePageChange(page)}
-                                className={`size-12 rounded-xl font-bold flex items-center justify-center transition-colors ${currentPage === page
+                        {(() => {
+                            const maxVisible = 3;
+                            let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+                            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+                            if (endPage - startPage + 1 < maxVisible) {
+                                startPage = Math.max(1, endPage - maxVisible + 1);
+                            }
+
+                            return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map((page) => (
+                                <button
+                                    key={page}
+                                    type="button"
+                                    onClick={() => handlePageChange(page)}
+                                    className={`size-12 rounded-xl font-bold flex items-center justify-center transition-colors ${currentPage === page
                                         ? "bg-[#2a6ba7] text-white"
                                         : "bg-white border border-gray-100 hover:bg-gray-50"
-                                    }`}
-                            >
-                                {page}
-                            </button>
-                        ))}
+                                        }`}
+                                >
+                                    {page}
+                                </button>
+                            ));
+                        })()}
 
                         <button
                             type="button"
