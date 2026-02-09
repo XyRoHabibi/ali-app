@@ -103,13 +103,13 @@ export default function Header() {
                 className={`md:hidden fixed inset-0 z-[999] bg-white p-6 flex flex-col h-screen overflow-y-auto transition-transform duration-300 ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
                     }`}
             >
-                <div className="flex items-center justify-between mb-12">
+                <div className="flex items-center justify-between mb-6">
                     <Image
-                        src="/images/logo-color.svg" // Pastikan extension sesuai (png/svg)
+                        src="/images/logo-color.png" // Pastikan extension sesuai (png/svg)
                         alt="ALI Logo"
                         width={160}
                         height={40}
-                        className="h-10 w-auto"
+                        className="h-24 w-auto"
                     />
                     <button
                         onClick={() => setIsMobileMenuOpen(false)}
