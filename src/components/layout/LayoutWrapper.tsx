@@ -23,12 +23,12 @@ export default function LayoutWrapper({
 
     // Default layout with Header and Footer
     return (
-        <>
+        <div className="flex flex-col min-h-screen w-full overflow-x-hidden">
             <ReactLenis root />
             <Header />
-            <main className="relative">{children}</main>
+            <main className="relative flex-grow w-full overflow-x-hidden">{children}</main>
             <Footer />
             <FloatingWhatsApp />
-        </>
+        </div>
     );
 }

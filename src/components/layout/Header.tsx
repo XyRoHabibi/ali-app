@@ -26,11 +26,13 @@ export default function Header() {
             document.body.style.paddingRight = "var(--removed-body-scroll-width)"; // Handle scrollbar jump if any
             // Lock Lenis scroll if it's active on the html/body
             document.documentElement.classList.add('lenis-stopped');
+            document.body.classList.add('mobile-menu-open');
         } else {
             document.body.style.overflow = "";
             document.body.style.touchAction = "";
             document.body.style.paddingRight = "";
             document.documentElement.classList.remove('lenis-stopped');
+            document.body.classList.remove('mobile-menu-open');
         }
 
         return () => {
@@ -38,6 +40,7 @@ export default function Header() {
             document.body.style.touchAction = "";
             document.body.style.paddingRight = "";
             document.documentElement.classList.remove('lenis-stopped');
+            document.body.classList.remove('mobile-menu-open');
         };
     }, [isMobileMenuOpen]);
 
@@ -126,8 +129,8 @@ export default function Header() {
             <div
                 data-lenis-prevent
                 className={`md:hidden fixed inset-0 z-[9999] bg-white p-6 flex flex-col h-[100dvh] overflow-y-auto overscroll-none transition-all duration-300 ${isMobileMenuOpen
-                        ? "translate-x-0 opacity-100 visible"
-                        : "translate-x-full opacity-0 invisible pointer-events-none"
+                    ? "translate-x-0 opacity-100 visible"
+                    : "translate-x-full opacity-0 invisible pointer-events-none"
                     }`}
             >
                 <div className="flex items-center justify-between mb-6">
