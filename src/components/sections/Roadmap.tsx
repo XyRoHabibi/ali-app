@@ -80,7 +80,7 @@ export default function Roadmap() {
     const contentRef = useRef<HTMLDivElement>(null);
     const [currentStep, setCurrentStep] = useState(0);
 
-    // Setup Animation
+    // Setup Animation Utama (ScrollTrigger)
     useEffect(() => {
         // Registrasi plugin GSAP
         gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -110,7 +110,7 @@ export default function Roadmap() {
                         },
                     });
                 },
-                // Mobile - REVAMPED ANIMATION
+                // Mobile
                 "(max-width: 1023px)": function () {
                     const cards = gsap.utils.toArray('.mobile-card');
 
@@ -121,29 +121,33 @@ export default function Roadmap() {
                         const tl = gsap.timeline({
                             scrollTrigger: {
                                 trigger: card,
-                                start: "top 150%", // Animasi mulai saat elemen masuk 80% viewport
+                                start: "top 150%",
                                 toggleActions: "play none none reverse"
                             }
                         });
 
                         // 1. Animasi Dot (Pop in + Rotate)
-                        tl.fromTo(dot,
-                            { scale: 0, rotation: -90, opacity: 0 },
-                            { scale: 1, rotation: 0, opacity: 1, duration: 0.6, ease: "back.out(1.7)" }
-                        );
+                        if (dot) {
+                            tl.fromTo(dot,
+                                { scale: 0, rotation: -90, opacity: 0 },
+                                { scale: 1, rotation: 0, opacity: 1, duration: 0.6, ease: "back.out(1.7)" }
+                            );
+                        }
 
                         // 2. Animasi Konten (Slide in from right + Blur fade)
-                        tl.fromTo(content,
-                            { opacity: 0, x: 50, filter: "blur(10px)" },
-                            {
-                                opacity: 1,
-                                x: 0,
-                                filter: "blur(0px)",
-                                duration: 0.6,
-                                ease: "power2.out"
-                            },
-                            "-=0.4" // Mulai sedikit lebih cepat sebelum dot selesai
-                        );
+                        if (content) {
+                            tl.fromTo(content,
+                                { opacity: 0, x: 50, filter: "blur(10px)" },
+                                {
+                                    opacity: 1,
+                                    x: 0,
+                                    filter: "blur(0px)",
+                                    duration: 0.6,
+                                    ease: "power2.out"
+                                },
+                                "-=0.4"
+                            );
+                        }
                     });
                 }
             });
@@ -152,15 +156,33 @@ export default function Roadmap() {
         return () => ctx.revert();
     }, []);
 
-    // Effect khusus untuk animasi konten saat step berubah (Desktop)
+    // --- UPDATED ANIMATION LOGIC (DESKTOP STEP CHANGE) ---
     useEffect(() => {
         if (!contentRef.current) return;
 
-        // Start from 0.8 opacity to ensure the "active" card is always bright and never looks "faded" while scrolling
+        // Reset animasi sebelumnya jika user scroll cepat
+        gsap.killTweensOf(contentRef.current.children);
+
+        // Animasi Masuk Staggered (Icon -> Judul -> Detail)
+        // Ini membuat efek elemen masuk satu per satu
         gsap.fromTo(
-            contentRef.current,
-            { opacity: 0.8, y: 10, scale: 0.99 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.2, ease: "power2.out" }
+            contentRef.current.children,
+            {
+                y: 30,          // Mulai dari sedikit ke bawah
+                opacity: 0,     // Mulai transparan
+                filter: "blur(5px)", // Mulai agak blur
+                scale: 0.95     // Sedikit lebih kecil
+            },
+            {
+                y: 0,
+                opacity: 1,
+                filter: "blur(0px)",
+                scale: 1,
+                duration: 0.5,
+                stagger: 0.1,   // Jeda 0.1 detik antar elemen (Icon, Text, Box AI)
+                ease: "back.out(1.2)", // Sedikit efek mantul (bouncy) biar menarik
+                overwrite: "auto"
+            }
         );
     }, [currentStep]);
 
@@ -213,6 +235,7 @@ export default function Roadmap() {
                                 {roadmapSteps.map((s, index) => (
                                     <div
                                         key={s.id}
+                                        onClick={() => handleStepClick(index)} // Optional: Enable click to scroll
                                         className={`flex items-center gap-4 p-4 rounded-xl border-l-4 transition-all duration-200 cursor-pointer ${index === currentStep
                                             ? "bg-white !border-l-[#f3b444] shadow-[0_15px_35px_-10px_rgba(0,0,0,0.1)] scale-[1.05] !opacity-100 z-10"
                                             : "border-l-transparent opacity-20 grayscale hover:opacity-100 hover:grayscale-0"
@@ -270,14 +293,18 @@ export default function Roadmap() {
                                     </div>
                                 </div>
 
-                                {/* Content Area with Animation Key */}
+                                {/* Content Area with Animation Target */}
                                 <div className="flex-1 p-12 flex flex-col items-center justify-center text-center relative z-10">
                                     <div ref={contentRef} className="space-y-8 w-full">
+
+                                        {/* Child 1: Icon */}
                                         <div className="size-24 bg-[#2a6ba7]/5 rounded-[2rem] flex items-center justify-center text-4xl text-[#2a6ba7] mx-auto shadow-inner ring-4 ring-white">
                                             <span className="material-symbols-outlined text-5xl">
                                                 {step.icon}
                                             </span>
                                         </div>
+
+                                        {/* Child 2: Title & Desc */}
                                         <div className="space-y-4">
                                             <h4 className="text-3xl font-black text-gray-900">
                                                 {step.title}
@@ -288,6 +315,8 @@ export default function Roadmap() {
                                                 </p>
                                             </div>
                                         </div>
+
+                                        {/* Child 3: Detail Box */}
                                         <div className="flex items-start gap-4 text-left p-4 rounded-xl border-l-4 border-[#f3b444] bg-[#f3b444]/5 max-w-md mx-auto">
                                             <span className="material-symbols-outlined text-[#2a6ba7] text-xl mt-0.5">smart_toy</span>
                                             <p className="text-[11px] text-gray-500 leading-relaxed">
@@ -295,6 +324,7 @@ export default function Roadmap() {
                                                 {step.detail}
                                             </p>
                                         </div>
+
                                     </div>
                                 </div>
 
@@ -323,13 +353,13 @@ export default function Roadmap() {
 
                         {roadmapSteps.map((s, index) => (
                             <div key={s.id} className="mobile-card relative pl-8">
-                                {/* Dot on timeline */}
-                                <div className={`absolute left-0 top-6 -translate-x-1/2 size-8 rounded-full border-4 border-[#F9FAFB] flex items-center justify-center z-10 ${index <= 8 ? "bg-[#2a6ba7] text-white" : "bg-white text-gray-400 border-gray-200"
+                                {/* Dot on timeline (Added mobile-dot class for GSAP targeting) */}
+                                <div className={`mobile-dot absolute left-0 top-6 -translate-x-1/2 size-8 rounded-full border-4 border-[#F9FAFB] flex items-center justify-center z-10 ${index <= 8 ? "bg-[#2a6ba7] text-white" : "bg-white text-gray-400 border-gray-200"
                                     }`}>
                                     <span className="text-[10px]  font-bold">{index + 1}</span>
                                 </div>
 
-                                {/* Mobile Card Content (Added 'mobile-content' class for animation target) */}
+                                {/* Mobile Card Content */}
                                 <div className="mobile-content bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                                     <div className="flex items-center gap-3 mb-4">
                                         <div className="size-10 rounded-lg bg-[#2a6ba7]/10 flex items-center justify-center text-[#2a6ba7]">
