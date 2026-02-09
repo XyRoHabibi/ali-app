@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
 const roadmapSteps = [
     {
@@ -76,41 +79,13 @@ export default function Roadmap() {
     const sectionRef = useRef<HTMLElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
     const [currentStep, setCurrentStep] = useState(0);
-    const [gsapLoaded, setGsapLoaded] = useState(false);
 
-    // 1. Load GSAP via CDN
+    // Setup Animation
     useEffect(() => {
-        const loadScript = (src: string) => {
-            return new Promise((resolve, reject) => {
-                if (document.querySelector(`script[src="${src}"]`)) {
-                    resolve(true);
-                    return;
-                }
-                const script = document.createElement("script");
-                script.src = src;
-                script.async = true;
-                script.onload = () => resolve(true);
-                script.onerror = () => reject(new Error(`Failed to load script ${src}`));
-                document.body.appendChild(script);
-            });
-        };
+        // Registrasi plugin GSAP
+        gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-        Promise.all([
-            loadScript("https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"),
-            loadScript("https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js")
-        ]).then(() => {
-            setGsapLoaded(true);
-        }).catch(err => console.error("Error loading GSAP:", err));
-    }, []);
-
-    // 2. Setup Animation setelah GSAP loaded
-    useEffect(() => {
-        if (!gsapLoaded || !sectionRef.current) return;
-
-        const gsap = (window as any).gsap;
-        const ScrollTrigger = (window as any).ScrollTrigger;
-
-        gsap.registerPlugin(ScrollTrigger);
+        if (!sectionRef.current) return;
 
         const ctx = gsap.context(() => {
             ScrollTrigger.matchMedia({
@@ -123,7 +98,7 @@ export default function Roadmap() {
                             end: "+=4000",
                             pin: true,
                             scrub: 0.5,
-                            onUpdate: (self: any) => {
+                            onUpdate: (self) => {
                                 const progress = self.progress;
                                 const totalSteps = roadmapSteps.length;
                                 const activeIndex = Math.min(
@@ -158,24 +133,21 @@ export default function Roadmap() {
         }, sectionRef);
 
         return () => ctx.revert();
-    }, [gsapLoaded]);
+    }, []);
 
     // Effect khusus untuk animasi konten saat step berubah
     useEffect(() => {
-        if (!gsapLoaded || !contentRef.current) return;
-
-        const gsap = (window as any).gsap;
+        if (!contentRef.current) return;
 
         gsap.fromTo(
             contentRef.current,
             { opacity: 0, y: 20, scale: 0.98 },
             { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power2.out" }
         );
-    }, [currentStep, gsapLoaded]);
+    }, [currentStep]);
 
     const handleStepClick = (index: number) => {
-        if (!gsapLoaded || !sectionRef.current) return;
-        const gsap = (window as any).gsap;
+        if (!sectionRef.current) return;
 
         const scrollHeight = 4000;
         const sectionTop = sectionRef.current.offsetTop;
@@ -195,7 +167,6 @@ export default function Roadmap() {
         <section
             id="roadmap-section"
             ref={sectionRef}
-            // Perbaikan 5: pb-40 agar bagian bawah tidak terpotong section lain
             className="relative bg-[#F9FAFB] overflow-hidden pb-40"
         >
             {/* Background Blob */}
@@ -203,13 +174,10 @@ export default function Roadmap() {
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
 
             {/* Container Utama */}
-            {/* Perbaikan 2: min-h-screen, flex, justify-center agar posisi vertikal di tengah */}
-            {/* Perbaikan 1: pt-32 agar header turun ke bawah, tidak mepet atas */}
             <div className="w-full px-6 pt-32 lg:min-h-screen lg:flex lg:flex-col lg:justify-center relative z-10">
 
                 <div className="max-w-[1200px] mx-auto w-full">
                     {/* Header */}
-                    {/* Perbaikan 1: mb-20 agar jarak ke konten di bawahnya lebih lega */}
                     <div className="text-center mb-10 lg:mb-20">
                         <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-4">
                             Alur <span className="text-[#2a6ba7] italic">Pendirian Legalitas</span>
@@ -228,9 +196,6 @@ export default function Roadmap() {
                                     <div
                                         key={s.id}
                                         onClick={() => handleStepClick(index)}
-                                        // Perbaikan 3: Logic Opacity. 
-                                        // Aktif: bg-white, opacity-100, border jelas, shadow.
-                                        // Tidak aktif: opacity-50, grayscale, border transparan.
                                         className={`roadmap-card flex items-center gap-4 p-4 rounded-2xl border transition-all duration-300 cursor-pointer ${index === currentStep
                                             ? "bg-white border-[#2a6ba7] shadow-xl scale-[1.02] opacity-100 ring-4 ring-[#2a6ba7]/10"
                                             : "bg-transparent border-transparent opacity-50 hover:opacity-80 hover:bg-white/50 grayscale hover:grayscale-0"
@@ -290,7 +255,6 @@ export default function Roadmap() {
 
                                 {/* Content Area with Animation Key */}
                                 <div className="flex-1 p-12 flex flex-col items-center justify-center text-center relative z-10">
-                                    {/* Perbaikan 4: Wrapper div dengan ref untuk animasi GSAP */}
                                     <div ref={contentRef} className="space-y-8 w-full">
                                         <div className="size-24 bg-[#2a6ba7]/5 rounded-[2rem] flex items-center justify-center text-4xl text-[#2a6ba7] mx-auto shadow-inner ring-4 ring-white">
                                             <span className="material-symbols-outlined text-5xl">
