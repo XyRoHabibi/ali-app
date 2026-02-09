@@ -121,7 +121,7 @@ export default function Roadmap() {
                         const tl = gsap.timeline({
                             scrollTrigger: {
                                 trigger: card,
-                                start: "top 150%",
+                                start: "top 50%",
                                 toggleActions: "play none none reverse"
                             }
                         });
