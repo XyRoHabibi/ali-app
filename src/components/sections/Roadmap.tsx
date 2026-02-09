@@ -110,23 +110,40 @@ export default function Roadmap() {
                         },
                     });
                 },
-                // Mobile
+                // Mobile - REVAMPED ANIMATION
                 "(max-width: 1023px)": function () {
                     const cards = gsap.utils.toArray('.mobile-card');
+
                     cards.forEach((card: any) => {
-                        gsap.fromTo(card,
-                            { opacity: 0, y: 50 },
+                        const dot = card.querySelector('.mobile-dot');
+                        const content = card.querySelector('.mobile-content');
+
+                        const tl = gsap.timeline({
+                            scrollTrigger: {
+                                trigger: card,
+                                start: "top 150%", // Animasi mulai saat elemen masuk 80% viewport
+                                toggleActions: "play none none reverse"
+                            }
+                        });
+
+                        // 1. Animasi Dot (Pop in + Rotate)
+                        tl.fromTo(dot,
+                            { scale: 0, rotation: -90, opacity: 0 },
+                            { scale: 1, rotation: 0, opacity: 1, duration: 0.6, ease: "back.out(1.7)" }
+                        );
+
+                        // 2. Animasi Konten (Slide in from right + Blur fade)
+                        tl.fromTo(content,
+                            { opacity: 0, x: 50, filter: "blur(10px)" },
                             {
                                 opacity: 1,
-                                y: 0,
+                                x: 0,
+                                filter: "blur(0px)",
                                 duration: 0.6,
-                                scrollTrigger: {
-                                    trigger: card,
-                                    start: "top 85%",
-                                    toggleActions: "play none none reverse"
-                                }
-                            }
-                        )
+                                ease: "power2.out"
+                            },
+                            "-=0.4" // Mulai sedikit lebih cepat sebelum dot selesai
+                        );
                     });
                 }
             });
@@ -135,7 +152,7 @@ export default function Roadmap() {
         return () => ctx.revert();
     }, []);
 
-    // Effect khusus untuk animasi konten saat step berubah
+    // Effect khusus untuk animasi konten saat step berubah (Desktop)
     useEffect(() => {
         if (!contentRef.current) return;
 
@@ -306,14 +323,14 @@ export default function Roadmap() {
 
                         {roadmapSteps.map((s, index) => (
                             <div key={s.id} className="mobile-card relative pl-8">
-                                {/* Dot on timeline */}
-                                <div className={`absolute left-0 top-6 -translate-x-1/2 size-8 rounded-full border-4 border-[#F9FAFB] flex items-center justify-center z-10 ${index <= 1 ? "bg-[#2a6ba7] text-white" : "bg-white text-gray-400 border-gray-200"
+                                {/* Dot on timeline (Added 'mobile-dot' class for animation target) */}
+                                <div className={`mobile-dot absolute left-0 top-6 -translate-x-1/2 size-8 rounded-full border-4 border-[#F9FAFB] flex items-center justify-center z-10 ${index <= 8 ? "bg-[#2a6ba7] text-white" : "bg-white text-gray-400 border-gray-200"
                                     }`}>
-                                    <span className="text-[10px] font-bold">{index + 1}</span>
+                                    <span className="text-[10px]  font-bold">{index + 1}</span>
                                 </div>
 
-                                {/* Mobile Card Content */}
-                                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                                {/* Mobile Card Content (Added 'mobile-content' class for animation target) */}
+                                <div className="mobile-content bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                                     <div className="flex items-center gap-3 mb-4">
                                         <div className="size-10 rounded-lg bg-[#2a6ba7]/10 flex items-center justify-center text-[#2a6ba7]">
                                             <span className="material-symbols-outlined text-xl">
@@ -324,7 +341,7 @@ export default function Roadmap() {
                                             <h4 className="text-lg font-black text-gray-900">
                                                 {s.title}
                                             </h4>
-                                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                                            <p className="text-[10px] font-bold text-gray-400  uppercase tracking-widest">
                                                 Step 0{index + 1}
                                             </p>
                                         </div>
