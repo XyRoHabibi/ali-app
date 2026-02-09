@@ -229,19 +229,24 @@ export default function Hero() {
                         {/* Marquee Badge (Bottom Center of Image) */}
                         <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 z-30 w-[90%]">
                             <div className="bg-white/80 backdrop-blur-md rounded-xl p-3 shadow-lg border border-white/20 overflow-hidden">
-                                <div className="flex gap-6 animate-marquee whitespace-nowrap">
+                                <div className="flex gap-8 animate-marquee whitespace-nowrap">
                                     {[
                                         "OSS RBA",
                                         "AHU Online",
                                         "NPWP Perusahaan",
+                                        "Sertifikasi Halal",
+                                        "Izin Edar BPOM",
                                         "OSS RBA",
                                         "AHU Online",
+                                        "NPWP Perusahaan",
+                                        "Sertifikasi Halal",
+                                        "Izin Edar BPOM",
                                     ].map((item, i) => (
                                         <span
                                             key={i}
-                                            className="flex items-center gap-2 text-xs font-bold text-gray-600"
+                                            className="flex items-center gap-2 text-[10px] md:text-xs font-bold text-gray-600"
                                         >
-                                            <span className="material-symbols-outlined text-[#2a6ba7] text-sm">
+                                            <span className="material-symbols-outlined text-[#2a6ba7] text-sm md:text-base">
                                                 verified
                                             </span>
                                             {item}
