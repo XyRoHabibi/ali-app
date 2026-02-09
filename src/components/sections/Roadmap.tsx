@@ -119,7 +119,7 @@ export default function Roadmap() {
                     const tl = gsap.timeline({
                         scrollTrigger: {
                             trigger: sectionRef.current,
-                            start: "top top",
+                            start: "center 44%",
                             end: "+=4000",
                             pin: true,
                             scrub: 0.5,
