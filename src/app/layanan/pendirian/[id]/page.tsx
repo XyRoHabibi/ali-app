@@ -279,21 +279,59 @@ export default function PendirianDetailPage({ params }: { params: Promise<{ id: 
             )}
 
             {/* Bank Partners Section */}
+            {/* Bank Partners Section - Revamped */}
             <div className="px-6 py-24">
-                <div className="bg-white dark:bg-gray-800 rounded-[4rem] p-12 md:p-20 text-center relative overflow-hidden group shadow-sm border border-gray-100 dark:border-gray-700">
-                    <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
-                    <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 blur-[100px] translate-y-1/2 -translate-x-1/2"></div>
+                <div className="relative rounded-[3rem] p-12 md:p-20 overflow-hidden border border-gray-100 bg-[#F8FAFC] shadow-2xl shadow-gray-200/50">
 
-                    <div className="relative z-10 max-w-4xl mx-auto">
-                        <p className="text-xs font-black text-gray-400 uppercase tracking-[0.3em] mb-8">Rekanan Bank Resmi</p>
-                        <h3 className="text-3xl md:text-5xl font-black text-gray-900 dark:text-white mb-12 tracking-tight leading-tight">
-                            Kini Buka Rekening Perusahaan <br /> Jadi Jauh <span className="text-primary">Lebih Mudah</span>
+                    {/* Decorative Background Elements */}
+                    {/* 1. Grid Pattern */}
+                    <div className="absolute inset-0"
+                        style={{
+                            backgroundImage: 'radial-gradient(#cbd5e1 1px, transparent 1px)',
+                            backgroundSize: '32px 32px',
+                            opacity: 0.4
+                        }}>
+                    </div>
+
+                    {/* 2. Soft Gradient Blobs */}
+                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
+                    <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#F3B444]/10 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/3 pointer-events-none"></div>
+
+                    <div className="relative z-10 max-w-5xl mx-auto text-center">
+                        {/* Header Section */}
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 shadow-sm mb-8">
+                            <span className="flex h-2 w-2 relative">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                            </span>
+                            <span className="text-xs font-bold text-gray-600 uppercase tracking-widest">Official Bank Partners</span>
+                        </div>
+
+                        <h3 className="text-3xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight leading-[1.15]">
+                            Kemudahan Akses Perbankan <br className="hidden md:block" />
+                            untuk <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400">Bisnis Anda</span>
                         </h3>
-                        <div className="flex flex-wrap justify-center items-center gap-10 md:gap-20 opacity-50 hover:opacity-100 transition-opacity duration-500">
-                            <img src="https://upload.wikimedia.org/wikipedia/en/f/fa/Bank_Mandiri_logo.svg" alt="Bank Mandiri" className="h-8 md:h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/f/f0/Bank_Negara_Indonesia_logo_%282004%29.svg" alt="Bank BNI" className="h-8 md:h-10 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Bank_Syariah_Indonesia.svg" alt="Bank BSI" className="h-8 md:h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg" alt="Bank BRI" className="h-8 md:h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+
+                        <p className="text-lg text-gray-500 max-w-2xl mx-auto mb-12 font-medium">
+                            Kami telah bekerja sama dengan bank terkemuka di Indonesia untuk mempercepat proses pembukaan rekening perusahaan Anda.
+                        </p>
+
+                        {/* Logo Cards Grid */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                            {[
+                                { name: "Bank Mandiri", src: "https://upload.wikimedia.org/wikipedia/en/f/fa/Bank_Mandiri_logo.svg", h: "h-8 md:h-10" },
+                                { name: "Bank BNI", src: "https://upload.wikimedia.org/wikipedia/commons/f/f0/Bank_Negara_Indonesia_logo_%282004%29.svg", h: "h-6 md:h-8" },
+                                { name: "Bank BSI", src: "https://upload.wikimedia.org/wikipedia/commons/a/a0/Bank_Syariah_Indonesia.svg", h: "h-8 md:h-10" },
+                                { name: "Bank BRI", src: "https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg", h: "h-8 md:h-10" }
+                            ].map((bank, idx) => (
+                                <div key={idx} className="group bg-white rounded-2xl p-6 md:p-8 flex items-center justify-center border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-default">
+                                    <img
+                                        src={bank.src}
+                                        alt={bank.name}
+                                        className={`${bank.h} w-auto object-contain filter scale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300`}
+                                    />
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
