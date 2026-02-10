@@ -112,7 +112,7 @@ export default function Footer() {
                             <span className="material-symbols-outlined text-[#2a6ba7] text-lg shrink-0">
                                 mail
                             </span>
-                            cs@akseslegal.id
+                            info.akseslegal.id@gmail.com
                         </li>
                     </ul>
 
