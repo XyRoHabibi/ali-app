@@ -193,8 +193,516 @@ export const pricingPackagesData = [
                 { name: "Penggunaan Alamat Kantor (Makassar/Kendari/Palu)", status: { standard: false, bundle: true } }
             ]
         }
+    },
+    {
+        id: "pendirian-pt-pma",
+        comparisonTable: {
+            title: "Detail Perbandingan Fitur",
+            headers: [
+                { key: "legal", label: "Paket Legal", price: "Rp8.999.000", subLabel: "Best Value", cssClass: "bg-primary/5" },
+                { key: "business", label: "Paket Business", price: "Rp9.499.000", subLabel: "Recommended", cssClass: "bg-primary/10" }
+            ],
+            features: [
+                { name: "Akta Notaris", status: { legal: true, business: true } },
+                { name: "Free 10 KBLI Pada Akta Notaris*", status: { legal: true, business: true } },
+                { name: "SK Menteri", status: { legal: true, business: true } },
+                { name: "Akun Coretax", status: { legal: true, business: true } },
+                { name: "NPWP Perusahaan", status: { legal: true, business: true } },
+                { name: "Akun OSS*", status: { legal: false, business: true } },
+                { name: "NIB Perusahaan*", status: { legal: false, business: true } },
+                { name: "Free 5 KBLI pada NIB*", status: { legal: false, business: true } },
+                { name: "Konsultasi Legalitas", status: { legal: true, business: true } },
+                { name: "Free 50 Draft Perjanjian", status: { legal: true, business: true } },
+                { name: "Desain Logo", status: { legal: true, business: true } },
+                { name: "Desain Stempel", status: { legal: true, business: true } },
+                { name: "Desain Kartu Nama", status: { legal: true, business: true } },
+                { name: "Desain Kop Surat", status: { legal: true, business: true } },
+                { name: "Email Perusahaan", status: { legal: true, business: true } },
+                { name: "Pembukaan Rekening*", status: { legal: false, business: true } }
+            ]
+        }
+    },
+    {
+        id: "pendirian-pt-umum",
+        comparisonTable: {
+            title: "Detail Perbandingan Fitur",
+            headers: [
+                { key: "legal", label: "Paket Legal", price: "Rp3.999.000", subLabel: "Best Value", cssClass: "bg-primary/5" },
+                { key: "business", label: "Paket Business", price: "Rp4.499.000", subLabel: "Recommended", cssClass: "bg-primary/10" }
+            ],
+            features: [
+                { name: "Akta Notaris", status: { legal: true, business: true } },
+                { name: "Free 10 KBLI Pada Akta Notaris*", status: { legal: true, business: true } },
+                { name: "SK Menteri", status: { legal: true, business: true } },
+                { name: "Akun Coretax", status: { legal: true, business: true } },
+                { name: "NPWP Perusahaan", status: { legal: true, business: true } },
+                { name: "Akun OSS*", status: { legal: false, business: true } },
+                { name: "NIB Perusahaan*", status: { legal: false, business: true } },
+                { name: "Free 5 KBLI pada NIB*", status: { legal: false, business: true } },
+                { name: "Konsultasi Legalitas", status: { legal: true, business: true } },
+                { name: "Free 50 Draft Perjanjian", status: { legal: true, business: true } },
+                { name: "Desain Logo", status: { legal: true, business: true } },
+                { name: "Desain Stempel", status: { legal: true, business: true } },
+                { name: "Desain Kartu Nama", status: { legal: true, business: true } },
+                { name: "Desain Kop Surat", status: { legal: true, business: true } },
+                { name: "Email Perusahaan", status: { legal: true, business: true } },
+                { name: "Pembukaan Rekening*", status: { legal: false, business: true } }
+            ]
+        }
+    },
+    {
+        id: "pendirian-yayasan",
+        comparisonTable: {
+            title: "Detail Perbandingan Fitur",
+            headers: [
+                { key: "legal", label: "Paket Legal", price: "Rp3.499.000", subLabel: "Best Value", cssClass: "bg-primary/5" },
+                { key: "business", label: "Paket Business", price: "Rp3.999.000", subLabel: "Recommended", cssClass: "bg-primary/10" }
+            ],
+            features: [
+                { name: "Akta Notaris", status: { legal: true, business: true } },
+                { name: "Free 10 KBLI Pada Akta Notaris*", status: { legal: true, business: true } },
+                { name: "SK Menteri", status: { legal: true, business: true } },
+                { name: "Akun Coretax", status: { legal: true, business: true } },
+                { name: "NPWP Perusahaan", status: { legal: true, business: true } },
+                { name: "Akun OSS*", status: { legal: false, business: true } },
+                { name: "NIB Perusahaan*", status: { legal: false, business: true } },
+                { name: "Free 5 KBLI pada NIB*", status: { legal: false, business: true } },
+                { name: "Konsultasi Legalitas", status: { legal: true, business: true } },
+                { name: "Free 50 Draft Perjanjian", status: { legal: true, business: true } },
+                { name: "Desain Logo", status: { legal: true, business: true } },
+                { name: "Desain Stempel", status: { legal: true, business: true } },
+                { name: "Desain Kartu Nama", status: { legal: true, business: true } },
+                { name: "Desain Kop Surat", status: { legal: true, business: true } },
+                { name: "Email Perusahaan", status: { legal: true, business: true } },
+                { name: "Pembukaan Rekening*", status: { legal: false, business: true } }
+            ]
+        }
     }
 ];
+
+export const umkData: Record<string, any> = {
+    "pendirian_cv": {
+        "badge": "Badan Usaha Terpopuler",
+        "title": "Solusi Usaha <br>Hemat & <span class='text-primary'>Fleksibel</span>",
+        "desc": "CV adalah pilihan ideal bagi UMK yang ingin membangun bisnis bersama mitra dengan modal terjangkau namun memiliki legalitas yang diakui perbankan.",
+        "features": [
+            "Pendiri Minimal 2 Orang",
+            "Tanpa Minimal Modal Setor",
+            "Sistem Sekutu Aktif & Pasif",
+            "Manajemen Pajak Lebih Efisien"
+        ]
+    },
+    "rups_cv_perubahan": {
+        "badge": "Update Legalitas CV",
+        "title": "Penyesuaian Struktur <br><span class='text-primary'>Bisnis CV Anda</span>",
+        "desc": "Layanan perubahan CV untuk pembaharuan data pengurus, modal, atau anggaran dasar agar tetap relevan dengan perkembangan bisnis Anda.",
+        "features": [
+            "Perubahan Pengurus & Pesero",
+            "Penyesuaian Modal Usaha",
+            "Update Anggaran Dasar",
+            "Proses Cepat & Akurat"
+        ]
+    },
+    "pendirian_pt_umum": {
+        "badge": "Standar Bisnis Profesional",
+        "title": "Badan Hukum <br><span class='text-primary'>Pilihan Investor</span>",
+        "desc": "Bangun kredibilitas tertinggi dengan PT Umum. Struktur organisasi yang solid siap membawa bisnis Anda memenangkan tender besar dan pendanaan investor.",
+        "features": [
+            "Minimal 2 Pendiri/Pemegang Saham",
+            "Pemisahan Harta & Aset Pribadi",
+            "Akses Tender & Proyek Besar",
+            "Reputasi Bisnis Bonafide"
+        ]
+    },
+    "cv_to_pt_umum": {
+        "badge": "Scale Up Bisnis",
+        "title": "Transformasi CV <br>Menjadi <span class='text-primary'>PT Umum</span>",
+        "desc": "Tingkatkan kelas bisnis Anda dari CV ke PT Umum untuk fleksibilitas operasional yang lebih besar dan perlindungan hukum yang lebih kuat.",
+        "features": [
+            "Meningkatkan Status Hukum",
+            "Kapasitas Modal Lebih Besar",
+            "Keamanan Aset Pemilik",
+            "Siap Ekspansi Nasional"
+        ]
+    },
+    "bundling_pt_vo": {
+        "badge": "Paket Hemat Eksklusif",
+        "title": "Bundling PT <br>& <span class='text-primary'>Virtual Office</span>",
+        "desc": "Solusi cerdas bagi UMK. Miliki badan hukum PT sekaligus alamat bisnis bergengsi di lokasi strategis tanpa biaya sewa kantor yang mahal.",
+        "features": [
+            "Legalitas PT Lengkap",
+            "Alamat Kantor Strategis",
+            "Layanan Domisili Resmi",
+            "Lebih Hemat & Efisien"
+        ]
+    },
+    "rups_pt_pengurus": {
+        "badge": "Manajemen Perusahaan",
+        "title": "Perubahan Struktur <br>& <span class='text-primary'>Oper Saham</span>",
+        "desc": "Layanan RUPS profesional untuk perubahan jajaran direksi, komisaris, atau pengalihan kepemilikan saham secara transparan dan legal.",
+        "features": [
+            "Pengalihan Saham Legal",
+            "Ganti Direksi & Komisaris",
+            "Berita Acara RUPS Resmi",
+            "Update SK Kemenkumham"
+        ]
+    },
+    "rups_pt_kbli": {
+        "badge": "Update Operasional",
+        "title": "Penyesuaian <br><span class='text-primary'>Data & Bidang PT</span>",
+        "desc": "Pastikan PT Anda tetap patuh pada regulasi terbaru. Sesuaikan KBLI, Nama PT, Kedudukan, atau penambahan modal dengan mudah.",
+        "features": [
+            "Update KBLI Tahun Terbaru",
+            "Perubahan Nama & Kedudukan",
+            "Peningkatan Modal Disetor",
+            "Sesuai Regulasi OSS RBA"
+        ]
+    },
+    "pendirian_pt_pma": {
+        "badge": "Foreign Direct Investment",
+        "title": "Go Global with <br><span class='text-primary'>PT PMA</span>",
+        "desc": "Solusi legalitas bagi investor asing yang ingin mendirikan bisnis di Indonesia dengan perlindungan hukum and standar internasional.",
+        "features": [
+            "Kepemilikan Modal Asing",
+            "Fasilitas KITAS Investor",
+            "Perlindungan Hukum Investasi",
+            "Akses Pasar Internasional"
+        ]
+    },
+    "pt_pma_nib_pkkpr": {
+        "badge": "Izin Investasi Lengkap",
+        "title": "PT PMA Lengkap <br><span class='text-primary'>NIB & PKKPR</span>",
+        "desc": "Paket lengkap pendirian PT PMA hingga pengurusan izin lokasi (PKKPR) dan NIB agar operasional bisnis bisa segera berjalan.",
+        "features": [
+            "Izin Lokasi (PKKPR) Resmi",
+            "Akses Akun OSS RBA Asing",
+            "Kesesuaian Tata Ruang",
+            "Pendampingan Izin Sektoral"
+        ]
+    },
+    "rups_pt_pma": {
+        "badge": "Corporate Maintenance",
+        "title": "RUPS & Perubahan <br><span class='text-primary'>PT PMA</span>",
+        "desc": "Layanan RUPS khusus PT PMA untuk perubahan modal asing, struktur pengurus asing, atau penyesuaian regulasi investasi.",
+        "features": [
+            "Pelaporan LKPM Terpadu",
+            "Update Data Pemegang Saham",
+            "Perubahan Modal Asing",
+            "Kepatuhan Regulasi BKPM"
+        ]
+    },
+    "pendirian_koperasi": {
+        "badge": "Ekonomi Kerakyatan",
+        "title": "Maju Bersama <br>dalam <span class='text-primary'>Koperasi</span>",
+        "desc": "Bangun kekuatan ekonomi bersama melalui Koperasi dengan prinsip kekeluargaan untuk meningkatkan kesejahteraan seluruh anggota.",
+        "features": [
+            "Asas Kekeluargaan & Adil",
+            "Permodalan dari Anggota",
+            "Demokrasi Rapat Anggota",
+            "Sistem SHU yang Transparan"
+        ]
+    },
+    "pendirian_ud": {
+        "badge": "Langkah Awal Bisnis",
+        "title": "Usaha Dagang <br><span class='text-primary'>Mandiri</span>",
+        "desc": "Bentuk usaha paling praktis untuk memulai bisnis dagang secara mandiri dengan biaya operasional dan pendirian yang sangat murah.",
+        "features": [
+            "Pemilik Tunggal Mandiri",
+            "Modal Bebas Sesuai Kemampuan",
+            "Kendali Penuh di Tangan Anda",
+            "Proses Cepat & Administrasi Mudah"
+        ]
+    },
+    "pendirian_yayasan": {
+        "badge": "Badan Hukum Sosial",
+        "title": "Legalitas Resmi <br>untuk <span class='text-primary'>Yayasan</span>",
+        "desc": "Wujudkan visi sosial, pendidikan, atau keagamaan Anda melalui Yayasan dengan struktur organisasi yang akuntabel dan berstatus badan hukum.",
+        "features": [
+            "Fokus Kegiatan Non-Profit",
+            "Struktur Pembina, Pengurus, Pengawas",
+            "Badan Hukum Sah Kemenkumham",
+            "Kredibilitas untuk Donasi"
+        ]
+    },
+    "perubahan_yayasan": {
+        "badge": "Update Organ Yayasan",
+        "title": "Perubahan Data <br><span class='text-primary'>& Organ Yayasan</span>",
+        "desc": "Layanan pembaharuan struktur Pembina, Pengurus, atau Pengawas Yayasan serta penyesuaian Anggaran Dasar sesuai aturan terbaru.",
+        "features": [
+            "Perubahan Susunan Pengurus",
+            "Update Anggaran Dasar",
+            "Proses Transparan & Legal",
+            "Sesuai UU Yayasan Terbaru"
+        ]
+    },
+    "penutupan_pt_perorangan": {
+        "badge": "Likuidasi Bisnis",
+        "title": "Pembubaran Resmi <br><span class='text-primary'>PT Perorangan</span>",
+        "desc": "Proses penutupan badan hukum PT Perorangan secara legal untuk menghindari kewajiban pajak atau administratif di masa depan.",
+        "features": [
+            "Penghapusan Status Hukum",
+            "Pencabutan Izin Usaha",
+            "Pelaporan Pajak Akhir",
+            "Bebas Tanggungan Admin"
+        ]
+    },
+    "akta_cabang_pt": {
+        "badge": "Ekspansi Wilayah",
+        "title": "Pembukaan <br><span class='text-primary'>Kantor Cabang PT</span>",
+        "desc": "Perluas jangkauan bisnis Anda dengan pembukaan cabang resmi yang terdaftar di Kemenkumham dan memiliki legalitas operasional.",
+        "features": [
+            "Akta Notaris Kantor Cabang",
+            "SK Sah Kemenkumham",
+            "NIB Khusus Cabang",
+            "Legalitas Operasional Lokal"
+        ]
+    },
+    "akta_cabang_cv": {
+        "badge": "Ekspansi Wilayah",
+        "title": "Pembukaan <br><span class='text-primary'>Kantor Cabang CV</span>",
+        "desc": "Mudahkan operasional CV di berbagai lokasi dengan pendaftaran cabang resmi untuk memperkuat jaringan bisnis bersama mitra.",
+        "features": [
+            "Pendaftaran Cabang Resmi",
+            "Legalitas Terpercaya",
+            "Proses Cepat & Transparan",
+            "Dukungan Ekspansi Bisnis"
+        ]
+    },
+    "nib_pt_pma": {
+        "badge": "Izin Investasi Asing",
+        "title": "Registrasi <br><span class='text-primary'>NIB PT PMA</span>",
+        "desc": "Pengurusan Nomor Induk Berusaha khusus perusahaan modal asing untuk memastikan operasional bisnis sesuai regulasi investasi Indonesia.",
+        "features": [
+            "Akses OSS RBA Internasional",
+            "Izin Usaha Sektoral",
+            "Legalitas Penanaman Modal",
+            "Standar Operasional Global"
+        ]
+    },
+    "pengumuman_koran": {
+        "badge": "Kewajiban Publikasi",
+        "title": "Layanan <br><span class='text-primary'>Pengumuman Koran</span>",
+        "desc": "Penuhi persyaratan legal untuk pembubaran, merger, atau perubahan modal melalui publikasi resmi di media cetak nasional.",
+        "features": [
+            "Media Cetak Terakreditasi",
+            "Bukti Fisik Iklan Resmi",
+            "Proses Cepat & Murah",
+            "Sesuai UU Perseroan Terbatas"
+        ]
+    },
+    "nib_badan": {
+        "badge": "Identitas Bisnis",
+        "title": "Nomor Induk Berusaha <br><span class='text-primary'>(NIB) Badan</span>",
+        "desc": "Dapatkan identitas tunggal untuk operasional bisnis badan usaha Anda sebagai syarat mutlak perizinan berusaha berbasis risiko.",
+        "features": [
+            "Berlaku Seumur Hidup",
+            "Syarat Utama Izin Usaha",
+            "Akses Fasilitas Investasi",
+            "Legalitas di Sistem OSS"
+        ]
+    },
+    "nib_pribadi": {
+        "badge": "Legalitas Perorangan",
+        "title": "NIB Untuk <br><span class='text-primary'>Usaha Mandiri</span>",
+        "desc": "Solusi praktis bagi pemilik usaha mikro perorangan untuk memiliki izin resmi guna meningkatkan kepercayaan pembeli dan perbankan.",
+        "features": [
+            "Proses Kilat 1 Hari",
+            "Syarat Pinjaman Bank",
+            "Izin Operasional Resmi",
+            "Bebas Biaya Administrasi"
+        ]
+    },
+    "pendirian_iumk": {
+        "badge": "Izin Usaha Mikro",
+        "title": "Sertifikasi <br><span class='text-primary'>Legalitas IUMK</span>",
+        "desc": "Tanda legalitas bagi pelaku usaha mikro dan kecil untuk memberikan kepastian hukum dan sarana pemberdayaan dalam mengembangkan usaha.",
+        "features": [
+            "Sertifikat Izin Resmi",
+            "Akses Program Pemerintah",
+            "Pendampingan Usaha",
+            "Legalitas Lokasi Usaha"
+        ]
+    },
+    "pendirian_tdp": {
+        "badge": "Registrasi Perusahaan",
+        "title": "Tanda Daftar <br><span class='text-primary'>Perusahaan (TDP)</span>",
+        "desc": "Pengurusan pendaftaran perusahaan sebagai bukti sah bahwa unit usaha Anda telah terdaftar and memenuhi kewajiban wajib daftar perusahaan.",
+        "features": [
+            "Bukti Sah Perusahaan",
+            "Kelengkapan Dokumen Lelang",
+            "Validasi Data Bisnis",
+            "Registrasi Instansi Terkait"
+        ]
+    },
+    "pendirian_siup": {
+        "badge": "Izin Dagang",
+        "title": "Surat Izin Usaha <br><span class='text-primary'>Perdagangan (SIUP)</span>",
+        "desc": "Izin resmi untuk menjalankan kegiatan usaha perdagangan bagi perusahaan, koperasi, atau perorangan agar operasional legal.",
+        "features": [
+            "Izin Niaga Terpercaya",
+            "Klasifikasi Bidang Usaha",
+            "Syarat Transaksi B2B",
+            "Legalitas Operasional Sah"
+        ]
+    },
+    "pendirian_situ": {
+        "badge": "Izin Lokasi",
+        "title": "Surat Izin <br><span class='text-primary'>Tempat Usaha (SITU)</span>",
+        "desc": "Izin tempat usaha yang diberikan kepada perorangan atau badan usaha di lokasi tertentu yang tidak menimbulkan gangguan lingkungan.",
+        "features": [
+            "Legalitas Lokasi Fisik",
+            "Izin Tata Ruang Daerah",
+            "Persetujuan Lingkungan",
+            "Keamanan Domisili Bisnis"
+        ]
+    },
+    "pendirian_ho": {
+        "badge": "Izin Gangguan",
+        "title": "Izin Gangguan <br><span class='text-primary'>(HO/Hinderordonnantie)</span>",
+        "desc": "Pernyataan tidak keberatan dari lingkungan sekitar terhadap operasional bisnis yang memiliki potensi risiko gangguan atau kebisingan.",
+        "features": [
+            "Izin Lingkungan Sosial",
+            "Sertifikat Bebas Gangguan",
+            "Kepatuhan Perda Setempat",
+            "Perlindungan Operasional"
+        ]
+    },
+    "izin_toko_retail": {
+        "badge": "Izin Retail",
+        "title": "Izin Usaha <br><span class='text-primary'>Toko Modern/Retail</span>",
+        "desc": "Layanan legalitas khusus untuk operasional toko retail atau swalayan agar sesuai dengan zonasi perdagangan dan regulasi ritel.",
+        "features": [
+            "Zonasi Perdagangan Sah",
+            "Syarat Kerjasama Supplier",
+            "Kepatuhan Standar Ritel",
+            "Izin Operasional Lengkap"
+        ]
+    },
+    "pendirian_perkumpulan": {
+        "badge": "Legalitas Organisasi",
+        "title": "Wadah Resmi <br><span class='text-primary'>Komunitas Anda</span>",
+        "desc": "Bentuk badan hukum non-profit yang ideal untuk komunitas, hobi, atau asosiasi profesi agar memiliki identitas hukum yang sah.",
+        "features": [
+            "Berbasis Keanggotaan",
+            "Wadah Hobi & Profesi",
+            "Badan Hukum Sah Kemenkumham",
+            "Manajemen Organisasi Teratur"
+        ]
+    }
+};
+
+export function getComparisonTableKey(serviceName: string) {
+    const name = (serviceName || '').toLowerCase().trim();
+    if (name === 'cv') return 'pendirian-cv';
+    if (name === 'perkumpulan') return 'pendirian-perkumpulan';
+    if (name.includes('pt perorangan')) return 'pendirian-pt-perorangan';
+    if (name.includes('pt pma')) return 'pendirian-pt-pma';
+    if (name === 'pt umum') return 'pendirian-pt-umum';
+    if (name === 'yayasan') return 'pendirian-yayasan';
+    return null;
+}
+
+export function getUMKDataKey(serviceName: string) {
+    const name = serviceName.toLowerCase();
+
+    if (name === "cv") return "pendirian_cv";
+    if (name === "rups cv (perubahan)") return "rups_cv_perubahan";
+    if (name === "pt umum") return "pendirian_pt_umum";
+    if (name === "cv to pt umum") return "cv_to_pt_umum";
+    if (name === "bundling pt dan vo") return "bundling_pt_vo";
+    if (name.includes("rups pt (pengurus")) return "rups_pt_pengurus";
+    if (name.includes("rups pt (kbli")) return "rups_pt_kbli";
+    if (name === "pt pma (pt asing)") return "pendirian_pt_pma";
+    if (name.includes("pt pma + nib")) return "pt_pma_nib_pkkpr";
+    if (name.includes("rups pt pma")) return "rups_pt_pma";
+    if (name === "koperasi") return "pendirian_koperasi";
+    if (name.includes("ud (usaha dagang)")) return "pendirian_ud";
+    if (name === "yayasan") return "pendirian_yayasan";
+    if (name === "perubahan yayasan") return "perubahan_yayasan";
+    if (name === "penutupan pt perorangan") return "penutupan_pt_perorangan";
+    if (name === "akta cabang pt") return "akta_cabang_pt";
+    if (name === "akta cabang cv") return "akta_cabang_cv";
+    if (name === "nib pt pma") return "nib_pt_pma";
+    if (name === "pengumuman koran") return "pengumuman_koran";
+    if (name.includes("nib badan")) return "nib_badan";
+    if (name.includes("nib pribadi")) return "nib_pribadi";
+    if (name.includes("iumk")) return "pendirian_iumk";
+    if (name.includes("tdp")) return "pendirian_tdp";
+    if (name.includes("siup")) return "pendirian_siup";
+    if (name.includes("situ")) return "pendirian_situ";
+    if (name.includes("ho (izin")) return "pendirian_ho";
+    if (name.includes("toko retail")) return "izin_toko_retail";
+    if (name === "perkumpulan") return "pendirian_perkumpulan";
+
+    if (name.includes("cv") && !name.includes("pt") && !name.includes("cabang") && !name.includes("perubahan") && !name.includes("rups")) return "pendirian_cv";
+    if (name.includes("pt perorangan")) return "pendirian_pt_perorangan";
+
+    return null;
+}
+
+export function getUMKHeader(serviceName: string) {
+    const name = serviceName.toLowerCase();
+
+    if (name.includes('pt perorangan') && !name.includes('penutupan')) {
+        return {
+            badge: "Fokus Skala Usaha UMK",
+            title: "Solusi Legalitas <br>Terbaik untuk <span class=\"text-primary\">UMK</span>"
+        };
+    }
+
+    const key = getUMKDataKey(serviceName);
+    if (key && umkData[key]) {
+        return {
+            badge: umkData[key].badge,
+            title: umkData[key].title
+        };
+    }
+
+    return {
+        badge: "SIAP UNTUK EKSPANSI",
+        title: "Tingkatkan Status <br>Bisnis ke <span class=\"text-primary\">PT Umum</span>"
+    };
+}
+
+export function getUMKDescription(serviceName: string) {
+    const name = serviceName.toLowerCase();
+
+    if (name.includes('pt perorangan') && !name.includes('penutupan')) {
+        return "PT Perorangan adalah entitas hukum resmi yang memungkinkan Anda menjadi Direktur sekaligus Pemilik Tunggal dengan perlindungan aset penuh.";
+    }
+
+    const key = getUMKDataKey(serviceName);
+    if (key && umkData[key]) {
+        return umkData[key].desc;
+    }
+
+    return `${serviceName} memberikan solusi legalitas terbaik untuk UMK Indonesia dengan proses yang <b>cepat, transparan, and terjangkau</b>. Dapatkan pendampingan profesional untuk memastikan legalitas bisnis Anda terdaftar dengan benar.`;
+}
+
+export function getUMKFeatures(serviceName: string) {
+    const name = serviceName.toLowerCase();
+
+    if (name.includes('pt perorangan') && !name.includes('penutupan')) {
+        return [
+            "100% Kendali di Tangan Anda",
+            "Modal Sangat Terjangkau",
+            "Pemisahan Harta Pribadi",
+            "Legalitas Resmi Standar Bank"
+        ];
+    }
+
+    const key = getUMKDataKey(serviceName);
+    if (key && umkData[key]) {
+        return umkData[key].features;
+    }
+
+    return [
+        "Proses Cepat",
+        "Harga Transparan",
+        "Konsultasi Gratis",
+        "Legalitas Sah di Kemenkumham"
+    ];
+}
 
 export function getServiceFlowType(serviceName: string) {
     const name = serviceName.toLowerCase();
