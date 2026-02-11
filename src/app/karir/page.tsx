@@ -425,8 +425,7 @@ export default function KarirPage() {
                                             </div>
                                         </div>
                                         <Link
-                                            href={`https://wa.me/6285333338818?text=${job.whatsappMessage}`}
-                                            target="_blank"
+                                            href={`/karir/lamar?posisi=${job.id}`}
                                             className="shrink-0 px-8 h-12 rounded-xl bg-[#2a6ba7] text-white font-bold flex items-center justify-center gap-2 hover:bg-[#2a6ba7]/90 hover:shadow-xl hover:shadow-[#2a6ba7]/30 transition-all group"
                                         >
                                             Lamar Sekarang
