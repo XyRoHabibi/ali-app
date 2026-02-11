@@ -145,6 +145,33 @@ const allArticles = [
         excerpt: "Kapan bisnis Anda siap naik kelas ke PT dan langkah konversi CV ke PT yang perlu Anda ketahui.",
         image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=800&q=80",
     },
+    {
+        id: 13,
+        slug: "pajak-umkm-2024",
+        title: "Panduan Pajak UMKM 0.5%: Cara Hitung dan Bayar untuk Pemula",
+        category: "perpajakan",
+        categoryLabel: "Perpajakan",
+        excerpt: "Manfaatkan tarif PPh Final 0,5% untuk UMKM. Simak kriteria, batas waktu, dan cara setor pajaknya.",
+        image: "https://images.unsplash.com/photo-1554224155-1696413565d3?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+        id: 14,
+        slug: "npwp-badan-online",
+        title: "Cara Membuat NPWP Badan Online 2024: Syarat dan Prosedur Lengkap",
+        category: "perpajakan",
+        categoryLabel: "Perpajakan",
+        excerpt: "Kini daftar NPWP perusahaan bisa dilakukan dari rumah. Berikut panduan praktis pendaftaran lewat DJP Online.",
+        image: "https://images.unsplash.com/photo-1586486855514-8c633cc6fd38?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+        id: 15,
+        slug: "kewajiban-pajak-pt-perorangan",
+        title: "Penting! Kenali Kewajiban Pajak PT Perorangan Setelah Berdiri",
+        category: "perpajakan",
+        categoryLabel: "Perpajakan",
+        excerpt: "Sudah punya PT Perorangan? Ingat ada kewajiban lapor SPT Tahunan dan masa. Cek list lengkapnya di sini.",
+        image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80",
+    },
 ];
 
 // Categories for filter
@@ -152,6 +179,7 @@ const categories = [
     { id: "semua", label: "Semua" },
     { id: "pendirian", label: "Pendirian" },
     { id: "perizinan", label: "Perizinan" },
+    { id: "perpajakan", label: "Perpajakan" },
 ];
 
 const ITEMS_PER_PAGE = 3;
