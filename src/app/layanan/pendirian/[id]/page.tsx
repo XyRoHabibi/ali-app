@@ -92,6 +92,10 @@ export default function PendirianDetailPage({ params }: { params: Promise<{ id: 
                                 <span>Mulai Sekarang</span>
                                 <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
                             </a>
+                            <a href="#paket-harga"
+                                className="bg-white text-primary border border-primary/20 text-base font-bold px-8 py-4 rounded-xl hover:bg-gray-50 transition-all flex items-center justify-center">
+                                Lihat Paket
+                            </a>
                         </div>
                     </div>
                     <div className="flex-1 w-full max-w-[500px]">
@@ -339,10 +343,10 @@ export default function PendirianDetailPage({ params }: { params: Promise<{ id: 
 
             {/* Pricing Cards Section */}
             {tableData && (
-                <section className="px-6 py-12 md:py-24 my-12">
+                <section id="paket-harga" className="px-6 py-12 md:py-24 my-12">
                     <div className="max-w-[1200px] mx-auto">
                         <div className="text-center mb-16">
-                            <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-6">Investasi Transparan</h2>
+                            <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-6">Paket Investasi Tunggal</h2>
                             <p className="text-base md:text-xl text-gray-500 max-w-2xl mx-auto font-medium">Satu harga jujur untuk kemajuan bisnis Anda tanpa biaya siluman.</p>
                         </div>
 
