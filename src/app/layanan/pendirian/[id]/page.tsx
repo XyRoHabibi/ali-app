@@ -342,7 +342,7 @@ export default function PendirianDetailPage({ params }: { params: Promise<{ id: 
             </div>
 
             {/* Pricing Cards Section */}
-            {tableData && (
+            {tableData ? (
                 <section id="paket-harga" className="px-6 py-12 md:py-24 my-12">
                     <div className="max-w-[1200px] mx-auto">
                         <div className="text-center mb-16">
@@ -419,28 +419,18 @@ export default function PendirianDetailPage({ params }: { params: Promise<{ id: 
                                                     <span className="text-xs text-gray-400 font-bold uppercase tracking-wider">All-in</span>
                                                 </div>
                                                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
-                                                    {isVO ? (
+                                                    {(isVO || (['cv', 'rups cv (perubahan)', 'pt umum', 'cv to pt umum', 'upgrade ke pt umum'].includes(service?.name?.toLowerCase() || '') && (header.key === 'business' || header.label.toLowerCase().includes('business')))) ? (
                                                         <>
                                                             {[
-                                                                "Surat Pernyataan",
-                                                                "Free 10 KBLI Pada Surat Pernyataan*",
-                                                                "SK Menteri",
-                                                                "Akun Coretax",
-                                                                "NPWP Perusahaan",
-                                                                "Akun OSS*",
-                                                                "NIB Perusahaan*",
-                                                                "Free 5 KBLI pada NIB*",
-                                                                "Konsultasi Legalitas",
-                                                                "Free 50 Draft Perjanjian",
-                                                                "Desain Logo",
-                                                                "Desain Stempel",
-                                                                "Email Perusahaan",
-                                                                "Pembukaan Rekening*",
-                                                                "Penggunaan Alamat Kantor (Makassar/Kendari/Palu)"
+                                                                { icon: "stars", text: "Semua Fitur Paket Standard" },
+                                                                { icon: "app_registration", text: "Akun OSS* & NIB Perusahaan* (termasuk Free 5 KBLI pada NIB*)" },
+                                                                { icon: "account_balance", text: "Pembukaan Rekening* mitra bank pilihan" },
+                                                                { icon: "location_city", text: "Penggunaan Alamat Kantor (1 Tahun)" },
+                                                                { icon: "verified_user", text: "Alamat Bisnis Prestigious (Makassar/Kendari/Palu)" }
                                                             ].map((feature, fi) => (
                                                                 <li key={fi} className="flex items-start gap-3 text-sm font-medium text-gray-600">
-                                                                    <span className="material-symbols-outlined text-primary text-xl">check_circle</span>
-                                                                    <span className="leading-tight">{feature}</span>
+                                                                    <span className="material-symbols-outlined text-primary text-xl">{feature.icon}</span>
+                                                                    <span className="leading-tight">{feature.text}</span>
                                                                 </li>
                                                             ))}
                                                         </>
@@ -472,6 +462,53 @@ export default function PendirianDetailPage({ params }: { params: Promise<{ id: 
                                     );
                                 }
                             })}
+                        </div>
+                    </div>
+                </section>
+            ) : (
+                <section id="paket-harga" className="px-6 py-12 md:py-24 my-12">
+                    <div className="max-w-[1200px] mx-auto">
+                        <div className="text-center mb-16">
+                            <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-6">Paket Investasi Tunggal</h2>
+                            <p className="text-base md:text-xl text-gray-500 max-w-2xl mx-auto font-medium">Satu harga jujur untuk kemajuan bisnis Anda tanpa biaya siluman.</p>
+                        </div>
+
+                        <div className="max-w-4xl mx-auto">
+                            <div className="relative flex flex-col md:flex-row items-center gap-12 p-8 md:p-16 rounded-[3rem] border-2 border-primary bg-white shadow-2xl overflow-hidden group">
+                                <div className="absolute top-0 right-0 bg-primary px-10 py-3 rounded-bl-3xl">
+                                    <span className="text-white text-[10px] font-black uppercase tracking-widest">Recommended</span>
+                                </div>
+
+                                <div className="flex-1 space-y-8">
+                                    <div>
+                                        <h3 className="text-3xl font-black mb-2 text-gray-900">{service.name}</h3>
+                                        <p className="text-gray-500 font-bold text-sm uppercase tracking-widest">Paket Lengkap</p>
+                                    </div>
+                                    <ul className="space-y-4">
+                                        {getUMKFeatures(service.name).map((feature: string, fi: number) => (
+                                            <li key={fi} className="flex items-start gap-3 text-sm font-bold text-gray-700">
+                                                <span className="material-symbols-outlined text-primary text-xl">verified</span>
+                                                <span className="leading-tight">{feature}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                <div className="flex flex-col items-center gap-6 p-10 bg-primary/5 rounded-[2rem] border border-primary/10 w-full md:w-auto min-w-[300px]">
+                                    <div className="text-center">
+                                        <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] block mb-2">Total Investasi</span>
+                                        <span className="text-5xl font-black text-primary tracking-tighter">{service.price}</span>
+                                    </div>
+                                    <div className="w-full space-y-4">
+                                        <a href={`https://wa.me/6285333338818?text=${waMessage}`}
+                                            target="_blank"
+                                            className="w-full bg-primary text-white hover:bg-primary/90 font-black py-4 px-10 rounded-2xl text-center transition-all shadow-xl shadow-primary/20 flex items-center justify-center gap-2 whitespace-nowrap">
+                                            <span className="material-symbols-outlined">rocket_launch</span>
+                                            <span>Daftar Sekarang</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>

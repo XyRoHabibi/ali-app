@@ -1,15 +1,15 @@
 export const allServices = [
     { id: 1, name: "PT Perorangan", price: "Rp 999.000", category: "usaha", icon: "person", color: "primary", description: "Solusi legalitas terbaik untuk UMKM Indonesia. Proses kilat dengan harga paling terjangkau. Mulai langkah besar usaha Anda hari ini dengan pendampingan profesional." },
-    { id: 2, name: "Upgrade ke PT Umum", price: "Rp 4.500.000", category: "usaha", icon: "upgrade", color: "primary" },
+    { id: 2, name: "Upgrade ke PT Umum", price: "Rp 2.499.000", category: "usaha", icon: "upgrade", color: "primary" },
     { id: 3, name: "CV", price: "Rp 1.999.000", category: "usaha", icon: "groups", color: "secondary" },
     { id: 4, name: "RUPS CV (Perubahan)", price: "Rp 1.999.000", category: "usaha", icon: "edit_document", color: "secondary" },
     { id: 5, name: "PT Umum", price: "Rp 3.999.000", category: "usaha", icon: "corporate_fare", color: "primary" },
-    { id: 6, name: "CV to PT Umum", price: "Rp 3.999.000", category: "usaha", icon: "swap_horiz", color: "secondary" },
+    { id: 6, name: "CV to PT Umum", price: "Rp 1.999.000", category: "usaha", icon: "swap_horiz", color: "secondary" },
     { id: 7, name: "Bundling PT dan VO", price: "Rp 6.250.000", category: "usaha", icon: "package", color: "primary" },
     { id: 8, name: "RUPS PT (Pengurus/Oper Saham)", price: "Rp 3.499.000", category: "usaha", icon: "swap_horizontal_circle", color: "primary" },
     { id: 9, name: "RUPS PT (KBLI/Kedudukan/Nama PT/Modal)", price: "Rp 4.499.000", category: "usaha", icon: "edit_note", color: "primary" },
     { id: 10, name: "PT PMA (PT Asing)", price: "Rp 8.999.000", category: "usaha", icon: "public", color: "primary" },
-    { id: 11, name: "PT PMA + NIB dan PKKPR", price: "Rp 5.000.000", category: "usaha", icon: "add_business", color: "primary" },
+    { id: 11, name: "PT PMA + NIB dan PKKPR", price: "Rp 15.000.000", category: "usaha", icon: "add_business", color: "primary" },
     { id: 12, name: "RUPS PT PMA (PT Asing)", price: "Rp 8.999.000", category: "usaha", icon: "language", color: "primary" },
     { id: 13, name: "Koperasi", price: "Rp 7.499.000", category: "usaha", icon: "handshake", color: "green" },
     { id: 14, name: "UD (Usaha Dagang)", price: "Rp 1.999.000", category: "usaha", icon: "store", color: "orange" },
@@ -229,6 +229,34 @@ export const pricingPackagesData = [
             headers: [
                 { key: "legal", label: "Paket Legal", price: "Rp3.999.000", subLabel: "Best Value", cssClass: "bg-primary/5" },
                 { key: "business", label: "Paket Business", price: "Rp4.499.000", subLabel: "Recommended", cssClass: "bg-primary/10" }
+            ],
+            features: [
+                { name: "Akta Notaris", status: { legal: true, business: true } },
+                { name: "Free 10 KBLI Pada Akta Notaris*", status: { legal: true, business: true } },
+                { name: "SK Menteri", status: { legal: true, business: true } },
+                { name: "Akun Coretax", status: { legal: true, business: true } },
+                { name: "NPWP Perusahaan", status: { legal: true, business: true } },
+                { name: "Akun OSS*", status: { legal: false, business: true } },
+                { name: "NIB Perusahaan*", status: { legal: false, business: true } },
+                { name: "Free 5 KBLI pada NIB*", status: { legal: false, business: true } },
+                { name: "Konsultasi Legalitas", status: { legal: true, business: true } },
+                { name: "Free 50 Draft Perjanjian", status: { legal: true, business: true } },
+                { name: "Desain Logo", status: { legal: true, business: true } },
+                { name: "Desain Stempel", status: { legal: true, business: true } },
+                { name: "Desain Kartu Nama", status: { legal: true, business: true } },
+                { name: "Desain Kop Surat", status: { legal: true, business: true } },
+                { name: "Email Perusahaan", status: { legal: true, business: true } },
+                { name: "Pembukaan Rekening*", status: { legal: false, business: true } }
+            ]
+        }
+    },
+    {
+        id: "cv-to-pt-umum",
+        comparisonTable: {
+            title: "Detail Perbandingan Fitur",
+            headers: [
+                { key: "legal", label: "Paket Legal", price: "Rp1.999.000", subLabel: "Best Value", cssClass: "bg-primary/5" },
+                { key: "business", label: "Paket Business", price: "Rp2.499.000", subLabel: "Recommended", cssClass: "bg-primary/10" }
             ],
             features: [
                 { name: "Akta Notaris", status: { legal: true, business: true } },
@@ -593,12 +621,14 @@ export const umkData: Record<string, any> = {
 
 export function getComparisonTableKey(serviceName: string) {
     const name = (serviceName || '').toLowerCase().trim();
-    if (name === 'cv') return 'pendirian-cv';
-    if (name === 'perkumpulan') return 'pendirian-perkumpulan';
-    if (name.includes('pt perorangan')) return 'pendirian-pt-perorangan';
+    if (name.includes('cv') && !name.includes('pt')) return 'pendirian-cv';
+    if (name.includes('upgrade') && name.includes('pt')) return 'pendirian-cv'; // Match HTML default table
+    if (name.includes('perkumpulan')) return 'pendirian-perkumpulan';
+    if (name.includes('pt perorangan') || name.includes('bundling')) return 'pendirian-pt-perorangan';
     if (name.includes('pt pma')) return 'pendirian-pt-pma';
-    if (name === 'pt umum') return 'pendirian-pt-umum';
-    if (name === 'yayasan') return 'pendirian-yayasan';
+    if (name.includes('cv to pt')) return 'cv-to-pt-umum';
+    if (name.includes('pt umum')) return 'pendirian-pt-umum';
+    if (name.includes('yayasan')) return 'pendirian-yayasan';
     return null;
 }
 
@@ -650,6 +680,13 @@ export function getUMKHeader(serviceName: string) {
         };
     }
 
+    if (name.includes('upgrade') && name.includes('pt')) {
+        return {
+            badge: "SIAP UNTUK EKSPANSI",
+            title: "Tingkatkan Status <br>Bisnis ke <span class=\"text-primary\">PT Umum</span>"
+        };
+    }
+
     const key = getUMKDataKey(serviceName);
     if (key && umkData[key]) {
         return {
@@ -668,7 +705,11 @@ export function getUMKDescription(serviceName: string) {
     const name = serviceName.toLowerCase();
 
     if (name.includes('pt perorangan') && !name.includes('penutupan')) {
-        return "PT Perorangan adalah entitas hukum resmi yang memungkinkan Anda menjadi Direktur sekaligus Pemilik Tunggal dengan perlindungan aset penuh.";
+        return "PT Perorangan adalah entitas hukum resmi yang memungkinkan Anda menjadi <b>Direktur sekaligus Pemilik Tunggal</b> dengan perlindungan aset penuh.";
+    }
+
+    if (name.includes('upgrade') && name.includes('pt')) {
+        return "Solusi transformatif untuk mengubah PT Perorangan menjadi <b>PT Persekutuan Modal</b> guna membuka peluang investasi, tender besar, dan kerjasama strategis.";
     }
 
     const key = getUMKDataKey(serviceName);
@@ -676,7 +717,7 @@ export function getUMKDescription(serviceName: string) {
         return umkData[key].desc;
     }
 
-    return `${serviceName} memberikan solusi legalitas terbaik untuk UMK Indonesia dengan proses yang <b>cepat, transparan, and terjangkau</b>. Dapatkan pendampingan profesional untuk memastikan legalitas bisnis Anda terdaftar dengan benar.`;
+    return `${serviceName} memberikan solusi legalitas terbaik untuk UMK Indonesia dengan proses yang <b>cepat, transparan, dan terjangkau</b>. Dapatkan pendampingan profesional untuk memastikan legalitas bisnis Anda terdaftar dengan benar.`;
 }
 
 export function getUMKFeatures(serviceName: string) {
@@ -688,6 +729,15 @@ export function getUMKFeatures(serviceName: string) {
             "Modal Sangat Terjangkau",
             "Pemisahan Harta Pribadi",
             "Legalitas Resmi Standar Bank"
+        ];
+    }
+
+    if (name.includes('upgrade') && name.includes('pt')) {
+        return [
+            "Meningkatkan Status Hukum",
+            "Kapasitas Modal Lebih Besar",
+            "Keamanan Aset Pemilik",
+            "Siap Ekspansi Nasional"
         ];
     }
 

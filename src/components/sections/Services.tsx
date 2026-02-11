@@ -10,8 +10,8 @@ const services = [
         description:
             "Solusi terbaik untuk UMKM. Tanggung jawab terbatas, pajak lebih ringan, dan prestise perusahaan.",
         features: ["Akta Pendirian", "SK Kemenkumham", "NIB & NPWP"],
-        price: "Rp 1.5jt",
-        href: "/layanan-pt",
+        price: "Rp 999.000",
+        href: "/layanan/pendirian/1",
         isPopular: true,
         iconBg: "bg-gradient-to-br from-[#2a6ba7] to-blue-400",
         iconShadow: "shadow-lg shadow-[#2a6ba7]/30",
@@ -25,8 +25,8 @@ const services = [
         description:
             "Badan usaha untuk kemitraan (sekutu aktif & pasif). Cocok untuk tender pemerintah.",
         features: ["Akta Notaris", "Daftar Pengadilan", "Perizinan OSS"],
-        price: "Rp 2jt",
-        href: "/layanan-cv",
+        price: "Rp 1.999.000",
+        href: "/layanan/pendirian/3",
         isPopular: false,
         iconBg: "bg-white border border-gray-100",
         iconShadow: "shadow-sm",
@@ -42,8 +42,8 @@ const services = [
         description:
             "Lindungi nama brand dan logo Anda dari plagiarisme kompetitor. Aset terpenting bisnis.",
         features: ["Analisa Merek", "Pendaftaran DJKI", "Sertifikat Resmi"],
-        price: "Rp 2.5jt",
-        href: "/layanan-haki",
+        price: "Rp 1.899.000",
+        href: "/layanan/lanjutan/22",
         isPopular: false,
         iconBg: "bg-white border border-gray-100",
         iconShadow: "shadow-sm",
