@@ -164,6 +164,46 @@ const jobPositions = [
     },
 ];
 
+// Internship positions
+const internshipPositions = [
+    {
+        id: 5,
+        title: "Legal Research Intern",
+        type: "Magang",
+        typeColor: "bg-amber-100 text-amber-700",
+        description: "Membantu riset hukum, menyusun dokumen legal, dan mendukung tim konsultan dalam proyek-proyek legalitas bisnis.",
+        location: "Jakarta / Remote",
+        duration: "3-6 Bulan",
+        icon: "menu_book",
+        gradient: "from-amber-500 to-orange-600",
+        shadow: "shadow-amber-500/30",
+    },
+    {
+        id: 6,
+        title: "Social Media Intern",
+        type: "Magang",
+        typeColor: "bg-amber-100 text-amber-700",
+        description: "Membuat konten kreatif untuk media sosial, membantu strategi digital marketing, dan mengelola engagement audiens.",
+        location: "Jakarta / Remote",
+        duration: "3-6 Bulan",
+        icon: "share",
+        gradient: "from-pink-500 to-rose-600",
+        shadow: "shadow-pink-500/30",
+    },
+    {
+        id: 7,
+        title: "Admin & Data Entry Intern",
+        type: "Magang",
+        typeColor: "bg-amber-100 text-amber-700",
+        description: "Mendukung operasional harian perusahaan, mengelola data klien, serta membantu proses administrasi dokumen.",
+        location: "Jakarta",
+        duration: "3-6 Bulan",
+        icon: "edit_document",
+        gradient: "from-cyan-500 to-teal-600",
+        shadow: "shadow-cyan-500/30",
+    },
+];
+
 export default function KarirPage() {
     const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -429,6 +469,99 @@ export default function KarirPage() {
                                             className="shrink-0 px-8 h-12 rounded-xl bg-[#2a6ba7] text-white font-bold flex items-center justify-center gap-2 hover:bg-[#2a6ba7]/90 hover:shadow-xl hover:shadow-[#2a6ba7]/30 transition-all group"
                                         >
                                             Lamar Sekarang
+                                            <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">
+                                                arrow_forward
+                                            </span>
+                                        </Link>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* Internship Section */}
+                <section id="internship" className="py-24 px-6 relative bg-gradient-to-b from-amber-50/50 to-transparent">
+                    <div className="max-w-[1200px] mx-auto">
+                        <div className="text-center mb-16 reveal-up">
+                            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-100 text-amber-700 text-xs font-bold uppercase tracking-wider mb-6">
+                                <span className="material-symbols-outlined text-sm">school</span>
+                                Program Magang
+                            </span>
+                            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+                                Mulai Karirmu dengan <span className="text-[#f3b444]">Magang</span>
+                            </h2>
+                            <p className="text-lg text-gray-500 font-medium max-w-2xl mx-auto">
+                                Bagi mahasiswa atau fresh graduate yang ingin mendapatkan pengalaman kerja nyata di bidang legal tech
+                            </p>
+                        </div>
+
+                        {/* Internship Benefits */}
+                        <div className="grid md:grid-cols-3 gap-6 mb-12 reveal-up" style={{ transitionDelay: "100ms" }}>
+                            <div className="bg-white rounded-2xl p-6 border border-amber-100 shadow-md text-center">
+                                <div className="size-12 mx-auto rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center mb-4">
+                                    <span className="material-symbols-outlined">workspace_premium</span>
+                                </div>
+                                <h4 className="font-bold text-gray-900 mb-1">Sertifikat Magang</h4>
+                                <p className="text-sm text-gray-500">Dapatkan sertifikat resmi setelah menyelesaikan program</p>
+                            </div>
+                            <div className="bg-white rounded-2xl p-6 border border-amber-100 shadow-md text-center">
+                                <div className="size-12 mx-auto rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center mb-4">
+                                    <span className="material-symbols-outlined">mentor</span>
+                                </div>
+                                <h4 className="font-bold text-gray-900 mb-1">Mentoring Langsung</h4>
+                                <p className="text-sm text-gray-500">Bimbingan dari profesional berpengalaman di bidangnya</p>
+                            </div>
+                            <div className="bg-white rounded-2xl p-6 border border-amber-100 shadow-md text-center">
+                                <div className="size-12 mx-auto rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center mb-4">
+                                    <span className="material-symbols-outlined">rocket_launch</span>
+                                </div>
+                                <h4 className="font-bold text-gray-900 mb-1">Peluang Full-Time</h4>
+                                <p className="text-sm text-gray-500">Kesempatan bergabung sebagai karyawan tetap setelah magang</p>
+                            </div>
+                        </div>
+
+                        <div className="space-y-6">
+                            {internshipPositions.map((intern, index) => (
+                                <div
+                                    key={intern.id}
+                                    className="reveal-up job-card bg-white rounded-[2rem] p-8 border border-amber-100 shadow-lg"
+                                    style={{ transitionDelay: `${(index + 1) * 100}ms` }}
+                                >
+                                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                                        <div className="flex items-start gap-6">
+                                            <div
+                                                className={`size-16 shrink-0 rounded-2xl bg-gradient-to-br ${intern.gradient} text-white flex items-center justify-center shadow-lg ${intern.shadow}`}
+                                            >
+                                                <span className="material-symbols-outlined text-2xl">{intern.icon}</span>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <div className="flex flex-wrap items-center gap-3">
+                                                    <h3 className="text-xl font-black text-gray-900">{intern.title}</h3>
+                                                    <span
+                                                        className={`px-3 py-1 rounded-full ${intern.typeColor} text-xs font-bold`}
+                                                    >
+                                                        {intern.type}
+                                                    </span>
+                                                </div>
+                                                <p className="text-gray-500 text-sm font-medium">{intern.description}</p>
+                                                <div className="flex flex-wrap gap-4 text-sm text-gray-400 font-medium">
+                                                    <span className="flex items-center gap-1">
+                                                        <span className="material-symbols-outlined text-base">location_on</span>
+                                                        {intern.location}
+                                                    </span>
+                                                    <span className="flex items-center gap-1">
+                                                        <span className="material-symbols-outlined text-base">schedule</span>
+                                                        {intern.duration}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <Link
+                                            href={`/karir/lamar?posisi=${intern.id}`}
+                                            className="shrink-0 px-8 h-12 rounded-xl bg-[#f3b444] text-[#2a6ba7] font-bold flex items-center justify-center gap-2 hover:bg-[#f3b444]/90 hover:shadow-xl hover:shadow-[#f3b444]/30 transition-all group"
+                                        >
+                                            Daftar Magang
                                             <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">
                                                 arrow_forward
                                             </span>

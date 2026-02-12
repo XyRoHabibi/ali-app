@@ -12,6 +12,9 @@ const jobPositions: Record<string, { title: string; icon: string; gradient: stri
     "2": { title: "Digital Marketing Specialist", icon: "campaign", gradient: "from-[#f3b444] to-orange-500" },
     "3": { title: "Frontend Developer", icon: "code", gradient: "from-purple-500 to-violet-600" },
     "4": { title: "Customer Success Officer", icon: "headset_mic", gradient: "from-green-500 to-emerald-600" },
+    "5": { title: "Legal Research Intern", icon: "menu_book", gradient: "from-amber-500 to-orange-600" },
+    "6": { title: "Social Media Intern", icon: "share", gradient: "from-pink-500 to-rose-600" },
+    "7": { title: "Admin & Data Entry Intern", icon: "edit_document", gradient: "from-cyan-500 to-teal-600" },
 };
 
 type FormStatus = "idle" | "loading" | "success" | "error";
@@ -395,10 +398,10 @@ function LamarForm() {
                                     onDrop={handleDrop}
                                     onClick={() => fileInputRef.current?.click()}
                                     className={`relative cursor-pointer border-2 border-dashed rounded-2xl p-10 text-center transition-all duration-300 ${dragActive
-                                            ? "border-[#2a6ba7] bg-[#2a6ba7]/5 scale-[1.02]"
-                                            : cvFile
-                                                ? "border-green-400 bg-green-50"
-                                                : "border-gray-300 bg-gray-50/50 hover:border-[#2a6ba7]/50 hover:bg-[#2a6ba7]/5"
+                                        ? "border-[#2a6ba7] bg-[#2a6ba7]/5 scale-[1.02]"
+                                        : cvFile
+                                            ? "border-green-400 bg-green-50"
+                                            : "border-gray-300 bg-gray-50/50 hover:border-[#2a6ba7]/50 hover:bg-[#2a6ba7]/5"
                                         }`}
                                 >
                                     <input
@@ -529,8 +532,8 @@ function LamarForm() {
                                         type="submit"
                                         disabled={formStatus === "loading"}
                                         className={`shrink-0 w-full sm:w-auto h-14 px-10 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 transition-all duration-300 ${formStatus === "loading"
-                                                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                                                : "bg-[#2a6ba7] text-white shadow-lg shadow-[#2a6ba7]/30 hover:shadow-[#2a6ba7]/50 hover:-translate-y-1 active:translate-y-0 active:shadow-lg"
+                                            ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                                            : "bg-[#2a6ba7] text-white shadow-lg shadow-[#2a6ba7]/30 hover:shadow-[#2a6ba7]/50 hover:-translate-y-1 active:translate-y-0 active:shadow-lg"
                                             }`}
                                     >
                                         {formStatus === "loading" ? (
