@@ -658,7 +658,7 @@ export default function KarirPage() {
                                 centeredSlides={true}
                                 slidesPerView={'auto'} // Biarkan 'auto' agar width slide mengikuti CSS
                                 loop={true}
-                                loopedSlides={4}
+
                                 watchSlidesProgress={true}
                                 observer={true}
                                 observeParents={true}
