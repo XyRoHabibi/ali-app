@@ -5,16 +5,16 @@ export const allServices = [
     { id: 4, name: "RUPS CV (Perubahan)", price: "Rp 1.999.000", category: "usaha", icon: "edit_document", color: "secondary" },
     { id: 5, name: "PT Umum", price: "Rp 3.999.000", category: "usaha", icon: "corporate_fare", color: "primary" },
     { id: 6, name: "CV to PT Umum", price: "Rp 1.999.000", category: "usaha", icon: "swap_horiz", color: "secondary" },
-    { id: 7, name: "Bundling PT dan VO", price: "Rp 6.250.000", category: "usaha", icon: "package", color: "primary" },
-    { id: 8, name: "RUPS PT (Pengurus/Oper Saham)", price: "Rp 3.499.000", category: "usaha", icon: "swap_horizontal_circle", color: "primary" },
-    { id: 9, name: "RUPS PT (KBLI/Kedudukan/Nama PT/Modal)", price: "Rp 4.499.000", category: "usaha", icon: "edit_note", color: "primary" },
+    { id: 7, name: "Bundling PT dan VO", price: "Rp 1.999.000", category: "usaha", icon: "package", color: "primary" },
+    { id: 8, name: "RUPS PT (Pengurus/Oper Saham)", price: "Rp 1.999.000", category: "usaha", icon: "swap_horizontal_circle", color: "primary" },
+    { id: 9, name: "RUPS PT (KBLI/Kedudukan/Nama PT/Modal)", price: "Rp 1.999.000", category: "usaha", icon: "edit_note", color: "primary" },
     { id: 10, name: "PT PMA (PT Asing)", price: "Rp 8.999.000", category: "usaha", icon: "public", color: "primary" },
-    { id: 11, name: "PT PMA + NIB dan PKKPR", price: "Rp 15.000.000", category: "usaha", icon: "add_business", color: "primary" },
+    { id: 11, name: "PT PMA + NIB dan PKKPR", price: "Rp 8.999.000", category: "usaha", icon: "add_business", color: "primary" },
     { id: 12, name: "RUPS PT PMA (PT Asing)", price: "Rp 8.999.000", category: "usaha", icon: "language", color: "primary" },
     { id: 13, name: "Koperasi", price: "Rp 7.499.000", category: "usaha", icon: "handshake", color: "green" },
     { id: 14, name: "UD (Usaha Dagang)", price: "Rp 1.999.000", category: "usaha", icon: "store", color: "orange" },
     { id: 15, name: "Yayasan", price: "Rp 3.499.000", category: "usaha", icon: "volunteer_activism", color: "blue" },
-    { id: 16, name: "Perubahan Yayasan", price: "Rp 4.000.000", category: "usaha", icon: "edit", color: "blue" },
+    { id: 16, name: "Perubahan Yayasan", price: "Rp 1.999.000", category: "usaha", icon: "edit", color: "blue" },
     { id: 17, name: "Penutupan PT Perorangan", price: "Rp 999.000", category: "usaha", icon: "close", color: "red" },
     { id: 18, name: "Akta Cabang PT", price: "Rp 2.500.000", category: "usaha", icon: "account_tree", color: "primary" },
     { id: 19, name: "Akta Cabang CV", price: "Rp 1.500.000", category: "usaha", icon: "account_tree", color: "secondary" },
@@ -285,6 +285,120 @@ export const pricingPackagesData = [
             headers: [
                 { key: "legal", label: "Paket Legal", price: "Rp3.499.000", subLabel: "Best Value", cssClass: "bg-primary/5" },
                 { key: "business", label: "Paket Business", price: "Rp3.999.000", subLabel: "Recommended", cssClass: "bg-primary/10" }
+            ],
+            features: [
+                { name: "Akta Notaris", status: { legal: true, business: true } },
+                { name: "Free 10 KBLI Pada Akta Notaris*", status: { legal: true, business: true } },
+                { name: "SK Menteri", status: { legal: true, business: true } },
+                { name: "Akun Coretax", status: { legal: true, business: true } },
+                { name: "NPWP Perusahaan", status: { legal: true, business: true } },
+                { name: "Akun OSS*", status: { legal: false, business: true } },
+                { name: "NIB Perusahaan*", status: { legal: false, business: true } },
+                { name: "Free 5 KBLI pada NIB*", status: { legal: false, business: true } },
+                { name: "Konsultasi Legalitas", status: { legal: true, business: true } },
+                { name: "Free 50 Draft Perjanjian", status: { legal: true, business: true } },
+                { name: "Desain Logo", status: { legal: true, business: true } },
+                { name: "Desain Stempel", status: { legal: true, business: true } },
+                { name: "Desain Kartu Nama", status: { legal: true, business: true } },
+                { name: "Desain Kop Surat", status: { legal: true, business: true } },
+                { name: "Email Perusahaan", status: { legal: true, business: true } },
+                { name: "Pembukaan Rekening*", status: { legal: false, business: true } }
+            ]
+        }
+    },
+    {
+        id: "bundling-pt-vo",
+        comparisonTable: {
+            title: "Detail Perbandingan Fitur",
+            headers: [
+                { key: "legal", label: "Paket Legal", price: "Rp1.999.000", subLabel: "Best Value", cssClass: "bg-primary/5" },
+                { key: "business", label: "Paket Business", price: "Rp2.499.000", subLabel: "Recommended", cssClass: "bg-primary/10" }
+            ],
+            features: [
+                { name: "Penggunaan Alamat Kantor (1 Tahun)", status: { legal: true, business: true } },
+                { name: "Alamat Bisnis Prestigious", status: { legal: true, business: true } },
+                { name: "Akta Notaris", status: { legal: true, business: true } },
+                { name: "SK Menteri", status: { legal: true, business: true } },
+                { name: "NPWP Perusahaan", status: { legal: true, business: true } },
+                { name: "NIB Perusahaan*", status: { legal: true, business: true } },
+                { name: "Akun OSS*", status: { legal: true, business: true } },
+                { name: "Free 10 KBLI Pada Akta Notaris*", status: { legal: true, business: true } },
+                { name: "Akun Coretax", status: { legal: true, business: true } },
+                { name: "Free 5 KBLI pada NIB*", status: { legal: false, business: true } },
+                { name: "Konsultasi Legalitas", status: { legal: true, business: true } },
+                { name: "Free 50 Draft Perjanjian", status: { legal: true, business: true } },
+                { name: "Desain Logo", status: { legal: true, business: true } },
+                { name: "Desain Stempel", status: { legal: true, business: true } },
+                { name: "Desain Kartu Nama", status: { legal: true, business: true } },
+                { name: "Desain Kop Surat", status: { legal: true, business: true } },
+                { name: "Email Perusahaan", status: { legal: true, business: true } },
+                { name: "Pembukaan Rekening*", status: { legal: false, business: true } }
+            ]
+        }
+    },
+    {
+        id: "rups-pt-pengurus",
+        comparisonTable: {
+            title: "Detail Perbandingan Fitur",
+            headers: [
+                { key: "legal", label: "Paket Legal", price: "Rp1.999.000", subLabel: "Best Value", cssClass: "bg-primary/5" },
+                { key: "business", label: "Paket Business", price: "Rp2.499.000", subLabel: "Recommended", cssClass: "bg-primary/10" }
+            ],
+            features: [
+                { name: "Akta Notaris", status: { legal: true, business: true } },
+                { name: "Free 10 KBLI Pada Akta Notaris*", status: { legal: true, business: true } },
+                { name: "SK Menteri", status: { legal: true, business: true } },
+                { name: "Akun Coretax", status: { legal: true, business: true } },
+                { name: "NPWP Perusahaan", status: { legal: true, business: true } },
+                { name: "Akun OSS*", status: { legal: false, business: true } },
+                { name: "NIB Perusahaan*", status: { legal: false, business: true } },
+                { name: "Free 5 KBLI pada NIB*", status: { legal: false, business: true } },
+                { name: "Konsultasi Legalitas", status: { legal: true, business: true } },
+                { name: "Free 50 Draft Perjanjian", status: { legal: true, business: true } },
+                { name: "Desain Logo", status: { legal: true, business: true } },
+                { name: "Desain Stempel", status: { legal: true, business: true } },
+                { name: "Desain Kartu Nama", status: { legal: true, business: true } },
+                { name: "Desain Kop Surat", status: { legal: true, business: true } },
+                { name: "Email Perusahaan", status: { legal: true, business: true } },
+                { name: "Pembukaan Rekening*", status: { legal: false, business: true } }
+            ]
+        }
+    },
+    {
+        id: "rups-pt-kbli",
+        comparisonTable: {
+            title: "Detail Perbandingan Fitur",
+            headers: [
+                { key: "legal", label: "Paket Legal", price: "Rp1.999.000", subLabel: "Best Value", cssClass: "bg-primary/5" },
+                { key: "business", label: "Paket Business", price: "Rp2.499.000", subLabel: "Recommended", cssClass: "bg-primary/10" }
+            ],
+            features: [
+                { name: "Akta Notaris", status: { legal: true, business: true } },
+                { name: "Free 10 KBLI Pada Akta Notaris*", status: { legal: true, business: true } },
+                { name: "SK Menteri", status: { legal: true, business: true } },
+                { name: "Akun Coretax", status: { legal: true, business: true } },
+                { name: "NPWP Perusahaan", status: { legal: true, business: true } },
+                { name: "Akun OSS*", status: { legal: false, business: true } },
+                { name: "NIB Perusahaan*", status: { legal: false, business: true } },
+                { name: "Free 5 KBLI pada NIB*", status: { legal: false, business: true } },
+                { name: "Konsultasi Legalitas", status: { legal: true, business: true } },
+                { name: "Free 50 Draft Perjanjian", status: { legal: true, business: true } },
+                { name: "Desain Logo", status: { legal: true, business: true } },
+                { name: "Desain Stempel", status: { legal: true, business: true } },
+                { name: "Desain Kartu Nama", status: { legal: true, business: true } },
+                { name: "Desain Kop Surat", status: { legal: true, business: true } },
+                { name: "Email Perusahaan", status: { legal: true, business: true } },
+                { name: "Pembukaan Rekening*", status: { legal: false, business: true } }
+            ]
+        }
+    },
+    {
+        id: "perubahan-yayasan",
+        comparisonTable: {
+            title: "Detail Perbandingan Fitur",
+            headers: [
+                { key: "legal", label: "Paket Legal", price: "Rp1.999.000", subLabel: "Best Value", cssClass: "bg-primary/5" },
+                { key: "business", label: "Paket Business", price: "Rp2.499.000", subLabel: "Recommended", cssClass: "bg-primary/10" }
             ],
             features: [
                 { name: "Akta Notaris", status: { legal: true, business: true } },
@@ -624,10 +738,14 @@ export function getComparisonTableKey(serviceName: string) {
     if (name.includes('cv') && !name.includes('pt')) return 'pendirian-cv';
     if (name.includes('upgrade') && name.includes('pt')) return 'pendirian-cv'; // Match HTML default table
     if (name.includes('perkumpulan')) return 'pendirian-perkumpulan';
-    if (name.includes('pt perorangan') || name.includes('bundling')) return 'pendirian-pt-perorangan';
+    if (name.includes('pt perorangan')) return 'pendirian-pt-perorangan';
+    if (name.includes('bundling')) return 'bundling-pt-vo';
+    if (name.includes('rups pt (pengurus')) return 'rups-pt-pengurus';
+    if (name.includes('rups pt (kbli')) return 'rups-pt-kbli';
     if (name.includes('pt pma')) return 'pendirian-pt-pma';
     if (name.includes('cv to pt')) return 'cv-to-pt-umum';
     if (name.includes('pt umum')) return 'pendirian-pt-umum';
+    if (name.includes('perubahan yayasan')) return 'perubahan-yayasan';
     if (name.includes('yayasan')) return 'pendirian-yayasan';
     return null;
 }
