@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 import { allServices } from "@/data/services";
 
@@ -42,10 +43,35 @@ function getServiceLink(service: any): string {
     return `/layanan/${service.id}`;
 }
 
-export default function LayananPage() {
-    const [activeCategory, setActiveCategory] = useState("all");
+function LayananContent() {
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const pathname = usePathname();
+
+    const [activeCategory, setActiveCategory] = useState(searchParams.get("category") || "all");
     const [searchQuery, setSearchQuery] = useState("");
     const sectionRef = useRef<HTMLDivElement>(null);
+
+    // Sync state with URL params (e.g. on back button)
+    useEffect(() => {
+        const category = searchParams.get("category");
+        if (category && category !== activeCategory) {
+            setActiveCategory(category);
+        } else if (!category && activeCategory !== "all") {
+            setActiveCategory("all");
+        }
+    }, [searchParams]);
+
+    const handleCategoryChange = (catId: string) => {
+        setActiveCategory(catId);
+        const params = new URLSearchParams(searchParams.toString());
+        if (catId === "all") {
+            params.delete("category");
+        } else {
+            params.set("category", catId);
+        }
+        router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    };
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -112,7 +138,7 @@ export default function LayananPage() {
                                     {categories.map((cat) => (
                                         <button
                                             key={cat.id}
-                                            onClick={() => setActiveCategory(cat.id)}
+                                            onClick={() => handleCategoryChange(cat.id)}
                                             className={`category-btn whitespace-nowrap px-6 py-3 rounded-xl text-left text-xs md:text-sm font-bold transition-all ${activeCategory === cat.id
                                                 ? "bg-[#2a6ba7] text-white shadow-[0_10px_20px_rgba(42,107,167,0.2)]"
                                                 : "hover:bg-gray-100"
@@ -258,5 +284,13 @@ export default function LayananPage() {
                 </section>
             </main>
         </div>
+    );
+}
+
+export default function LayananPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <LayananContent />
+        </Suspense>
     );
 }
