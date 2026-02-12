@@ -4,12 +4,23 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-// Stats data for hero
+// --- SWIPER IMPORTS ---
+// Impor komponen dan style yang dibutuhkan untuk slider
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination, Navigation, EffectCoverflow } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import "swiper/css/effect-coverflow";
+
+// --- DATA ---
+
+// Stats data for hero (Dipindahkan ke bawah teks hero agar tidak menutupi gambar 3D)
 const heroStats = [
     { value: "20+", label: "Tim Member" },
     { value: "5+", label: "Tahun Growth" },
     { value: "100%", label: "Remote Friendly" },
-    { value: "∞", label: "Peluang Belajar" },
+    // { value: "∞", label: "Peluang Belajar" }, // Dikurangi agar pas 3 kolom di mobile
 ];
 
 // Benefits data
@@ -120,7 +131,6 @@ const jobPositions = [
         icon: "support_agent",
         gradient: "from-[#2a6ba7] to-blue-600",
         shadow: "shadow-[#2a6ba7]/30",
-        whatsappMessage: "Halo%20Akses%20Legal,%20saya%20tertarik%20melamar%20posisi%20Legal%20Consultant",
     },
     {
         id: 2,
@@ -134,7 +144,6 @@ const jobPositions = [
         gradient: "from-[#f3b444] to-orange-500",
         shadow: "shadow-[#f3b444]/30",
         iconColor: "text-[#2a6ba7]",
-        whatsappMessage: "Halo%20Akses%20Legal,%20saya%20tertarik%20melamar%20posisi%20Digital%20Marketing%20Specialist",
     },
     {
         id: 3,
@@ -147,7 +156,6 @@ const jobPositions = [
         icon: "code",
         gradient: "from-purple-500 to-violet-600",
         shadow: "shadow-purple-500/30",
-        whatsappMessage: "Halo%20Akses%20Legal,%20saya%20tertarik%20melamar%20posisi%20Frontend%20Developer",
     },
     {
         id: 4,
@@ -160,7 +168,6 @@ const jobPositions = [
         icon: "headset_mic",
         gradient: "from-green-500 to-emerald-600",
         shadow: "shadow-green-500/30",
-        whatsappMessage: "Halo%20Akses%20Legal,%20saya%20tertarik%20melamar%20posisi%20Customer%20Success%20Officer",
     },
 ];
 
@@ -204,9 +211,61 @@ const internshipPositions = [
     },
 ];
 
-export default function KarirPage() {
-    const sectionRef = useRef<HTMLDivElement>(null);
+// --- DATA BARU UNTUK SLIDER ---
 
+// Data Testimoni Magang (Ganti dengan data asli dan foto asli)
+// Data Testimoni
+const internTestimonials = [
+    {
+        id: 1,
+        name: "Sarah Amalia",
+        role: "Legal Research Intern", // Tambahan Role
+        institution: "Universitas Indonesia",
+        image: "/images/foto0.jpg",
+        quote: "Pengalaman magang di Akses Legal sangat membuka wawasan. Saya tidak hanya belajar teori hukum bisnis, tapi langsung menerapkannya dalam kasus nyata.",
+    },
+    {
+        id: 2,
+        name: "Budi Santoso",
+        role: "IT Support Intern",
+        institution: "Universitas Gadjah Mada",
+        image: "/images/foto1.png",
+        quote: "Lingkungan kerjanya sangat kolaboratif dan remote-friendly. Sebagai intern IT, saya diberi kepercayaan untuk ikut mengembangkan fitur website.",
+    },
+    {
+        id: 3,
+        name: "Citra Kirana",
+        role: "Social Media Intern",
+        institution: "Universitas Padjadjaran",
+        image: "/images/foto2.png",
+        quote: "Tim marketingnya sangat kreatif! Saya belajar banyak tentang strategi konten dan digital marketing. Sangat direkomendasikan.",
+    },
+    {
+        id: 4,
+        name: "Dimas Anggara",
+        role: "Business Dev Intern",
+        institution: "Institut Teknologi Bandung",
+        image: "/images/foto3.png",
+        quote: "Mentor disini sangat suportif. Saya diajarkan bagaimana melakukan negosiasi bisnis dan menyusun kontrak kerjasama yang baik.",
+    },
+];
+
+// Data Logo Institusi (Ganti dengan logo asli)
+// Pastikan file logo berwarna putih atau abu-abu terang agar kontras dengan background gelap
+const institutionLogos = [
+    { id: 1, src: "/images/logo-placeholder-1.png", alt: "Universitas Indonesia" },
+    { id: 2, src: "/images/logo-placeholder-2.png", alt: "UGM" },
+    { id: 3, src: "/images/logo-placeholder-3.png", alt: "UNPAD" },
+    { id: 4, src: "/images/logo-placeholder-4.png", alt: "ITB" },
+    { id: 5, src: "/images/logo-placeholder-5.png", alt: "BINUS University" },
+    { id: 6, src: "/images/logo-placeholder-6.png", alt: "Universitas Brawijaya" },
+];
+
+
+export default function KarirPage() {
+    const sectionRef = useRef(null);
+
+    // Scroll reveal animation
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
@@ -222,7 +281,6 @@ export default function KarirPage() {
         const revealElements = sectionRef.current?.querySelectorAll(".reveal-up");
         revealElements?.forEach((el) => observer.observe(el));
 
-        // Trigger immediately for elements already in viewport
         setTimeout(() => {
             revealElements?.forEach((el) => {
                 const rect = el.getBoundingClientRect();
@@ -236,21 +294,22 @@ export default function KarirPage() {
     }, []);
 
     return (
-        <div ref={sectionRef}>
-            <main className="relative">
-                {/* Hero Section */}
-                <section className="relative py-24 md:py-32 bg-gradient-to-br from-[#2a6ba7] via-[#1e5a8f] to-[#1a2c3d] text-white overflow-hidden px-6">
+        <div ref={sectionRef} className="bg-gray-50">
+            <main className="relative overflow-hidden">
+                {/* --- Hero Section (REVAMPED) --- */}
+                <section className="relative min-h-[90vh] flex items-center pt-24 pb-16 bg-gradient-to-br from-[#1a2c3d] via-[#2a6ba7] to-[#1e5a8f] text-white px-6 overflow-hidden rounded-b-[3rem] md:rounded-b-[5rem]">
                     {/* Background Elements */}
-                    <div className="absolute inset-0 pointer-events-none">
+                    <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-20">
                         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:40px_40px]"></div>
-                        <div className="absolute top-20 left-10 w-72 h-72 bg-[#f3b444]/20 rounded-full blur-[100px] animate-float"></div>
-                        <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#2a6ba7]/30 rounded-full blur-[120px]"></div>
+                        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#2a6ba7] rounded-full blur-[150px] -translate-y-1/2 translate-x-1/2 animate-pulse-slow"></div>
+                        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#f3b444]/30 rounded-full blur-[120px] translate-y-1/3 -translate-x-1/4"></div>
                     </div>
 
-                    <div className="max-w-[1200px] mx-auto relative z-10">
-                        <div className="grid lg:grid-cols-2 gap-16 items-center">
-                            <div className="space-y-8 reveal-up">
-                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+                    <div className="max-w-[1280px] mx-auto relative z-10 w-full">
+                        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                            {/* Text Content */}
+                            <div className="space-y-8 reveal-up order-2 lg:order-1 text-center lg:text-left">
+                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mx-auto lg:mx-0">
                                     <span className="relative flex h-2.5 w-2.5">
                                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                                         <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
@@ -261,75 +320,73 @@ export default function KarirPage() {
                                 <h1 className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight tracking-tight">
                                     Bangun Karir Impianmu
                                     <br />
-                                    <span className="text-[#f3b444]">Bersama Kami</span>
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f3b444] to-amber-300">Bersama Kami</span>
                                 </h1>
 
-                                <p className="text-lg md:text-xl text-white/80 font-medium leading-relaxed max-w-lg">
+                                <p className="text-lg md:text-xl text-white/80 font-medium leading-relaxed max-w-lg mx-auto lg:mx-0">
                                     Bergabunglah dengan tim inovatif yang mengubah cara bisnis Indonesia mengurus legalitas. Kami mencari talenta terbaik untuk tumbuh bersama.
                                 </p>
 
-                                <div className="flex flex-col sm:flex-row gap-4">
+                                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                                     <Link
                                         href="#open-positions"
-                                        className="group px-8 h-14 rounded-2xl bg-[#f3b444] text-[#2a6ba7] font-bold flex items-center justify-center gap-3 shadow-lg shadow-[#f3b444]/30 hover:shadow-[#f3b444]/50 hover:-translate-y-1 transition-all duration-300"
+                                        className="group px-8 h-14 rounded-2xl bg-[#f3b444] text-[#2a6ba7] font-bold flex items-center justify-center gap-3 shadow-lg shadow-[#f3b444]/20 hover:shadow-[#f3b444]/40 hover:-translate-y-1 transition-all duration-300"
                                     >
                                         <span>Lihat Lowongan</span>
-                                        <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">
+                                        <span className="material-symbols-outlined group-hover:translate-y-1 transition-transform">
                                             arrow_downward
                                         </span>
                                     </Link>
                                     <Link
                                         href="#why-join"
-                                        className="px-8 h-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold flex items-center justify-center gap-3 hover:bg-white/20 transition-all duration-300"
+                                        className="px-8 h-14 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 text-white font-bold flex items-center justify-center gap-3 hover:bg-white/10 transition-all duration-300"
                                     >
                                         <span>Kenapa Bergabung?</span>
                                     </Link>
                                 </div>
+
+                                {/* Quick Stats moved below text for better composition with the new image */}
+                                <div className="grid grid-cols-3 gap-4 pt-8 border-t border-white/10 max-w-md mx-auto lg:mx-0">
+                                    {heroStats.map((stat, index) => (
+                                        <div key={index} className="text-center lg:text-left">
+                                            <p className="text-2xl sm:text-3xl font-black text-[#f3b444]">{stat.value}</p>
+                                            <p className="text-xs sm:text-sm font-bold text-white/70">{stat.label}</p>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
 
-                            {/* Hero Visual */}
+                            {/* Hero Visual - NEW 3D ASSET */}
                             <div
-                                className="relative reveal-up hidden lg:block"
+                                className="relative reveal-up order-1 lg:order-2 flex justify-center"
                                 style={{ transitionDelay: "200ms" }}
                             >
-                                <div className="relative">
-                                    <div className="absolute inset-0 bg-gradient-to-br from-[#f3b444]/30 to-[#2a6ba7]/30 rounded-[3rem] blur-3xl"></div>
-                                    <div className="relative bg-white/10 backdrop-blur-xl rounded-[3rem] p-8 border border-white/20">
-                                        <div className="grid grid-cols-2 gap-6">
-                                            {heroStats.map((stat, index) => (
-                                                <div
-                                                    key={index}
-                                                    className="bg-white/10 rounded-2xl p-6 text-center hover:bg-white/20 transition-all"
-                                                >
-                                                    <p className="text-4xl font-black text-[#f3b444] mb-2">{stat.value}</p>
-                                                    <p className="text-sm font-bold text-white/70">{stat.label}</p>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
+                                <div className="relative w-full max-w-[600px] lg:max-w-full aspect-square lg:aspect-auto lg:h-[600px]">
+                                    {/* Efek Glow di belakang gambar */}
+                                    <div className="absolute inset-0 bg-gradient-to-tr from-[#f3b444]/20 to-[#2a6ba7]/20 blur-[100px] rounded-full transform rotate-12 scale-75"></div>
+
+                                    {/* Gunakan Aset 3D Isometric yang baru */}
+                                    {/* Pastikan file Anda bernama persis seperti ini di folder public/images/ */}
+                                    <Image
+                                        src="/images/akses-legal-indonesia-career-hero-3d-isometric.webp"
+                                        alt="Ilustrasi Karir Akses Legal Indonesia 3D Isometric"
+                                        fill
+                                        priority
+                                        className="object-contain animate-float drop-shadow-[0_20px_50px_rgba(0,0,0,0.3)]"
+                                        sizes="(max-w: 768px) 100vw, 50vw"
+                                    />
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    {/* Decorative Logo */}
-                    <div className="absolute right-0 top-0 opacity-5 translate-x-1/4 -translate-y-1/4">
-                        <Image
-                            src="/images/logo-putih.png"
-                            alt=""
-                            width={600}
-                            height={300}
-                            className="w-[600px] h-auto"
-                        />
-                    </div>
                 </section>
 
                 {/* Why Join Us Section */}
-                <section id="why-join" className="py-24 px-6 relative overflow-hidden">
+                <section id="why-join" className="py-24 px-6 relative z-10">
                     <div className="max-w-[1200px] mx-auto">
                         <div className="text-center mb-16 reveal-up">
                             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-                                Kenapa <span className="text-gradient">Bergabung</span> dengan Kami?
+                                Kenapa <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2a6ba7] to-blue-500">Bergabung</span> dengan Kami?
                             </h2>
                             <p className="text-lg text-gray-500 font-medium max-w-2xl mx-auto">
                                 Kami menawarkan lebih dari sekadar pekerjaan. Ini adalah kesempatan untuk bertumbuh dan membuat dampak nyata.
@@ -340,11 +397,11 @@ export default function KarirPage() {
                             {benefits.map((benefit, index) => (
                                 <div
                                     key={benefit.id}
-                                    className={`reveal-up benefit-card p-8 rounded-[2.5rem] bg-white border-2 border-transparent ${benefit.hoverBorder} shadow-xl transition-all group`}
+                                    className={`reveal-up benefit-card p-8 rounded-[2.5rem] bg-white border border-gray-100/50 ${benefit.hoverBorder} shadow-xl shadow-gray-100/50 hover:shadow-2xl transition-all group duration-300 hover:-translate-y-2`}
                                     style={{ transitionDelay: `${index * 100}ms` }}
                                 >
                                     <div
-                                        className={`benefit-icon size-16 rounded-2xl bg-gradient-to-br ${benefit.gradient} ${benefit.iconColor || "text-white"} flex items-center justify-center mb-6 transition-transform shadow-lg ${benefit.shadow}`}
+                                        className={`benefit-icon size-16 rounded-2xl bg-gradient-to-br ${benefit.gradient} ${benefit.iconColor || "text-white"} flex items-center justify-center mb-6 transition-transform shadow-lg ${benefit.shadow} group-hover:scale-110 duration-300`}
                                     >
                                         <span className="material-symbols-outlined text-3xl">{benefit.icon}</span>
                                     </div>
@@ -359,7 +416,7 @@ export default function KarirPage() {
                 </section>
 
                 {/* Our Culture Section */}
-                <section className="py-24 bg-white px-6">
+                <section className="py-24 bg-gradient-to-b from-white to-gray-50 px-6">
                     <div className="max-w-[1200px] mx-auto">
                         <div className="grid lg:grid-cols-2 gap-16 items-center">
                             <div className="reveal-up space-y-8">
@@ -381,9 +438,9 @@ export default function KarirPage() {
 
                                 <div className="space-y-6">
                                     {cultureValues.map((value) => (
-                                        <div key={value.id} className="flex items-start gap-4">
+                                        <div key={value.id} className="flex items-start gap-4 group">
                                             <div
-                                                className={`size-12 shrink-0 rounded-xl ${value.bgColor} ${value.iconColor} flex items-center justify-center`}
+                                                className={`size-12 shrink-0 rounded-xl ${value.bgColor} ${value.iconColor} flex items-center justify-center group-hover:scale-110 transition-transform`}
                                             >
                                                 <span className="material-symbols-outlined">{value.icon}</span>
                                             </div>
@@ -401,7 +458,7 @@ export default function KarirPage() {
                                 style={{ transitionDelay: "200ms" }}
                             >
                                 {cultureImages.map((img, index) => (
-                                    <div key={index} className={index % 2 === 1 ? "mt-8" : ""}>
+                                    <div key={index} className={`${index % 2 === 1 ? "mt-8" : ""} hover:scale-[1.02] transition-transform duration-300`}>
                                         <Image
                                             src={img.src}
                                             alt={img.alt}
@@ -417,11 +474,15 @@ export default function KarirPage() {
                 </section>
 
                 {/* Open Positions Section */}
-                <section id="open-positions" className="py-24 px-6 relative">
+                <section id="open-positions" className="py-24 px-6 relative bg-gray-50">
                     <div className="max-w-[1200px] mx-auto">
                         <div className="text-center mb-16 reveal-up">
+                            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-xs font-bold uppercase tracking-wider mb-6">
+                                <span className="material-symbols-outlined text-sm">work</span>
+                                Lowongan Pekerjaan
+                            </span>
                             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-                                Posisi <span className="text-gradient">Tersedia</span>
+                                Posisi <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2a6ba7] to-blue-500">Tersedia</span>
                             </h2>
                             <p className="text-lg text-gray-500 font-medium max-w-2xl mx-auto">
                                 Temukan peran yang sesuai dengan passion dan keahlian Anda
@@ -432,7 +493,7 @@ export default function KarirPage() {
                             {jobPositions.map((job, index) => (
                                 <div
                                     key={job.id}
-                                    className="reveal-up job-card bg-white rounded-[2rem] p-8 border border-gray-100 shadow-lg"
+                                    className="reveal-up job-card bg-white rounded-[2rem] p-6 md:p-8 border border-gray-100 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                                     style={{ transitionDelay: `${index * 100}ms` }}
                                 >
                                     <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
@@ -442,7 +503,7 @@ export default function KarirPage() {
                                             >
                                                 <span className="material-symbols-outlined text-2xl">{job.icon}</span>
                                             </div>
-                                            <div className="space-y-2">
+                                            <div className="space-y-3 flex-1">
                                                 <div className="flex flex-wrap items-center gap-3">
                                                     <h3 className="text-xl font-black text-gray-900">{job.title}</h3>
                                                     <span
@@ -451,13 +512,13 @@ export default function KarirPage() {
                                                         {job.type}
                                                     </span>
                                                 </div>
-                                                <p className="text-gray-500 text-sm font-medium">{job.description}</p>
-                                                <div className="flex flex-wrap gap-4 text-sm text-gray-400 font-medium">
-                                                    <span className="flex items-center gap-1">
+                                                <p className="text-gray-500 text-sm font-medium line-clamp-2 md:line-clamp-none">{job.description}</p>
+                                                <div className="flex flex-wrap gap-4 text-sm text-gray-400 font-medium pt-1">
+                                                    <span className="flex items-center gap-1 bg-gray-50 px-3 py-1 rounded-full">
                                                         <span className="material-symbols-outlined text-base">location_on</span>
                                                         {job.location}
                                                     </span>
-                                                    <span className="flex items-center gap-1">
+                                                    <span className="flex items-center gap-1 bg-gray-50 px-3 py-1 rounded-full">
                                                         <span className="material-symbols-outlined text-base">work</span>
                                                         {job.experience}
                                                     </span>
@@ -481,7 +542,7 @@ export default function KarirPage() {
                 </section>
 
                 {/* Internship Section */}
-                <section id="internship" className="py-24 px-6 relative bg-gradient-to-b from-amber-50/50 to-transparent">
+                <section id="internship" className="py-24 px-6 relative bg-gradient-to-b from-amber-50/80 to-white">
                     <div className="max-w-[1200px] mx-auto">
                         <div className="text-center mb-16 reveal-up">
                             <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-100 text-amber-700 text-xs font-bold uppercase tracking-wider mb-6">
@@ -498,21 +559,21 @@ export default function KarirPage() {
 
                         {/* Internship Benefits */}
                         <div className="grid md:grid-cols-3 gap-6 mb-12 reveal-up" style={{ transitionDelay: "100ms" }}>
-                            <div className="bg-white rounded-2xl p-6 border border-amber-100 shadow-md text-center">
+                            <div className="bg-white rounded-2xl p-6 border border-amber-100 shadow-md text-center hover:shadow-lg transition-all hover:-translate-y-1">
                                 <div className="size-12 mx-auto rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center mb-4">
                                     <span className="material-symbols-outlined">workspace_premium</span>
                                 </div>
                                 <h4 className="font-bold text-gray-900 mb-1">Sertifikat Magang</h4>
                                 <p className="text-sm text-gray-500">Dapatkan sertifikat resmi setelah menyelesaikan program</p>
                             </div>
-                            <div className="bg-white rounded-2xl p-6 border border-amber-100 shadow-md text-center">
+                            <div className="bg-white rounded-2xl p-6 border border-amber-100 shadow-md text-center hover:shadow-lg transition-all hover:-translate-y-1">
                                 <div className="size-12 mx-auto rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center mb-4">
                                     <span className="material-symbols-outlined">mentor</span>
                                 </div>
                                 <h4 className="font-bold text-gray-900 mb-1">Mentoring Langsung</h4>
                                 <p className="text-sm text-gray-500">Bimbingan dari profesional berpengalaman di bidangnya</p>
                             </div>
-                            <div className="bg-white rounded-2xl p-6 border border-amber-100 shadow-md text-center">
+                            <div className="bg-white rounded-2xl p-6 border border-amber-100 shadow-md text-center hover:shadow-lg transition-all hover:-translate-y-1">
                                 <div className="size-12 mx-auto rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center mb-4">
                                     <span className="material-symbols-outlined">rocket_launch</span>
                                 </div>
@@ -525,7 +586,7 @@ export default function KarirPage() {
                             {internshipPositions.map((intern, index) => (
                                 <div
                                     key={intern.id}
-                                    className="reveal-up job-card bg-white rounded-[2rem] p-8 border border-amber-100 shadow-lg"
+                                    className="reveal-up job-card bg-white rounded-[2rem] p-6 md:p-8 border border-amber-100 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                                     style={{ transitionDelay: `${(index + 1) * 100}ms` }}
                                 >
                                     <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
@@ -535,7 +596,7 @@ export default function KarirPage() {
                                             >
                                                 <span className="material-symbols-outlined text-2xl">{intern.icon}</span>
                                             </div>
-                                            <div className="space-y-2">
+                                            <div className="space-y-3 flex-1">
                                                 <div className="flex flex-wrap items-center gap-3">
                                                     <h3 className="text-xl font-black text-gray-900">{intern.title}</h3>
                                                     <span
@@ -544,13 +605,13 @@ export default function KarirPage() {
                                                         {intern.type}
                                                     </span>
                                                 </div>
-                                                <p className="text-gray-500 text-sm font-medium">{intern.description}</p>
-                                                <div className="flex flex-wrap gap-4 text-sm text-gray-400 font-medium">
-                                                    <span className="flex items-center gap-1">
+                                                <p className="text-gray-500 text-sm font-medium line-clamp-2 md:line-clamp-none">{intern.description}</p>
+                                                <div className="flex flex-wrap gap-4 text-sm text-gray-400 font-medium pt-1">
+                                                    <span className="flex items-center gap-1 bg-amber-50 px-3 py-1 rounded-full text-amber-700/70">
                                                         <span className="material-symbols-outlined text-base">location_on</span>
                                                         {intern.location}
                                                     </span>
-                                                    <span className="flex items-center gap-1">
+                                                    <span className="flex items-center gap-1 bg-amber-50 px-3 py-1 rounded-full text-amber-700/70">
                                                         <span className="material-symbols-outlined text-base">schedule</span>
                                                         {intern.duration}
                                                     </span>
@@ -573,11 +634,165 @@ export default function KarirPage() {
                     </div>
                 </section>
 
+                {/* --- SECTION BARU: TESTIMONI INTERN (GAYA FOCUSED / TELKOM STYLE) --- */}
+                <section className="py-24 px-6 bg-white relative overflow-hidden">
+                    {/* Background decoration */}
+                    <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#f3b444_1px,transparent_1px)] [background-size:20px_20px] opacity-10 pointer-events-none"></div>
+
+                    <div className="max-w-[1200px] mx-auto relative z-10">
+                        <div className="text-center mb-12 reveal-up">
+                            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+                                Kata Mereka yang Pernah <span className="text-[#2a6ba7]">Magang</span> Disini
+                            </h2>
+                            <p className="text-lg text-gray-500 font-medium max-w-2xl mx-auto">
+                                Dengar langsung pengalaman dari alumni program magang kami.
+                            </p>
+                        </div>
+
+                        <div className="reveal-up relative py-10" style={{ transitionDelay: "200ms" }}>
+                            <Swiper
+                                modules={[Pagination, Autoplay, Navigation, EffectCoverflow]}
+                                effect={'coverflow'}
+                                grabCursor={true}
+                                centeredSlides={true}
+                                slidesPerView={'auto'} // Biarkan 'auto' agar width slide mengikuti CSS
+                                loop={true}
+                                speed={600} // Transisi halus
+                                coverflowEffect={{
+                                    rotate: 0,       // Tidak diputar (tetap flat seperti contoh Telkom)
+                                    stretch: 0,      // Jarak antar slide
+                                    depth: 100,      // Kedalaman efek 3D (membuat yang belakang terlihat jauh)
+                                    modifier: 2.5,   // Pengali efek depth
+                                    slideShadows: false, // Matikan bayangan hitam agar terlihat bersih
+                                }}
+                                pagination={{ clickable: true, dynamicBullets: true }}
+                                navigation={{
+                                    nextEl: '.custom-next',
+                                    prevEl: '.custom-prev',
+                                }}
+                                autoplay={{
+                                    delay: 5000,
+                                    disableOnInteraction: false,
+                                }}
+                                className="swiper-testimonial !pb-16"
+                            >
+                                {internTestimonials.map((testimonial) => (
+                                    // Width slide diatur fix (misal 350px atau 400px) agar proporsional saat di-center
+                                    <SwiperSlide key={testimonial.id} className="!w-[300px] md:!w-[450px]">
+                                        {/* Kita menggunakan CSS selector di <style> bawah untuk mengatur:
+                            - Opacity
+                            - Scale
+                            berdasarkan class '.swiper-slide-active'
+                        */}
+                                        <div className="testimonial-card flex flex-col items-center text-center transition-all duration-500">
+
+                                            {/* Foto Besar */}
+                                            <div className="relative mb-8 group">
+                                                <div className="absolute inset-0 bg-[#f3b444] rounded-[2rem] rotate-6 scale-90 opacity-0 group-[.swiper-slide-active_&]:opacity-20 transition-all duration-500"></div>
+                                                <div className="relative size-64 md:size-80 rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white">
+                                                    <Image
+                                                        src={testimonial.image}
+                                                        alt={testimonial.name}
+                                                        fill
+                                                        className="object-cover"
+                                                    />
+                                                </div>
+                                                {/* Icon Quote Floating */}
+
+                                            </div>
+
+                                            {/* Teks Konten */}
+                                            <div className="bg-white/80 backdrop-blur-sm p-6 rounded-3xl opacity-0 translate-y-4 group-[.swiper-slide-active_&]:opacity-100 group-[.swiper-slide-active_&]:translate-y-0 transition-all duration-500 delay-200">
+                                                <h4 className="font-black text-2xl text-gray-900 mb-1">{testimonial.name}</h4>
+                                                <p className="text-[#2a6ba7] font-bold text-sm uppercase tracking-wider mb-4">
+                                                    {testimonial.role} - {testimonial.institution}
+                                                </p>
+                                                <p className="text-gray-600 italic font-medium leading-relaxed">
+                                                    "{testimonial.quote}"
+                                                </p>
+                                            </div>
+
+                                        </div>
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>
+
+                            {/* Custom Navigation Buttons (Sesuai style request) */}
+                            <button className="custom-prev absolute top-1/2 left-0 md:left-10 z-20 -translate-y-1/2 size-12 md:size-14 bg-white text-[#2a6ba7] rounded-full shadow-lg flex items-center justify-center hover:bg-[#2a6ba7] hover:text-white transition-all hover:scale-110 border border-gray-100">
+                                <span className="material-symbols-outlined text-2xl">arrow_back</span>
+                            </button>
+                            <button className="custom-next absolute top-1/2 right-0 md:right-10 z-20 -translate-y-1/2 size-12 md:size-14 bg-white text-[#2a6ba7] rounded-full shadow-lg flex items-center justify-center hover:bg-[#2a6ba7] hover:text-white transition-all hover:scale-110 border border-gray-100">
+                                <span className="material-symbols-outlined text-2xl">arrow_forward</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                {/* --- SECTION BARU: INSTITUTION LOGO SLIDER (SWIPER AUTOPLAY MARQUEE) --- */}
+                <section className="py-16 bg-[#2a6ba7] relative overflow-hidden">
+                    <div className="max-w-[1200px] mx-auto px-6 mb-8 text-center reveal-up">
+                        <p className="text-white/80 text-lg font-semibold uppercase tracking-widest">
+                            Dipercaya oleh talenta dari institusi ternama
+                        </p>
+                    </div>
+
+                    <div className="relative w-full reveal-up" style={{ transitionDelay: "100ms" }}>
+                        {/* Gradient Fade Effect pada sisi kiri kanan slider */}
+                        <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-[#2a6ba7] to-transparent z-10 hidden md:block"></div>
+                        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-[#2a6ba7] to-transparent z-10 hidden md:block"></div>
+
+                        <Swiper
+                            modules={[Autoplay]}
+                            spaceBetween={60}
+                            slidesPerView="auto"
+                            loop={true}
+                            speed={4000} // Kecepatan marquee (semakin besar semakin lambat)
+                            allowTouchMove={false} // Nonaktifkan geser manual agar seperti marquee
+                            autoplay={{
+                                delay: 0,
+                                disableOnInteraction: false,
+                                pauseOnMouseEnter: false, // Tetap jalan saat di-hover
+                            }}
+                            className="swiper-marquee py-4"
+                        >
+                            {institutionLogos.map((logo) => (
+                                <SwiperSlide key={logo.id} className="!w-auto flex items-center justify-center">
+                                    {/* Gunakan logo berwarna putih/terang dengan opacity */}
+                                    <div className="h-16 w-auto px-4 opacity-60 hover:opacity-100 transition-opacity duration-300 grayscale hover:grayscale-0 filter">
+                                        <Image
+                                            src={logo.src}
+                                            alt={logo.alt}
+                                            width={150}
+                                            height={80}
+                                            className="h-full w-auto object-contain brightness-0 invert" // Class ini memaksa gambar jadi putih (jika inputnya hitam/berwarna)
+                                        />
+                                    </div>
+                                </SwiperSlide>
+                            ))}
+                            {/* Duplikasi untuk efek looping yang mulus jika item sedikit */}
+                            {institutionLogos.map((logo) => (
+                                <SwiperSlide key={`duplicate-${logo.id}`} className="!w-auto flex items-center justify-center">
+                                    <div className="h-16 w-auto px-4 opacity-60 hover:opacity-100 transition-opacity duration-300 grayscale hover:grayscale-0 filter">
+                                        <Image
+                                            src={logo.src}
+                                            alt={logo.alt}
+                                            width={150}
+                                            height={80}
+                                            className="h-full w-auto object-contain brightness-0 invert"
+                                        />
+                                    </div>
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                    </div>
+                </section>
+
                 {/* CTA Section */}
-                <section className="py-12 md:py-24 max-w-[1200px] mx-auto px-6 mb-10 md:mb-20">
-                    <div className="bg-gradient-to-br from-[#2a6ba7] via-[#1e5a8f] to-[#1a2c3d] rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-20 text-center space-y-6 md:space-y-8 reveal-up relative overflow-hidden">
+                <section className="py-12 md:py-24 max-w-[1200px] mx-auto px-6 mb-10 md:mb-20 mt-16">
+                    <div className="bg-gradient-to-br from-[#2a6ba7] via-[#1e5a8f] to-[#1a2c3d] rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-20 text-center space-y-6 md:space-y-8 reveal-up relative overflow-hidden shadow-2xl">
                         {/* Background Pattern */}
                         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:30px_30px] pointer-events-none"></div>
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-[#f3b444]/20 rounded-full blur-[80px] translate-x-1/3 -translate-y-1/3"></div>
 
                         <div className="relative z-10">
                             <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-bold uppercase tracking-wider mb-6">
@@ -585,18 +800,18 @@ export default function KarirPage() {
                                 Tidak Menemukan Posisi yang Sesuai?
                             </span>
 
-                            <h2 className="text-2xl md:text-5xl font-black text-white leading-tight">
+                            <h2 className="text-3xl md:text-5xl font-black text-white leading-tight">
                                 Kirimkan CV Anda
                                 <br className="hidden md:block" />
-                                <span className="text-[#f3b444]">Untuk Peluang Mendatang</span>
+                                <span className="text-[#f3b444]"> Untuk Peluang Mendatang</span>
                             </h2>
-                            <p className="text-base md:text-xl text-white/80 max-w-2xl mx-auto mt-4">
+                            <p className="text-base md:text-xl text-white/80 max-w-2xl mx-auto mt-4 font-medium">
                                 Kami selalu mencari talenta terbaik. Kirimkan CV Anda dan kami akan menghubungi Anda jika ada posisi yang sesuai.
                             </p>
-                            <div className="flex flex-col sm:flex-row justify-center gap-4 md:gap-6 mt-8">
+                            <div className="flex flex-col sm:flex-row justify-center gap-4 md:gap-6 mt-10">
                                 <Link
                                     href="mailto:career@akseslegal.id"
-                                    className="h-14 md:h-16 px-8 md:px-10 bg-[#f3b444] text-[#2a6ba7] font-black text-base md:text-lg rounded-xl md:rounded-2xl shadow-xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2"
+                                    className="h-14 md:h-16 px-8 md:px-10 bg-[#f3b444] text-[#2a6ba7] font-black text-base md:text-lg rounded-2xl shadow-lg shadow-[#f3b444]/20 hover:shadow-[#f3b444]/40 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3"
                                 >
                                     <span className="material-symbols-outlined">mail</span>
                                     Kirim CV via Email
@@ -604,9 +819,9 @@ export default function KarirPage() {
                                 <Link
                                     href="https://wa.me/6285333338818?text=Halo%20Akses%20Legal,%20saya%20ingin%20mengirimkan%20CV%20untuk%20peluang%20karir"
                                     target="_blank"
-                                    className="h-14 md:h-16 px-8 md:px-10 bg-white/10 backdrop-blur-md border border-white/20 text-white font-black text-base md:text-lg rounded-xl md:rounded-2xl hover:bg-white/20 transition-all flex items-center justify-center gap-2"
+                                    className="h-14 md:h-16 px-8 md:px-10 bg-white/10 backdrop-blur-md border border-white/20 text-white font-black text-base md:text-lg rounded-2xl hover:bg-white/20 transition-all flex items-center justify-center gap-3"
                                 >
-                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                                     </svg>
                                     Chat via WhatsApp
@@ -616,6 +831,53 @@ export default function KarirPage() {
                     </div>
                 </section>
             </main>
+
+            {/* Style Tambahan untuk Logika Slide */}
+            {/* Style Tambahan untuk Logika Slide */}
+            <style jsx global>{`
+    /* LOGIKA TRANSISI SEPERTI CONTOH (Scale & Opacity) */
+    
+    /* Default state (Slide Samping) */
+    .swiper-testimonial .swiper-slide {
+        opacity: 0.4; /* Opacity rendah untuk yang di samping */
+        transform: scale(0.8); /* Ukuran lebih kecil */
+        filter: blur(1px) grayscale(50%); /* Sedikit blur & hitam putih */
+        transition: all 0.5s ease;
+    }
+
+    /* Active state (Slide Tengah) */
+    .swiper-testimonial .swiper-slide-active {
+        opacity: 1 !important;
+        transform: scale(1) !important;
+        filter: blur(0) grayscale(0) !important;
+        z-index: 10;
+    }
+    
+    /* Mengaktifkan animasi child elements saat slide aktif */
+    /* Ini trik CSS untuk mentarget elemen anak hanya ketika parentnya aktif */
+    .swiper-testimonial .swiper-slide-active .group .scale-0 {
+        transform: scale(1);
+    }
+    
+    .swiper-testimonial .swiper-slide-active .opacity-0 {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Pagination Styling */
+    .swiper-pagination-bullet {
+        background-color: #cbd5e1;
+        opacity: 1;
+        width: 10px;
+        height: 10px;
+        transition: all 0.3s;
+    }
+    .swiper-pagination-bullet-active {
+        background-color: #f3b444; /* Warna Orange Brand */
+        width: 30px;
+        border-radius: 99px;
+    }
+`}</style>
         </div>
     );
 }
