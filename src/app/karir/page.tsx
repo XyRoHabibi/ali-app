@@ -264,7 +264,7 @@ const institutionLogos = [
 
 
 export default function KarirPage() {
-    const sectionRef = useRef(null);
+    const sectionRef = useRef<HTMLDivElement>(null);
 
     // Scroll reveal animation
     useEffect(() => {
@@ -280,10 +280,10 @@ export default function KarirPage() {
         );
 
         const revealElements = sectionRef.current?.querySelectorAll(".reveal-up");
-        revealElements?.forEach((el) => observer.observe(el));
+        revealElements?.forEach((el: Element) => observer.observe(el));
 
         setTimeout(() => {
-            revealElements?.forEach((el) => {
+            revealElements?.forEach((el: Element) => {
                 const rect = el.getBoundingClientRect();
                 if (rect.top < window.innerHeight) {
                     el.classList.add("active");
@@ -658,6 +658,10 @@ export default function KarirPage() {
                                 centeredSlides={true}
                                 slidesPerView={'auto'} // Biarkan 'auto' agar width slide mengikuti CSS
                                 loop={true}
+                                loopedSlides={4}
+                                watchSlidesProgress={true}
+                                observer={true}
+                                observeParents={true}
                                 speed={600} // Transisi halus
                                 coverflowEffect={{
                                     rotate: 0,       // Tidak diputar (tetap flat seperti contoh Telkom)
@@ -677,9 +681,9 @@ export default function KarirPage() {
                                 }}
                                 className="swiper-testimonial !pb-16"
                             >
-                                {internTestimonials.map((testimonial) => (
+                                {[...internTestimonials, ...internTestimonials].map((testimonial, index) => (
                                     // Width slide diatur fix (misal 350px atau 400px) agar proporsional saat di-center
-                                    <SwiperSlide key={testimonial.id} className="!w-[300px] md:!w-[450px]">
+                                    <SwiperSlide key={`${testimonial.id}-${index}`} className="!w-[300px] md:!w-[450px]">
                                         {/* Kita menggunakan CSS selector di <style> bawah untuk mengatur:
                             - Opacity
                             - Scale
@@ -695,6 +699,7 @@ export default function KarirPage() {
                                                         src={testimonial.image}
                                                         alt={testimonial.name}
                                                         fill
+                                                        priority={true}
                                                         className="object-cover"
                                                     />
                                                 </div>
@@ -833,7 +838,6 @@ export default function KarirPage() {
                 </section>
             </main>
 
-            {/* Style Tambahan untuk Logika Slide */}
             {/* Style Tambahan untuk Logika Slide */}
             <style jsx global>{`
     /* LOGIKA TRANSISI SEPERTI CONTOH (Scale & Opacity) */
