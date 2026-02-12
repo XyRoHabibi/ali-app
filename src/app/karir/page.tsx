@@ -218,10 +218,10 @@ const internshipPositions = [
 const internTestimonials = [
     {
         id: 1,
-        name: "Sarah Amalia",
+        name: "Muhammad Irfan",
         role: "Legal Research Intern", // Tambahan Role
         institution: "Universitas Indonesia",
-        image: "/images/foto0.jpg",
+        image: "/images/irfan.png",
         quote: "Pengalaman magang di Akses Legal sangat membuka wawasan. Saya tidak hanya belajar teori hukum bisnis, tapi langsung menerapkannya dalam kasus nyata.",
     },
     {
@@ -253,8 +253,8 @@ const internTestimonials = [
 // Data Logo Institusi (Ganti dengan logo asli)
 // Pastikan file logo berwarna putih atau abu-abu terang agar kontras dengan background gelap
 const institutionLogos = [
-    { id: 1, src: "/images/logo-placeholder-1.png", alt: "Universitas Indonesia" },
-    { id: 2, src: "/images/logo-placeholder-2.png", alt: "UGM" },
+    { id: 1, src: "/images/uin.png", alt: "UIN Alauddin Makassar" },
+    { id: 2, src: "/images/SMKT.png", alt: "SMK Telkom Makassar" },
     { id: 3, src: "/images/logo-placeholder-3.png", alt: "UNPAD" },
     { id: 4, src: "/images/logo-placeholder-4.png", alt: "ITB" },
     { id: 5, src: "/images/logo-placeholder-5.png", alt: "BINUS University" },
