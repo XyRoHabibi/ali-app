@@ -253,12 +253,13 @@ const internTestimonials = [
 // Data Logo Institusi (Ganti dengan logo asli)
 // Pastikan file logo berwarna putih atau abu-abu terang agar kontras dengan background gelap
 const institutionLogos = [
-    { id: 1, src: "/images/uin.png", alt: "UIN Alauddin Makassar" },
-    { id: 2, src: "/images/SMKT.png", alt: "SMK Telkom Makassar" },
-    { id: 3, src: "/images/logo-placeholder-3.png", alt: "UNPAD" },
-    { id: 4, src: "/images/logo-placeholder-4.png", alt: "ITB" },
-    { id: 5, src: "/images/logo-placeholder-5.png", alt: "BINUS University" },
-    { id: 6, src: "/images/logo-placeholder-6.png", alt: "Universitas Brawijaya" },
+    { id: 1, src: "/images/uin.png", alt: "UINAlauddin Makassar" },
+    { id: 2, src: "/images/ibnulqayyim.png", alt: "SMKIT Ibnul Qayyim" },
+    { id: 3, src: "/images/SMKT.png", alt: "SMK Telkom Makassar" },
+    { id: 4, src: "/images/undipa.png", alt: "undipa" },
+    { id: 5, src: "/images/itb.png", alt: "ITB" },
+    { id: 6, src: "/images/brawijaya.png", alt: "Universitas Brawijaya" },
+    { id: 7, src: "/images/ui.png", alt: "Universitas Indonesia" },
 ];
 
 
@@ -764,7 +765,7 @@ export default function KarirPage() {
                                             alt={logo.alt}
                                             width={150}
                                             height={80}
-                                            className="h-full w-auto object-contain brightness-0 invert" // Class ini memaksa gambar jadi putih (jika inputnya hitam/berwarna)
+                                            className="h-full w-auto object-contain " // Class ini memaksa gambar jadi putih (jika inputnya hitam/berwarna)
                                         />
                                     </div>
                                 </SwiperSlide>
@@ -778,7 +779,7 @@ export default function KarirPage() {
                                             alt={logo.alt}
                                             width={150}
                                             height={80}
-                                            className="h-full w-auto object-contain brightness-0 invert"
+                                            className="h-full w-auto object-contain "
                                         />
                                     </div>
                                 </SwiperSlide>
