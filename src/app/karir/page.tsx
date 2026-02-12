@@ -723,6 +723,10 @@ export default function KarirPage() {
                                 ))}
                             </Swiper>
 
+                            {/* Overlay Blur Kiri & Kanan */}
+                            <div className="absolute top-0 left-0 w-16 md:w-32 h-full z-10 bg-gradient-to-r from-white via-white/20 to-transparent pointer-events-none backdrop-blur-[0px]"></div>
+                            <div className="absolute top-0 right-0 w-16 md:w-32 h-full z-10 bg-gradient-to-l from-white via-white/20 to-transparent pointer-events-none backdrop-blur-[0px]"></div>
+
                             {/* Custom Navigation Buttons (Sesuai style request) */}
                             <button className="custom-prev absolute top-1/2 left-0 md:left-10 z-20 -translate-y-1/2 size-12 md:size-14 bg-white text-[#2a6ba7] rounded-full shadow-lg flex items-center justify-center hover:bg-[#2a6ba7] hover:text-white transition-all hover:scale-110 border border-gray-100">
                                 <span className="material-symbols-outlined text-2xl">arrow_back</span>
@@ -747,49 +751,39 @@ export default function KarirPage() {
                         <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-[#2a6ba7] to-transparent z-10 hidden md:block"></div>
                         <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-[#2a6ba7] to-transparent z-10 hidden md:block"></div>
 
-                        <Swiper
-                            modules={[Autoplay]}
-                            spaceBetween={60}
-                            slidesPerView="auto"
-                            loop={true}
-                            speed={4000} // Kecepatan marquee (semakin besar semakin lambat)
-                            allowTouchMove={false} // Nonaktifkan geser manual agar seperti marquee
-                            autoplay={{
-                                delay: 0,
-                                disableOnInteraction: false,
-                                pauseOnMouseEnter: false, // Tetap jalan saat di-hover
-                            }}
-                            className="swiper-marquee py-4"
-                        >
-                            {institutionLogos.map((logo) => (
-                                <SwiperSlide key={logo.id} className="!w-auto flex items-center justify-center">
-                                    {/* Gunakan logo berwarna putih/terang dengan opacity */}
-                                    <div className="h-16 w-auto px-4 opacity-60 hover:opacity-100 transition-opacity duration-300 grayscale hover:grayscale-0 filter">
-                                        <Image
-                                            src={logo.src}
-                                            alt={logo.alt}
-                                            width={150}
-                                            height={80}
-                                            className="h-full w-auto object-contain " // Class ini memaksa gambar jadi putih (jika inputnya hitam/berwarna)
-                                        />
+                        <div className="flex overflow-hidden group">
+                            <div className="flex shrink-0 gap-16 md:gap-24 items-center justify-around min-w-full animate-marquee">
+                                {institutionLogos.map((logo) => (
+                                    <div key={logo.id} className="h-12 md:h-16 w-auto shrink-0 flex items-center justify-center">
+                                        <div className="h-full w-auto px-4 opacity-50 hover:opacity-100 transition-opacity duration-300 grayscale hover:grayscale-0 filter">
+                                            <Image
+                                                src={logo.src}
+                                                alt={logo.alt}
+                                                width={150}
+                                                height={80}
+                                                className="h-full w-auto object-contain"
+                                            />
+                                        </div>
                                     </div>
-                                </SwiperSlide>
-                            ))}
-                            {/* Duplikasi untuk efek looping yang mulus jika item sedikit */}
-                            {institutionLogos.map((logo) => (
-                                <SwiperSlide key={`duplicate-${logo.id}`} className="!w-auto flex items-center justify-center">
-                                    <div className="h-16 w-auto px-4 opacity-60 hover:opacity-100 transition-opacity duration-300 grayscale hover:grayscale-0 filter">
-                                        <Image
-                                            src={logo.src}
-                                            alt={logo.alt}
-                                            width={150}
-                                            height={80}
-                                            className="h-full w-auto object-contain "
-                                        />
+                                ))}
+                            </div>
+                            {/* Duplikasi untuk loop seamless */}
+                            <div className="flex shrink-0 gap-16 md:gap-24 items-center justify-around min-w-full animate-marquee" aria-hidden="true">
+                                {institutionLogos.map((logo) => (
+                                    <div key={`dup-${logo.id}`} className="h-12 md:h-16 w-auto shrink-0 flex items-center justify-center">
+                                        <div className="h-full w-auto px-4 opacity-50 hover:opacity-100 transition-opacity duration-300 grayscale hover:grayscale-0 filter">
+                                            <Image
+                                                src={logo.src}
+                                                alt={logo.alt}
+                                                width={150}
+                                                height={80}
+                                                className="h-full w-auto object-contain"
+                                            />
+                                        </div>
                                     </div>
-                                </SwiperSlide>
-                            ))}
-                        </Swiper>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </section>
 
@@ -881,6 +875,21 @@ export default function KarirPage() {
         background-color: #f3b444; /* Warna Orange Brand */
         width: 30px;
         border-radius: 99px;
+    }
+
+    /* CSS MARQUEE LOGIC */
+    @keyframes marquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-100%); }
+    }
+    
+    .animate-marquee {
+        animation: marquee 35s linear infinite;
+    }
+
+    /* Pause on hover if desired */
+    .group:hover .animate-marquee {
+        animation-play-state: paused;
     }
 `}</style>
         </div>
