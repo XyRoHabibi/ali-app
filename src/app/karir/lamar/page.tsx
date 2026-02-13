@@ -36,8 +36,13 @@ function LamarForm() {
     const [namaLengkap, setNamaLengkap] = useState("");
     const [email, setEmail] = useState("");
     const [noTelepon, setNoTelepon] = useState("");
-    const [jenjang, setJenjang] = useState("");
+    const [jenjang, setJenjang] = useState(""); // For Internships
+    const [pengalaman, setPengalaman] = useState(""); // For Jobs
+    const [pendidikan, setPendidikan] = useState(""); // For Jobs
+    const [pesan, setPesan] = useState(""); // For Jobs
     const [cvFile, setCvFile] = useState<File | null>(null);
+
+    const isMagang = parseInt(jobId) >= 5;
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -109,7 +114,13 @@ function LamarForm() {
             formData.append("email", email);
             formData.append("noTelepon", noTelepon);
             formData.append("posisi", job.title);
-            formData.append("jenjang", jenjang);
+            if (isMagang) {
+                formData.append("jenjang", jenjang);
+            } else {
+                formData.append("pengalaman", pengalaman);
+                formData.append("pendidikan", pendidikan);
+                formData.append("pesan", pesan);
+            }
             if (cvFile) {
                 formData.append("cv", cvFile);
             }
@@ -324,31 +335,83 @@ function LamarForm() {
                                         />
                                     </div>
 
-                                    {/* Jenjang */}
-                                    <div className="md:col-span-2">
-                                        <label
-                                            htmlFor="jenjang"
-                                            className="block text-sm font-bold text-gray-700 mb-2"
-                                        >
-                                            Jenjang Saat Ini <span className="text-red-500">*</span>
-                                        </label>
-                                        <select
-                                            id="jenjang"
-                                            value={jenjang}
-                                            onChange={(e) => setJenjang(e.target.value)}
-                                            required
-                                            className="w-full h-14 px-5 rounded-xl border-2 border-gray-200 bg-gray-50/50 text-gray-900 font-medium focus:border-[#2a6ba7] focus:ring-4 focus:ring-[#2a6ba7]/10 focus:bg-white transition-all outline-none appearance-none cursor-pointer"
-                                        >
-                                            <option value="">Pilih jenjang Anda saat ini</option>
-                                            <option value="Siswa SMA/SMK">Siswa SMA / SMK</option>
-                                            <option value="Mahasiswa D3">Mahasiswa D3</option>
-                                            <option value="Mahasiswa S1">Mahasiswa S1</option>
-                                            <option value="Mahasiswa S2">Mahasiswa S2</option>
-                                            <option value="Mahasiswa S3">Mahasiswa S3</option>
-                                            <option value="Fresh Graduate">Fresh Graduate</option>
-                                            <option value="Profesional">Profesional (Sudah Bekerja)</option>
-                                        </select>
-                                    </div>
+                                    {/* Additional Fields for Jobs / Interns */}
+                                    {isMagang ? (
+                                        <div className="md:col-span-2">
+                                            <label
+                                                htmlFor="jenjang"
+                                                className="block text-sm font-bold text-gray-700 mb-2"
+                                            >
+                                                Jenjang Saat Ini <span className="text-red-500">*</span>
+                                            </label>
+                                            <select
+                                                id="jenjang"
+                                                value={jenjang}
+                                                onChange={(e) => setJenjang(e.target.value)}
+                                                required
+                                                className="w-full h-14 px-5 rounded-xl border-2 border-gray-200 bg-gray-50/50 text-gray-900 font-medium focus:border-[#2a6ba7] focus:ring-4 focus:ring-[#2a6ba7]/10 focus:bg-white transition-all outline-none appearance-none cursor-pointer"
+                                            >
+                                                <option value="">Pilih jenjang Anda saat ini</option>
+                                                <option value="Siswa SMA/SMK">Siswa SMA / SMK</option>
+                                                <option value="Mahasiswa D3">Mahasiswa D3</option>
+                                                <option value="Mahasiswa S1">Mahasiswa S1</option>
+                                                <option value="Mahasiswa S2">Mahasiswa S2</option>
+                                                <option value="Mahasiswa S3">Mahasiswa S3</option>
+                                                <option value="Fresh Graduate">Fresh Graduate</option>
+                                                <option value="Profesional">Profesional (Sudah Bekerja)</option>
+                                            </select>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            {/* Pendidikan Terakhir */}
+                                            <div>
+                                                <label
+                                                    htmlFor="pendidikan"
+                                                    className="block text-sm font-bold text-gray-700 mb-2"
+                                                >
+                                                    Pendidikan Terakhir <span className="text-red-500">*</span>
+                                                </label>
+                                                <select
+                                                    id="pendidikan"
+                                                    value={pendidikan}
+                                                    onChange={(e) => setPendidikan(e.target.value)}
+                                                    required
+                                                    className="w-full h-14 px-5 rounded-xl border-2 border-gray-200 bg-gray-50/50 text-gray-900 font-medium focus:border-[#2a6ba7] focus:ring-4 focus:ring-[#2a6ba7]/10 focus:bg-white transition-all outline-none appearance-none cursor-pointer"
+                                                >
+                                                    <option value="">Pilih pendidikan</option>
+                                                    <option value="SMA/SMK">SMA / SMK</option>
+                                                    <option value="D3">D3</option>
+                                                    <option value="S1">S1</option>
+                                                    <option value="S2">S2</option>
+                                                    <option value="S3">S3</option>
+                                                </select>
+                                            </div>
+
+                                            {/* Pengalaman Kerja */}
+                                            <div>
+                                                <label
+                                                    htmlFor="pengalaman"
+                                                    className="block text-sm font-bold text-gray-700 mb-2"
+                                                >
+                                                    Pengalaman Kerja <span className="text-red-500">*</span>
+                                                </label>
+                                                <select
+                                                    id="pengalaman"
+                                                    value={pengalaman}
+                                                    onChange={(e) => setPengalaman(e.target.value)}
+                                                    required
+                                                    className="w-full h-14 px-5 rounded-xl border-2 border-gray-200 bg-gray-50/50 text-gray-900 font-medium focus:border-[#2a6ba7] focus:ring-4 focus:ring-[#2a6ba7]/10 focus:bg-white transition-all outline-none appearance-none cursor-pointer"
+                                                >
+                                                    <option value="">Pilih pengalaman</option>
+                                                    <option value="Fresh Graduate">Fresh Graduate</option>
+                                                    <option value="< 1 Tahun">{"< 1 Tahun"}</option>
+                                                    <option value="1-2 Tahun">1-2 Tahun</option>
+                                                    <option value="2-5 Tahun">2-5 Tahun</option>
+                                                    <option value="5+ Tahun">5+ Tahun</option>
+                                                </select>
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
                             </div>
 
@@ -361,7 +424,9 @@ function LamarForm() {
                                     <div className="size-10 rounded-xl bg-[#f3b444]/10 text-[#f3b444] flex items-center justify-center">
                                         <span className="material-symbols-outlined">upload_file</span>
                                     </div>
-                                    <h2 className="text-xl font-black text-gray-900">Upload Surat</h2>
+                                    <h2 className="text-xl font-black text-gray-900">
+                                        {isMagang ? "Upload Surat" : "Upload CV"}
+                                    </h2>
                                 </div>
 
                                 {/* Drag & Drop Zone */}
@@ -421,7 +486,7 @@ function LamarForm() {
                                             </div>
                                             <div>
                                                 <p className="text-gray-900 font-bold text-lg">
-                                                    Drag & drop surat Anda di sini
+                                                    {isMagang ? "Drag & drop surat Anda di sini" : "Drag & drop CV Anda di sini"}
                                                 </p>
                                                 <p className="text-gray-400 text-sm mt-1">
                                                     atau{" "}
@@ -454,6 +519,35 @@ function LamarForm() {
                                     )}
                                 </div>
                             </div>
+
+                            {/* Cover Letter Card (Only for Jobs) */}
+                            {!isMagang && (
+                                <div
+                                    className="reveal-up bg-white rounded-[2rem] p-8 md:p-10 shadow-xl border border-gray-100"
+                                    style={{ transitionDelay: "200ms" }}
+                                >
+                                    <div className="flex items-center gap-3 mb-8">
+                                        <div className="size-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center">
+                                            <span className="material-symbols-outlined">edit_note</span>
+                                        </div>
+                                        <div>
+                                            <h2 className="text-xl font-black text-gray-900">
+                                                Pesan / Cover Letter
+                                            </h2>
+                                            <p className="text-xs text-gray-400 font-medium">Opsional</p>
+                                        </div>
+                                    </div>
+
+                                    <textarea
+                                        id="pesan"
+                                        value={pesan}
+                                        onChange={(e) => setPesan(e.target.value)}
+                                        rows={6}
+                                        placeholder="Ceritakan tentang diri Anda, mengapa Anda tertarik dengan posisi ini, dan apa yang membuat Anda cocok untuk peran ini..."
+                                        className="w-full px-5 py-4 rounded-xl border-2 border-gray-200 bg-gray-50/50 text-gray-900 font-medium placeholder:text-gray-400 focus:border-[#2a6ba7] focus:ring-4 focus:ring-[#2a6ba7]/10 focus:bg-white transition-all outline-none resize-none leading-relaxed"
+                                    />
+                                </div>
+                            )}
 
 
                             {/* Error Message */}
