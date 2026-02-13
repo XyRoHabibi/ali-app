@@ -5,6 +5,7 @@ import Services from "@/components/sections/Services";
 import Roadmap from "@/components/sections/Roadmap";
 import BentoFeatures from "@/components/sections/BentoFeatures";
 import Testimonials from "@/components/sections/Testimonials";
+import Gallery from "@/components/sections/Gallery";
 import BlogPreview from "@/components/sections/BlogPreview";
 import FAQ from "@/components/sections/FAQ";
 import CTA from "@/components/sections/CTA";
@@ -32,6 +33,9 @@ export default function Home() {
 
       {/* Testimonials Section */}
       <Testimonials />
+
+      {/* Gallery Section */}
+      <Gallery />
 
       {/* Blog Preview Section */}
       <BlogPreview />

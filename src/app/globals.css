@@ -501,3 +501,277 @@ body {
 body.mobile-menu-open .floating-wa {
   display: none !important;
 }
+
+/* ===== Photo Wall Section ===== */
+.photowall-section {
+  position: relative;
+  padding: 6rem 0;
+  background: #F9FAFB;
+  overflow: hidden;
+}
+
+.photowall-bg-blur {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.photowall-bg-blur-1 {
+  top: -100px;
+  left: -200px;
+  width: 500px;
+  height: 500px;
+  background: rgba(42, 107, 167, 0.06);
+  filter: blur(150px);
+}
+
+.photowall-bg-blur-2 {
+  bottom: -100px;
+  right: -200px;
+  width: 400px;
+  height: 400px;
+  background: rgba(243, 180, 68, 0.06);
+  filter: blur(120px);
+}
+
+/* Header */
+.photowall-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 3rem;
+  padding: 0 1.5rem;
+  position: relative;
+  z-index: 10;
+}
+
+.photowall-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 1rem;
+  border-radius: 9999px;
+  background: rgba(42, 107, 167, 0.06);
+  border: 1px solid rgba(42, 107, 167, 0.1);
+  margin-bottom: 1rem;
+}
+
+.photowall-badge-text {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #2a6ba7;
+}
+
+.photowall-title {
+  font-size: 2.25rem;
+  font-weight: 900;
+  color: #111827;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .photowall-title {
+    font-size: 3rem;
+  }
+}
+
+.photowall-subtitle {
+  font-size: 1.05rem;
+  color: #6b7280;
+  font-weight: 500;
+  line-height: 1.7;
+}
+
+/* Photo Wall Container */
+.photowall-container {
+  position: relative;
+  height: 600px;
+  overflow: hidden;
+  margin: 0 auto;
+  max-width: 1300px;
+}
+
+@media (min-width: 768px) {
+  .photowall-container {
+    height: 650px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .photowall-container {
+    height: 700px;
+  }
+}
+
+/* Fade overlays */
+.photowall-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 120px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.photowall-fade-top {
+  top: 0;
+  background: linear-gradient(to bottom, #F9FAFB 0%, rgba(249, 250, 251, 0) 100%);
+}
+
+.photowall-fade-bottom {
+  bottom: 0;
+  background: linear-gradient(to top, #F9FAFB 0%, rgba(249, 250, 251, 0) 100%);
+}
+
+/* Scrolling Grid */
+.photowall-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 0 12px;
+  height: 100%;
+}
+
+@media (min-width: 640px) {
+  .photowall-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    padding: 0 20px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .photowall-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 0 24px;
+  }
+}
+
+/* Individual Column */
+.photowall-column {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+}
+
+.photowall-track {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .photowall-track {
+    gap: 14px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .photowall-track {
+    gap: 16px;
+  }
+}
+
+/* Individual Photo Item */
+.photowall-item {
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* Photo Card */
+.photowall-card {
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: #e5e7eb;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.photowall-card-hovered {
+  box-shadow: 0 20px 50px rgba(42, 107, 167, 0.25),
+    0 0 0 2px rgba(42, 107, 167, 0.3);
+  border-color: rgba(42, 107, 167, 0.4);
+}
+
+/* Photo Image */
+.photowall-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.photowall-card-hovered .photowall-image {
+  transform: scale(1.05);
+}
+
+/* Hover Overlay */
+.photowall-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+      rgba(42, 107, 167, 0) 30%,
+      rgba(26, 44, 61, 0.85) 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.photowall-label {
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+@media (min-width: 768px) {
+  .photowall-label {
+    font-size: 0.85rem;
+  }
+}
+
+/* CTA Section */
+.photowall-cta {
+  text-align: center;
+  margin-top: 3rem;
+  padding: 0 1.5rem;
+  position: relative;
+  z-index: 10;
+}
+
+.photowall-cta-text {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.photowall-cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  background: #2a6ba7;
+  color: white;
+  font-weight: 700;
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgba(42, 107, 167, 0.2);
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.photowall-cta-button:hover {
+  box-shadow: 0 16px 40px rgba(42, 107, 167, 0.3);
+  transform: translateY(-2px);
+}
+
