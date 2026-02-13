@@ -37,6 +37,10 @@ function LamarForm() {
     const [email, setEmail] = useState("");
     const [noTelepon, setNoTelepon] = useState("");
     const [jenjang, setJenjang] = useState(""); // For Internships
+    const [asalInstansi, setAsalInstansi] = useState(""); // For Internships
+    const [jumlahOrang, setJumlahOrang] = useState("1"); // For Internships
+    const [lakiLaki, setLakiLaki] = useState("0"); // For Internships
+    const [perempuan, setPerempuan] = useState("0"); // For Internships
     const [pengalaman, setPengalaman] = useState(""); // For Jobs
     const [pendidikan, setPendidikan] = useState(""); // For Jobs
     const [pesan, setPesan] = useState(""); // For Jobs
@@ -116,6 +120,10 @@ function LamarForm() {
             formData.append("posisi", job.title);
             if (isMagang) {
                 formData.append("jenjang", jenjang);
+                formData.append("asalInstansi", asalInstansi);
+                formData.append("jumlahOrang", jumlahOrang);
+                formData.append("lakiLaki", lakiLaki);
+                formData.append("perempuan", perempuan);
             } else {
                 formData.append("pengalaman", pengalaman);
                 formData.append("pendidikan", pendidikan);
@@ -337,30 +345,106 @@ function LamarForm() {
 
                                     {/* Additional Fields for Jobs / Interns */}
                                     {isMagang ? (
-                                        <div className="md:col-span-2">
-                                            <label
-                                                htmlFor="jenjang"
-                                                className="block text-sm font-bold text-gray-700 mb-2"
-                                            >
-                                                Jenjang Saat Ini <span className="text-red-500">*</span>
-                                            </label>
-                                            <select
-                                                id="jenjang"
-                                                value={jenjang}
-                                                onChange={(e) => setJenjang(e.target.value)}
-                                                required
-                                                className="w-full h-14 px-5 rounded-xl border-2 border-gray-200 bg-gray-50/50 text-gray-900 font-medium focus:border-[#2a6ba7] focus:ring-4 focus:ring-[#2a6ba7]/10 focus:bg-white transition-all outline-none appearance-none cursor-pointer"
-                                            >
-                                                <option value="">Pilih jenjang Anda saat ini</option>
-                                                <option value="Siswa SMA/SMK">Siswa SMA / SMK</option>
-                                                <option value="Mahasiswa D3">Mahasiswa D3</option>
-                                                <option value="Mahasiswa S1">Mahasiswa S1</option>
-                                                <option value="Mahasiswa S2">Mahasiswa S2</option>
-                                                <option value="Mahasiswa S3">Mahasiswa S3</option>
-                                                <option value="Fresh Graduate">Fresh Graduate</option>
-                                                <option value="Profesional">Profesional (Sudah Bekerja)</option>
-                                            </select>
-                                        </div>
+                                        <>
+                                            <div className="md:col-span-2">
+                                                <label
+                                                    htmlFor="jenjang"
+                                                    className="block text-sm font-bold text-gray-700 mb-2"
+                                                >
+                                                    Jenjang Saat Ini <span className="text-red-500">*</span>
+                                                </label>
+                                                <select
+                                                    id="jenjang"
+                                                    value={jenjang}
+                                                    onChange={(e) => setJenjang(e.target.value)}
+                                                    required
+                                                    className="w-full h-14 px-5 rounded-xl border-2 border-gray-200 bg-gray-50/50 text-gray-900 font-medium focus:border-[#2a6ba7] focus:ring-4 focus:ring-[#2a6ba7]/10 focus:bg-white transition-all outline-none appearance-none cursor-pointer"
+                                                >
+                                                    <option value="">Pilih jenjang Anda saat ini</option>
+                                                    <option value="Siswa SMA/SMK">Siswa SMA / SMK</option>
+                                                    <option value="Mahasiswa D3">Mahasiswa D3</option>
+                                                    <option value="Mahasiswa S1">Mahasiswa S1</option>
+                                                    <option value="Mahasiswa S2">Mahasiswa S2</option>
+                                                    <option value="Mahasiswa S3">Mahasiswa S3</option>
+                                                    <option value="Fresh Graduate">Fresh Graduate</option>
+                                                    <option value="Profesional">Profesional (Sudah Bekerja)</option>
+                                                </select>
+                                            </div>
+
+                                            {/* Asal Instansi */}
+                                            <div className="md:col-span-2">
+                                                <label
+                                                    htmlFor="asalInstansi"
+                                                    className="block text-sm font-bold text-gray-700 mb-2"
+                                                >
+                                                    Asal Kampus / Sekolah <span className="text-red-500">*</span>
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="asalInstansi"
+                                                    value={asalInstansi}
+                                                    onChange={(e) => setAsalInstansi(e.target.value)}
+                                                    required
+                                                    placeholder="Nama Universitas atau Sekolah"
+                                                    className="w-full h-14 px-5 rounded-xl border-2 border-gray-200 bg-gray-50/50 text-gray-900 font-medium placeholder:text-gray-400 focus:border-[#2a6ba7] focus:ring-4 focus:ring-[#2a6ba7]/10 focus:bg-white transition-all outline-none"
+                                                />
+                                            </div>
+
+                                            {/* Jumlah Orang */}
+                                            <div>
+                                                <label
+                                                    htmlFor="jumlahOrang"
+                                                    className="block text-sm font-bold text-gray-700 mb-2"
+                                                >
+                                                    Jumlah Anggota (Total) <span className="text-red-500">*</span>
+                                                </label>
+                                                <input
+                                                    type="number"
+                                                    id="jumlahOrang"
+                                                    value={jumlahOrang}
+                                                    onChange={(e) => setJumlahOrang(e.target.value)}
+                                                    min="1"
+                                                    required
+                                                    className="w-full h-14 px-5 rounded-xl border-2 border-gray-200 bg-gray-50/50 text-gray-900 font-medium placeholder:text-gray-400 focus:border-[#2a6ba7] focus:ring-4 focus:ring-[#2a6ba7]/10 focus:bg-white transition-all outline-none"
+                                                />
+                                            </div>
+
+                                            {/* Rincian Gender */}
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div>
+                                                    <label
+                                                        htmlFor="lakiLaki"
+                                                        className="block text-sm font-bold text-gray-700 mb-2"
+                                                    >
+                                                        Jumlah Laki-laki
+                                                    </label>
+                                                    <input
+                                                        type="number"
+                                                        id="lakiLaki"
+                                                        value={lakiLaki}
+                                                        onChange={(e) => setLakiLaki(e.target.value)}
+                                                        min="0"
+                                                        className="w-full h-14 px-5 rounded-xl border-2 border-gray-200 bg-gray-50/50 text-gray-900 font-medium placeholder:text-gray-400 focus:border-[#2a6ba7] focus:ring-4 focus:ring-[#2a6ba7]/10 focus:bg-white transition-all outline-none"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label
+                                                        htmlFor="perempuan"
+                                                        className="block text-sm font-bold text-gray-700 mb-2"
+                                                    >
+                                                        Jumlah Perempuan
+                                                    </label>
+                                                    <input
+                                                        type="number"
+                                                        id="perempuan"
+                                                        value={perempuan}
+                                                        onChange={(e) => setPerempuan(e.target.value)}
+                                                        min="0"
+                                                        className="w-full h-14 px-5 rounded-xl border-2 border-gray-200 bg-gray-50/50 text-gray-900 font-medium placeholder:text-gray-400 focus:border-[#2a6ba7] focus:ring-4 focus:ring-[#2a6ba7]/10 focus:bg-white transition-all outline-none"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </>
                                     ) : (
                                         <>
                                             {/* Pendidikan Terakhir */}
@@ -425,7 +509,7 @@ function LamarForm() {
                                         <span className="material-symbols-outlined">upload_file</span>
                                     </div>
                                     <h2 className="text-xl font-black text-gray-900">
-                                        {isMagang ? "Upload Surat" : "Upload CV"}
+                                        {isMagang ? "Upload Surat Magang / PKL  " : "Upload CV"}
                                     </h2>
                                 </div>
 

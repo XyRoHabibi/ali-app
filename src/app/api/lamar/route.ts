@@ -11,6 +11,11 @@ export async function POST(request: NextRequest) {
         const posisi = formData.get("posisi") as string;
         const pengalaman = formData.get("pengalaman") as string;
         const pendidikan = formData.get("pendidikan") as string;
+        const jenjang = formData.get("jenjang") as string;
+        const asalInstansi = formData.get("asalInstansi") as string;
+        const jumlahOrang = formData.get("jumlahOrang") as string;
+        const lakiLaki = formData.get("lakiLaki") as string;
+        const perempuan = formData.get("perempuan") as string;
         const pesan = formData.get("pesan") as string;
         const cvFile = formData.get("cv") as File | null;
 
@@ -73,6 +78,20 @@ export async function POST(request: NextRequest) {
                             <td style="padding: 8px 0; color: #6b7280; font-size: 14px;">No. Telepon</td>
                             <td style="padding: 8px 0; color: #111827; font-size: 14px; font-weight: 600;">${noTelepon}</td>
                         </tr>
+                        ${jenjang ? `
+                        <tr>
+                            <td style="padding: 8px 0; color: #6b7280; font-size: 14px;">Jenjang</td>
+                            <td style="padding: 8px 0; color: #111827; font-size: 14px; font-weight: 600;">${jenjang}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; color: #6b7280; font-size: 14px;">Asal Instansi</td>
+                            <td style="padding: 8px 0; color: #111827; font-size: 14px; font-weight: 600;">${asalInstansi}</td>
+                        </tr>
+                         <tr>
+                            <td style="padding: 8px 0; color: #6b7280; font-size: 14px;">Jumlah Anggota</td>
+                            <td style="padding: 8px 0; color: #111827; font-size: 14px; font-weight: 600;">${jumlahOrang} Orang (L: ${lakiLaki || 0}, P: ${perempuan || 0})</td>
+                        </tr>
+                        ` : `
                         <tr>
                             <td style="padding: 8px 0; color: #6b7280; font-size: 14px;">Pengalaman</td>
                             <td style="padding: 8px 0; color: #111827; font-size: 14px; font-weight: 600;">${pengalaman || "-"}</td>
@@ -81,6 +100,7 @@ export async function POST(request: NextRequest) {
                             <td style="padding: 8px 0; color: #6b7280; font-size: 14px;">Pendidikan</td>
                             <td style="padding: 8px 0; color: #111827; font-size: 14px; font-weight: 600;">${pendidikan || "-"}</td>
                         </tr>
+                        `}
                     </table>
                 </div>
 
