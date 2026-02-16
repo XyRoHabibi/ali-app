@@ -1,7 +1,9 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useRef, useLayoutEffect, useState } from "react";
 import Link from "next/link";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
     allServices,
     serviceFlowConfigs,
@@ -14,39 +16,184 @@ import {
 } from "@/data/services";
 import "./detail-layanan.css";
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function PendirianDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
     const serviceId = parseInt(id);
     const service = allServices.find(s => s.id === serviceId);
 
-    const [currentStep, setCurrentStep] = useState(0);
-    const [progressHeight, setProgressHeight] = useState(0);
-    const [completedSteps, setCompletedSteps] = useState<number[]>([]);
-
     const flowType = service ? getServiceFlowType(service.name) : 'default';
     const steps = serviceFlowConfigs[flowType as keyof typeof serviceFlowConfigs] || serviceFlowConfigs.default;
 
-    useEffect(() => {
-        if (!steps.length) return;
+    // GSAP Scroll Animation refs
+    const timelineSectionRef = useRef<HTMLElement>(null);
+    const progressBarRef = useRef<HTMLDivElement>(null);
+    const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const stepNumberRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-        let interval = setInterval(() => {
-            setCurrentStep(prev => {
-                const next = (prev + 1) % (steps.length + 1);
 
-                if (next === 0) {
-                    setCompletedSteps([]);
-                    setProgressHeight(0);
-                    return 0;
+    useLayoutEffect(() => {
+        if (!timelineSectionRef.current || !steps.length) return;
+
+        const ctx = gsap.context(() => {
+            const totalSteps = steps.length;
+
+            // Set initial states
+            stepRefs.current.forEach((el) => {
+                if (el) {
+                    gsap.set(el, { opacity: 0, y: 50, scale: 0.95 });
+                }
+            });
+            stepNumberRefs.current.forEach((el) => {
+                if (el) {
+                    gsap.set(el, { scale: 0, rotation: -180 });
+                }
+            });
+            if (progressBarRef.current) {
+                gsap.set(progressBarRef.current, { height: '0%' });
+            }
+
+            // Animate each step individually as it scrolls into view
+            stepRefs.current.forEach((el, i) => {
+                if (!el) return;
+                const numberEl = stepNumberRefs.current[i];
+                const progress = ((i + 1) / totalSteps) * 100;
+
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 85%',
+                        end: 'top 40%',
+                        scrub: 0.5,
+                    }
+                });
+
+                // Progress bar grows
+                tl.to(progressBarRef.current, {
+                    height: `${progress}%`,
+                    duration: 0.4,
+                    ease: 'power2.out',
+                }, 0);
+
+                // Step number spins in
+                if (numberEl) {
+                    tl.to(numberEl, {
+                        scale: 1,
+                        rotation: 0,
+                        duration: 0.5,
+                        ease: 'back.out(1.7)',
+                    }, 0);
                 }
 
-                setCompletedSteps(prevComp => [...prevComp, prev]);
-                setProgressHeight((next / steps.length) * 100);
-                return next;
-            });
-        }, 2000);
+                // Card slides up & fades in
+                tl.to(el, {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 0.6,
+                    ease: 'power3.out',
+                }, 0.05);
 
-        return () => clearInterval(interval);
-    }, [steps.length]);
+                // Card border glow
+                tl.fromTo(el.querySelector('.step-card') as HTMLElement, {
+                    borderColor: 'rgba(11,64,154,0)',
+                    boxShadow: '0 10px 15px -3px rgba(0,0,0,0.05)',
+                }, {
+                    borderColor: 'rgba(11,64,154,0.3)',
+                    boxShadow: '0 25px 50px -12px rgba(11,64,154,0.15)',
+                    duration: 0.4,
+                    ease: 'power2.out',
+                }, 0.1);
+
+                // 🎉 Celebration animation for the LAST step (on-card)
+                if (i === totalSteps - 1) {
+                    ScrollTrigger.create({
+                        trigger: el,
+                        start: 'top 60%',
+                        once: true,
+                        onEnter: () => {
+                            const card = el.querySelector('.step-card') as HTMLElement;
+
+                            // 1. Card entrance pulse — scale up then settle
+                            if (card) {
+                                gsap.fromTo(card,
+                                    { scale: 1 },
+                                    { scale: 1.03, duration: 0.3, ease: 'power2.out', yoyo: true, repeat: 1, delay: 0.4 }
+                                );
+                                // Green glow
+                                gsap.to(card, {
+                                    borderColor: 'rgba(34, 197, 94, 0.5)',
+                                    boxShadow: '0 0 30px rgba(34, 197, 94, 0.2), 0 0 60px rgba(34, 197, 94, 0.1), 0 20px 40px -8px rgba(34, 197, 94, 0.15)',
+                                    duration: 0.8,
+                                    ease: 'power2.out',
+                                    delay: 0.3,
+                                });
+                                // Add continuous shimmer class
+                                setTimeout(() => card.classList.add('celebration-glow'), 800);
+                            }
+
+                            // 2. Confetti burst from card center
+                            const particles = el.querySelectorAll('.confetti-particle');
+                            particles.forEach((p) => {
+                                const angle = Math.random() * Math.PI * 2;
+                                const distance = 50 + Math.random() * 150;
+                                const x = Math.cos(angle) * distance;
+                                const y = Math.sin(angle) * distance - 50;
+
+                                gsap.set(p, { x: 0, y: 0, scale: 0, opacity: 1, rotation: 0 });
+                                gsap.to(p, {
+                                    x, y,
+                                    rotation: Math.random() * 720 - 360,
+                                    scale: 0.8 + Math.random() * 0.6,
+                                    opacity: 0,
+                                    duration: 1 + Math.random() * 1,
+                                    ease: 'power2.out',
+                                    delay: 0.2 + Math.random() * 0.5,
+                                });
+                            });
+
+                            // 3. Celebration banner overlay pops in
+                            const banner = el.querySelector('.celebration-banner');
+                            if (banner) {
+                                gsap.fromTo(banner,
+                                    { scale: 0, opacity: 0 },
+                                    { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(2.5)', delay: 0.6 }
+                                );
+                                // Auto-fade banner after a few seconds
+                                gsap.to(banner, { opacity: 0, scale: 0.9, duration: 0.4, delay: 3.5, ease: 'power2.in' });
+                            }
+
+                            // 4. Floating emoji sparkles
+                            const sparkles = el.querySelectorAll('.celebration-sparkle');
+                            sparkles.forEach((s, si) => {
+                                gsap.fromTo(s,
+                                    { y: 0, opacity: 0, scale: 0 },
+                                    { y: -30 - Math.random() * 40, opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(2)', delay: 0.5 + si * 0.15 }
+                                );
+                                gsap.to(s, { y: -60 - Math.random() * 30, opacity: 0, duration: 1, delay: 2 + si * 0.1 });
+                            });
+
+                            // 5. Badge bounces with green flash
+                            if (numberEl) {
+                                gsap.to(numberEl, {
+                                    scale: 1.2, duration: 0.25, ease: 'back.out(2)',
+                                    yoyo: true, repeat: 3, delay: 0.3,
+                                });
+                                gsap.to(numberEl, {
+                                    borderColor: '#22c55e',
+                                    duration: 0.5, delay: 0.5,
+                                });
+                            }
+                        },
+                    });
+                }
+            });
+
+        }, timelineSectionRef);
+
+        return () => ctx.revert();
+    }, [steps]);
 
     if (!service) {
         return (
@@ -143,72 +290,237 @@ export default function PendirianDetailPage({ params }: { params: Promise<{ id: 
                 </div>
             </section>
 
-            {/* Timeline Section */}
-            <section className="py-20 overflow-hidden">
-                <div className="text-center mb-12">
-                    <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-4 text-gray-900">Alur Pendirian {service.name}</h2>
-                    <p className="text-gray-600 font-medium">Proses transparan dari awal hingga legalitas Anda terbit.</p>
+            {/* Timeline Section — GSAP Scroll Hijacking */}
+            <section ref={timelineSectionRef} className="relative min-h-screen py-20 overflow-hidden">
+                {/* Decorative background */}
+                <div className="absolute inset-0 pointer-events-none">
+                    <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/5 rounded-full blur-[120px]"></div>
+                    <div className="absolute bottom-1/4 -right-32 w-80 h-80 bg-primary/5 rounded-full blur-[100px]"></div>
+                </div>
+
+                <div className="text-center mb-16 relative z-10">
+                    <div className="inline-flex items-center gap-2 bg-primary/5 text-primary px-5 py-2 rounded-full border border-primary/10 mb-6">
+                        <span className="material-symbols-outlined text-sm">timeline</span>
+                        <span className="text-xs font-black uppercase tracking-widest">Proses Langkah Demi Langkah</span>
+                    </div>
+                    <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-4 text-gray-900">Alur Pendirian {service.name}</h2>
+                    <p className="text-gray-500 font-medium text-lg max-w-xl mx-auto">Scroll untuk melihat setiap tahap proses pendirian — transparan dari awal hingga legalitas Anda terbit.</p>
                 </div>
 
                 <div className="relative max-w-5xl mx-auto">
                     {/* Progress Line */}
-                    <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-1 md:-translate-x-1/2 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-1 md:-translate-x-1/2 bg-gray-200/60 rounded-full overflow-hidden">
                         <div
-                            className="bg-primary w-full rounded-full transition-all duration-700 ease-out"
-                            style={{ height: `${progressHeight}%`, boxShadow: "0 0 20px rgba(11, 64, 154, 0.4)" }}
+                            ref={progressBarRef}
+                            className="bg-gradient-to-b from-primary via-primary to-blue-400 w-full rounded-full"
+                            style={{ height: '0%', boxShadow: '0 0 24px rgba(11, 64, 154, 0.5), 0 0 60px rgba(11, 64, 154, 0.2)' }}
                         ></div>
                     </div>
 
                     {/* Steps */}
-                    <div className="space-y-6 md:space-y-0 md:grid md:grid-cols-2 md:gap-y-12">
+                    <div className="flex flex-col gap-8 md:gap-12">
                         {steps.map((step: any, index: number) => {
                             const stepNum = index + 1;
                             const isEven = stepNum % 2 === 0;
-                            const isActive = currentStep === index;
-                            const isCompleted = completedSteps.includes(index);
-                            const alignClass = isEven ? "md:pl-16" : "md:pl-0 md:text-right md:pr-16";
-                            const connectorPos = isEven ? "md:left-0 md:-translate-x-1/2" : "md:left-auto md:right-0 md:translate-x-1/2";
+                            const isLastStep = index === steps.length - 1;
+                            const confettiColors = ['#0B409A', '#3B82F6', '#F3B444', '#22C55E', '#EF4444', '#A855F7', '#EC4899', '#F97316'];
+                            const confettiShapes = ['rounded-full', 'rounded-sm', 'rounded-none'];
+                            const confettiSizes = ['w-2 h-2', 'w-3 h-3', 'w-2 h-3', 'w-3 h-1'];
 
                             return (
                                 <div
                                     key={index}
-                                    className={`timeline-step pl-20 ${alignClass} relative ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${!isEven ? 'md:z-10' : ''}`}
-                                    style={{ opacity: isActive || isCompleted ? 1 : 0.5, transition: 'all 0.5s ease' }}
+                                    ref={(el) => { stepRefs.current[index] = el; }}
+                                    className="timeline-step relative"
                                 >
-                                    <div className={`absolute left-8 ${connectorPos} top-1/2 -translate-y-1/2 z-20`}>
-                                        <div className={`size-14 bg-white rounded-2xl border-4 ${isActive || isCompleted ? 'border-primary' : 'border-gray-200'} shadow-lg flex items-center justify-center transition-all duration-500`}>
-                                            <span className={`text-xl font-black ${isActive || isCompleted ? 'text-primary' : 'text-gray-400'}`}>{stepNum}</span>
+                                    {/* Mobile layout */}
+                                    <div className="md:hidden pl-20 relative">
+                                        {/* Step Number Badge - mobile */}
+                                        <div className="absolute left-8 top-1/2 -translate-y-1/2 z-20 -translate-x-1/2">
+                                            <div
+                                                ref={(el) => { stepNumberRefs.current[index] = el; }}
+                                                className="size-14 bg-white rounded-2xl border-4 border-primary shadow-lg shadow-primary/20 flex items-center justify-center"
+                                            >
+                                                <span className="text-xl font-black text-primary">{stepNum}</span>
+                                            </div>
+                                        </div>
+                                        {/* Card - mobile */}
+                                        <div className={`step-card p-5 rounded-2xl border-2 shadow-lg relative overflow-hidden group ${isLastStep ? 'bg-gradient-to-br from-green-50 to-emerald-50/50 border-green-200' : 'bg-white border-gray-100'}`}>
+                                            {/* Confetti particles (last step only) */}
+                                            {isLastStep && Array.from({ length: 20 }).map((_, ci) => (
+                                                <div key={`m-confetti-${ci}`} className={`confetti-particle absolute top-1/2 left-1/2 ${confettiShapes[ci % confettiShapes.length]} ${confettiSizes[ci % confettiSizes.length]} z-30`} style={{ backgroundColor: confettiColors[ci % confettiColors.length], opacity: 0 }} />
+                                            ))}
+                                            <div className="relative z-10">
+                                                <div className="flex items-center gap-3 mb-3">
+                                                    <div className={`size-12 rounded-xl flex items-center justify-center ${isLastStep ? 'bg-green-100' : 'bg-primary/15'}`}>
+                                                        <span className={`material-symbols-outlined text-2xl ${isLastStep ? 'text-green-600' : 'text-primary'}`}>{step.icon}</span>
+                                                    </div>
+                                                    {isLastStep && <span className="inline-flex items-center gap-1 text-[10px] font-black text-green-700 bg-green-100 px-3 py-1 rounded-full border border-green-200">✅ Langkah Terakhir</span>}
+                                                </div>
+                                                <h3 className="text-lg font-bold mb-1 text-gray-900">{step.title}</h3>
+                                                <p className="text-xs text-gray-500 mb-2 leading-relaxed font-medium">{step.desc}</p>
+                                                <div className="flex items-center gap-2">
+                                                    {step.time && (
+                                                        <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full ${isLastStep ? 'text-green-700 bg-green-100' : 'text-primary bg-primary/10'}`}>
+                                                            <span className="material-symbols-outlined text-xs">schedule</span>
+                                                            {step.time}
+                                                        </span>
+                                                    )}
+                                                    {step.detail && (
+                                                        <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full ${isLastStep ? 'text-green-700 bg-green-100' : 'text-primary bg-primary/10'}`}>
+                                                            <span className="material-symbols-outlined text-xs">verified</span>
+                                                            {step.detail}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                {/* Celebration banner — overlay */}
+                                                {isLastStep && (
+                                                    <>
+                                                        <div className="celebration-banner absolute inset-0 z-40 flex items-center justify-center rounded-2xl bg-gradient-to-br from-green-500/95 to-emerald-500/95 backdrop-blur-sm" style={{ opacity: 0, transform: 'scale(0)' }}>
+                                                            <div className="text-center">
+                                                                <p className="text-3xl mb-1">🎉</p>
+                                                                <p className="text-white font-black text-sm">Selamat!</p>
+                                                                <p className="text-white/80 text-[11px] font-medium">Legalitas Resmi Terbit</p>
+                                                            </div>
+                                                        </div>
+                                                        {/* Floating sparkle emojis */}
+                                                        <span className="celebration-sparkle absolute -top-2 -right-2 text-lg z-50" style={{ opacity: 0 }}>✨</span>
+                                                        <span className="celebration-sparkle absolute -top-2 left-4 text-base z-50" style={{ opacity: 0 }}>🎊</span>
+                                                        <span className="celebration-sparkle absolute -bottom-1 right-6 text-base z-50" style={{ opacity: 0 }}>⭐</span>
+                                                    </>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className={`p-5 bg-white rounded-2xl border-2 ${isActive ? 'border-primary/30 shadow-2xl scale-[1.02]' : 'border-gray-100 shadow-lg'} transition-all duration-500 relative overflow-hidden group`}>
-                                        <div className="relative z-10">
-                                            <div className={`flex items-center gap-3 ${!isEven ? 'md:justify-end' : ''} mb-3`}>
-                                                <div className={`size-12 rounded-xl ${isActive || isCompleted ? 'bg-primary/20' : 'bg-gray-100'} flex items-center justify-center transition-colors`}>
-                                                    <span className={`material-symbols-outlined text-2xl ${isActive || isCompleted ? 'text-primary' : 'text-gray-400'}`}>{step.icon}</span>
+
+                                    {/* Desktop layout */}
+                                    <div className="hidden md:flex items-center gap-0 relative">
+                                        {/* Left side */}
+                                        <div className={`flex-1 ${isEven ? '' : 'pr-12'}`}>
+                                            {!isEven && (
+                                                <div className="text-right">
+                                                    <div className={`step-card p-5 rounded-2xl border-2 shadow-lg relative overflow-hidden group inline-block w-full ${isLastStep ? 'bg-gradient-to-br from-green-50 to-emerald-50/50 border-green-200' : 'bg-white border-gray-100'}`}>
+                                                        {/* Confetti particles (last step only) */}
+                                                        {isLastStep && Array.from({ length: 20 }).map((_, ci) => (
+                                                            <div key={`dl-confetti-${ci}`} className={`confetti-particle absolute top-1/2 left-1/2 ${confettiShapes[ci % confettiShapes.length]} ${confettiSizes[ci % confettiSizes.length]} z-30`} style={{ backgroundColor: confettiColors[ci % confettiColors.length], opacity: 0 }} />
+                                                        ))}
+                                                        <div className="relative z-10">
+                                                            <div className="flex items-center gap-3 justify-end mb-3">
+                                                                {isLastStep && <span className="inline-flex items-center gap-1 text-[10px] font-black text-green-700 bg-green-100 px-3 py-1 rounded-full border border-green-200">✅ Langkah Terakhir</span>}
+                                                                <div className={`size-12 rounded-xl flex items-center justify-center ${isLastStep ? 'bg-green-100' : 'bg-primary/15'}`}>
+                                                                    <span className={`material-symbols-outlined text-2xl ${isLastStep ? 'text-green-600' : 'text-primary'}`}>{step.icon}</span>
+                                                                </div>
+                                                            </div>
+                                                            <h3 className="text-lg font-bold mb-1 text-gray-900">{step.title}</h3>
+                                                            <p className="text-xs text-gray-500 mb-2 leading-relaxed font-medium">{step.desc}</p>
+                                                            <div className="flex items-center gap-2 justify-end">
+                                                                {step.time && (
+                                                                    <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full ${isLastStep ? 'text-green-700 bg-green-100' : 'text-primary bg-primary/10'}`}>
+                                                                        <span className="material-symbols-outlined text-xs">schedule</span>
+                                                                        {step.time}
+                                                                    </span>
+                                                                )}
+                                                                {step.detail && (
+                                                                    <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full ${isLastStep ? 'text-green-700 bg-green-100' : 'text-primary bg-primary/10'}`}>
+                                                                        <span className="material-symbols-outlined text-xs">verified</span>
+                                                                        {step.detail}
+                                                                    </span>
+                                                                )}
+                                                            </div>
+                                                            {/* Celebration banner — overlay */}
+                                                            {isLastStep && (
+                                                                <>
+                                                                    <div className="celebration-banner absolute inset-0 z-40 flex items-center justify-center rounded-2xl bg-gradient-to-br from-green-500/95 to-emerald-500/95 backdrop-blur-sm" style={{ opacity: 0, transform: 'scale(0)' }}>
+                                                                        <div className="text-center">
+                                                                            <p className="text-3xl mb-1">🎉</p>
+                                                                            <p className="text-white font-black text-sm">Selamat!</p>
+                                                                            <p className="text-white/80 text-[11px] font-medium">Legalitas Resmi Terbit</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span className="celebration-sparkle absolute -top-2 -right-2 text-lg z-50" style={{ opacity: 0 }}>✨</span>
+                                                                    <span className="celebration-sparkle absolute -top-2 left-4 text-base z-50" style={{ opacity: 0 }}>🎊</span>
+                                                                    <span className="celebration-sparkle absolute -bottom-1 right-6 text-base z-50" style={{ opacity: 0 }}>⭐</span>
+                                                                </>
+                                                            )}
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                            )}
+                                        </div>
+
+                                        {/* Center - Step Number Badge (desktop) */}
+                                        <div className="relative z-20 flex-shrink-0">
+                                            <div
+                                                ref={(el) => { stepNumberRefs.current[index] = el; }}
+                                                className="size-14 bg-white rounded-2xl border-4 border-primary shadow-lg shadow-primary/20 flex items-center justify-center"
+                                            >
+                                                <span className="text-xl font-black text-primary">{stepNum}</span>
                                             </div>
-                                            <h3 className={`text-lg font-bold mb-1 transition-colors ${isActive ? 'text-primary' : 'text-gray-900'}`}>{step.title}</h3>
-                                            <p className="text-xs text-gray-500 mb-2 leading-relaxed font-medium">{step.desc}</p>
-                                            <div className={`flex items-center gap-2 ${!isEven ? 'md:justify-end' : ''}`}>
-                                                {step.time && (
-                                                    <span className={`inline-flex items-center gap-1 text-[10px] font-bold ${isActive || isCompleted ? 'text-primary bg-primary/10' : 'text-gray-400 bg-gray-100'} px-2 py-1 rounded-full transition-colors`}>
-                                                        <span className="material-symbols-outlined text-xs">schedule</span>
-                                                        {step.time}
-                                                    </span>
-                                                )}
-                                                {step.detail && (
-                                                    <span className={`inline-flex items-center gap-1 text-[10px] font-bold ${isActive || isCompleted ? 'text-primary bg-primary/10' : 'text-gray-400 bg-gray-100'} px-2 py-1 rounded-full transition-colors`}>
-                                                        <span className="material-symbols-outlined text-xs">verified</span>
-                                                        {step.detail}
-                                                    </span>
-                                                )}
-                                            </div>
+                                        </div>
+
+                                        {/* Right side */}
+                                        <div className={`flex-1 ${isEven ? 'pl-12' : ''}`}>
+                                            {isEven && (
+                                                <div>
+                                                    <div className={`step-card p-5 rounded-2xl border-2 shadow-lg relative overflow-hidden group w-full ${isLastStep ? 'bg-gradient-to-br from-green-50 to-emerald-50/50 border-green-200' : 'bg-white border-gray-100'}`}>
+                                                        {/* Confetti particles (last step only) */}
+                                                        {isLastStep && Array.from({ length: 20 }).map((_, ci) => (
+                                                            <div key={`dr-confetti-${ci}`} className={`confetti-particle absolute top-1/2 left-1/2 ${confettiShapes[ci % confettiShapes.length]} ${confettiSizes[ci % confettiSizes.length]} z-30`} style={{ backgroundColor: confettiColors[ci % confettiColors.length], opacity: 0 }} />
+                                                        ))}
+                                                        <div className="relative z-10">
+                                                            <div className="flex items-center gap-3 mb-3">
+                                                                <div className={`size-12 rounded-xl flex items-center justify-center ${isLastStep ? 'bg-green-100' : 'bg-primary/15'}`}>
+                                                                    <span className={`material-symbols-outlined text-2xl ${isLastStep ? 'text-green-600' : 'text-primary'}`}>{step.icon}</span>
+                                                                </div>
+                                                                {isLastStep && <span className="inline-flex items-center gap-1 text-[10px] font-black text-green-700 bg-green-100 px-3 py-1 rounded-full border border-green-200">✅ Langkah Terakhir</span>}
+                                                            </div>
+                                                            <h3 className="text-lg font-bold mb-1 text-gray-900">{step.title}</h3>
+                                                            <p className="text-xs text-gray-500 mb-2 leading-relaxed font-medium">{step.desc}</p>
+                                                            <div className="flex items-center gap-2">
+                                                                {step.time && (
+                                                                    <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full ${isLastStep ? 'text-green-700 bg-green-100' : 'text-primary bg-primary/10'}`}>
+                                                                        <span className="material-symbols-outlined text-xs">schedule</span>
+                                                                        {step.time}
+                                                                    </span>
+                                                                )}
+                                                                {step.detail && (
+                                                                    <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full ${isLastStep ? 'text-green-700 bg-green-100' : 'text-primary bg-primary/10'}`}>
+                                                                        <span className="material-symbols-outlined text-xs">verified</span>
+                                                                        {step.detail}
+                                                                    </span>
+                                                                )}
+                                                            </div>
+                                                            {/* Celebration banner — overlay */}
+                                                            {isLastStep && (
+                                                                <>
+                                                                    <div className="celebration-banner absolute inset-0 z-40 flex items-center justify-center rounded-2xl bg-gradient-to-br from-green-500/95 to-emerald-500/95 backdrop-blur-sm" style={{ opacity: 0, transform: 'scale(0)' }}>
+                                                                        <div className="text-center">
+                                                                            <p className="text-3xl mb-1">🎉</p>
+                                                                            <p className="text-white font-black text-sm">Selamat!</p>
+                                                                            <p className="text-white/80 text-[11px] font-medium">Legalitas Resmi Terbit</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span className="celebration-sparkle absolute -top-2 -right-2 text-lg z-50" style={{ opacity: 0 }}>✨</span>
+                                                                    <span className="celebration-sparkle absolute -top-2 left-4 text-base z-50" style={{ opacity: 0 }}>🎊</span>
+                                                                    <span className="celebration-sparkle absolute -bottom-1 right-6 text-base z-50" style={{ opacity: 0 }}>⭐</span>
+                                                                </>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
                             );
                         })}
                     </div>
+                </div>
+
+                {/* Scroll indicator */}
+                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-400 animate-bounce">
+                    <span className="text-xs font-bold uppercase tracking-widest">Scroll</span>
+                    <span className="material-symbols-outlined text-lg">expand_more</span>
                 </div>
             </section>
 
@@ -392,7 +704,7 @@ export default function PendirianDetailPage({ params }: { params: Promise<{ id: 
                                                     </a>
                                                     <a href={`https://wa.me/6285333338818?text=${encodeURIComponent(`Halo admin, saya mau tanya-tanya dulu tentang ${service.name} - ${header.label}`)}`}
                                                         target="_blank"
-                                                        className="w-full bg-white text-primary border border-primary/20 hover:bg-gray-50 font-black py-4 px-10 rounded-2xl text-center transition-all flex items-center justify-center gap-2 whitespace-nowrap">
+                                                        className="w-full bg-green-500 text-white border border-primary/20 hover:bg-primary/90 font-black py-4 px-10 rounded-2xl text-center transition-all flex items-center justify-center gap-2 whitespace-nowrap">
                                                         <svg className="w-5 h-5 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l121.7-31.9c32.4 17.8 68.9 27.2 106.4 27.2h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-4-10.5-6.7z" /></svg>
                                                         <span>Konsultasi sekarang</span>
                                                     </a>
@@ -453,7 +765,7 @@ export default function PendirianDetailPage({ params }: { params: Promise<{ id: 
                                                 </a>
                                                 <a href={`https://wa.me/6285333338818?text=${encodeURIComponent(`Halo admin, saya mau tanya-tanya dulu tentang ${service.name} - ${header.label}`)}`}
                                                     target="_blank"
-                                                    className="w-full bg-gray-50 text-primary border border-gray-100 hover:bg-primary hover:text-white font-black py-4 px-8 rounded-2xl text-center transition-all flex items-center justify-center gap-2 whitespace-nowrap">
+                                                    className="w-full bg-green-500 text-white border border-gray-100 hover:bg-primary hover:text-white font-black py-4 px-8 rounded-2xl text-center transition-all flex items-center justify-center gap-2 whitespace-nowrap">
                                                     <svg className="w-5 h-5 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l121.7-31.9c32.4 17.8 68.9 27.2 106.4 27.2h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-4-10.5-6.7z" /></svg>
                                                     <span>Konsultasi sekarang</span>
                                                 </a>

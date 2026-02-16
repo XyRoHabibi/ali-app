@@ -1,10 +1,16 @@
-/* Timeline styles from detaillayanan-pendirian.html */
+/* Timeline Section — Premium Design System */
 .material-symbols-outlined {
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
+/* ===== Timeline Section Background ===== */
+.timeline-section {
+    background: linear-gradient(180deg, #ffffff 0%, #F8FAFC 30%, #F1F5F9 60%, #F8FAFC 100%);
+}
+
+/* ===== Progress Line Glow ===== */
 .progress-line {
-    background: linear-gradient(180deg, #2a6ba7, #F3B444, #2a6ba7);
+    background: linear-gradient(180deg, #0B409A, #3B82F6, #60A5FA);
     transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
 }
@@ -12,18 +18,18 @@
 .progress-line::after {
     content: '';
     position: absolute;
-    bottom: 0;
+    bottom: -2px;
     left: 50%;
     transform: translateX(-50%);
-    width: 16px;
-    height: 16px;
-    background: radial-gradient(circle, #F3B444, #e5a030);
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle, #3B82F6, #0B409A);
     border-radius: 50%;
-    box-shadow: 0 0 20px #F3B444, 0 0 40px #F3B444, 0 0 60px rgba(243, 180, 68, 0.5);
-    animation: particlePulse 1s ease-in-out infinite;
+    box-shadow: 0 0 12px #3B82F6, 0 0 24px rgba(59, 130, 246, 0.4);
+    animation: progressPulse 2s ease-in-out infinite;
 }
 
-@keyframes particlePulse {
+@keyframes progressPulse {
 
     0%,
     100% {
@@ -32,104 +38,150 @@
     }
 
     50% {
-        transform: translateX(-50%) scale(1.3);
-        opacity: 0.8;
+        transform: translateX(-50%) scale(1.4);
+        opacity: 0.7;
     }
 }
 
+/* ===== Step Card Styles ===== */
 .timeline-step .step-card {
     position: relative;
     overflow: hidden;
-    backdrop-filter: blur(10px);
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .timeline-step:hover .step-card {
-    transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) translateY(-5px);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px -8px rgba(11, 64, 154, 0.12), 0 0 0 1px rgba(11, 64, 154, 0.06);
+    border-color: rgba(11, 64, 154, 0.15);
 }
 
-.timeline-step.active .step-badge {
-    border-color: #2a6ba7 !important;
-    background: linear-gradient(135deg, #2a6ba7, #3b82f6) !important;
-    transform: scale(1.2) rotate(5deg);
+/* Shimmer effect on hover */
+.timeline-step .step-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(100deg,
+            transparent 20%,
+            rgba(255, 255, 255, 0.5) 50%,
+            transparent 80%);
+    transition: left 0.6s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.timeline-step:hover .step-card::after {
+    left: 150%;
+}
+
+/* ===== Step Badge Styles ===== */
+.timeline-step .step-badge {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.timeline-step:hover .step-badge {
+    transform: scale(1.08);
     box-shadow:
-        0 0 0 6px rgba(42, 107, 167, 0.15),
-        0 0 0 12px rgba(42, 107, 167, 0.1),
-        0 15px 50px rgba(42, 107, 167, 0.4);
-    animation: badgeFloat 2s ease-in-out infinite;
+        0 12px 32px -4px rgba(11, 64, 154, 0.5),
+        0 0 0 4px rgba(255, 255, 255, 1) !important;
 }
 
-@keyframes badgeFloat {
+/* ===== Active State (controlled by GSAP) ===== */
+.timeline-step.active .step-badge {
+    animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
 
     0%,
     100% {
-        transform: scale(1.2) rotate(5deg) translateY(0);
+        box-shadow:
+            0 8px 24px -4px rgba(11, 64, 154, 0.4),
+            0 0 0 3px rgba(255, 255, 255, 0.9);
     }
 
     50% {
-        transform: scale(1.2) rotate(5deg) translateY(-5px);
+        box-shadow:
+            0 12px 36px -4px rgba(11, 64, 154, 0.5),
+            0 0 0 6px rgba(11, 64, 154, 0.1),
+            0 0 0 12px rgba(11, 64, 154, 0.05);
     }
 }
 
 .timeline-step.active .step-card {
-    border-color: #2a6ba7 !important;
-    background: linear-gradient(135deg, rgba(42, 107, 167, 0.1), rgba(59, 130, 246, 0.05)) !important;
-    transform: perspective(1000px) translateY(-8px) scale(1.03);
+    border-color: rgba(11, 64, 154, 0.2) !important;
     box-shadow:
-        0 25px 50px rgba(42, 107, 167, 0.25),
-        0 0 0 1px rgba(42, 107, 167, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        0 20px 48px -8px rgba(11, 64, 154, 0.15),
+        0 0 0 1px rgba(11, 64, 154, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
 }
 
 .timeline-step.active .step-icon {
-    animation: iconBounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+    animation: iconFloat 3s ease-in-out infinite;
 }
 
-@keyframes iconBounce {
+@keyframes iconFloat {
 
     0%,
     100% {
-        transform: translateY(0) rotate(0deg) scale(1);
-    }
-
-    25% {
-        transform: translateY(-10px) rotate(-8deg) scale(1.1);
+        transform: translateY(0);
     }
 
     50% {
-        transform: translateY(-5px) rotate(0deg) scale(1.05);
-    }
-
-    75% {
-        transform: translateY(-8px) rotate(8deg) scale(1.1);
+        transform: translateY(-3px);
     }
 }
 
+/* ===== Completed State ===== */
 .timeline-step.completed .step-badge {
-    border-color: #22c55e !important;
-    background: linear-gradient(135deg, #22c55e, #16a34a) !important;
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%) !important;
+    box-shadow:
+        0 8px 24px -4px rgba(34, 197, 94, 0.4),
+        0 0 0 3px rgba(255, 255, 255, 0.9) !important;
 }
 
-.timeline-step.active .step-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -150%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(100deg,
-            transparent 20%,
-            rgba(255, 255, 255, 0.6) 50%,
-            transparent 80%);
-    animation: shimmerEnhanced 2s ease-in-out infinite;
-}
-
-@keyframes shimmerEnhanced {
-    0% {
-        left: -150%;
+/* ===== Responsive Adjustments ===== */
+@media (max-width: 767px) {
+    .timeline-step .step-card {
+        margin-left: 0;
     }
 
+    .timeline-step:hover .step-card {
+        transform: translateY(-2px);
+    }
+}
+
+/* ===== Celebration Glow (last step) ===== */
+.celebration-glow {
+    animation: celebrationPulse 2s ease-in-out infinite;
+}
+
+@keyframes celebrationPulse {
+
+    0%,
     100% {
-        left: 150%;
+        box-shadow:
+            0 0 20px rgba(34, 197, 94, 0.15),
+            0 20px 40px -8px rgba(34, 197, 94, 0.12);
     }
+
+    50% {
+        box-shadow:
+            0 0 35px rgba(34, 197, 94, 0.25),
+            0 0 60px rgba(34, 197, 94, 0.08),
+            0 20px 40px -8px rgba(34, 197, 94, 0.18);
+    }
+}
+
+/* ===== Scrollbar Utility ===== */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }

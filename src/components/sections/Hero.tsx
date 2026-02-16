@@ -88,15 +88,9 @@ export default function Hero() {
                             <Link
                                 href="https://wa.me/6285333338818"
                                 target="_blank"
-                                className="px-8 h-14 rounded-2xl bg-white text-gray-700 font-bold border border-gray-200 flex items-center justify-center gap-3 hover:border-[#2a6ba7] hover:text-[#2a6ba7] transition-all duration-300 group"
+                                className="px-8 h-14 rounded-2xl bg-green-500 text-white font-bold border border-gray-200 flex items-center justify-center gap-3 hover:border-[#2a6ba7] hover:text-[#2a6ba7] transition-all duration-300 group"
                             >
-                                <Image
-                                    src="/images/whatsapp-icon.svg"
-                                    alt="WA"
-                                    width={24}
-                                    height={24}
-                                    className="w-6 h-6 grayscale group-hover:grayscale-0 transition-all"
-                                />
+                                <i className="fa-brands fa-whatsapp text-[28px]"></i>
                                 <span>Konsultasi Gratis</span>
                             </Link>
                         </div>

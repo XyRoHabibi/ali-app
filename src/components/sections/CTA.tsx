@@ -76,7 +76,7 @@ export default function CTA() {
                             <Link
                                 href="https://wa.me/6285333338818?text=Halo%20Admin,%20saya%20mau%20konsultasi%20pendirian%20PT."
                                 target="_blank"
-                                className="h-16 px-10 bg-[#f3b444] text-[#2a6ba7] font-black text-lg rounded-2xl shadow-lg shadow-[#f3b444]/20 hover:scale-105 transition-all flex items-center justify-center gap-2"
+                                className="hover:text-[#2a6ba7] h-16 px-10 bg-green-500 text-white font-black text-lg rounded-2xl shadow-lg shadow-[#f3b444]/20 hover:scale-105 transition-all flex items-center justify-center gap-2"
                             >
                                 <i className="fa-brands fa-whatsapp text-2xl"></i>
                                 Chat WhatsApp
