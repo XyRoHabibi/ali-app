@@ -22,10 +22,12 @@ export const metadata: Metadata = {
 };
 
 // Dashboard has its own layout without the main Header and Footer
+import DashboardShell from "./components/DashboardShell";
+
 export default function DashboardLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    return <>{children}</>;
+    return <DashboardShell>{children}</DashboardShell>;
 }
