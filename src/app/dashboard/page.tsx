@@ -9,8 +9,8 @@ const sidebarNavItems = [
     { href: "/dashboard", label: "Overview", icon: "dashboard", active: true },
     { href: "/dashboard/permohonan", label: "Permohonan Saya", icon: "description", active: false },
     { href: "/dashboard/dokumen", label: "Dokumen Legal", icon: "folder", active: false },
-    { href: "/harga", label: "Billing & Harga", icon: "payments", active: false },
-    { href: "/pajak", label: "Pelaporan Pajak", icon: "receipt_long", active: false },
+    { href: "/dashboard/harga", label: "Billing & Harga", icon: "payments", active: false },
+    { href: "/dashboard/pajak", label: "Pelaporan Pajak", icon: "receipt_long", active: false },
 ];
 
 // Stats data
