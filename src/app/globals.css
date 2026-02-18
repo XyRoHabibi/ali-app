@@ -450,6 +450,25 @@ body {
   overflow: hidden;
 }
 
+/* ===== Custom Scrollbar Utility ===== */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(42, 107, 167, 0.05);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(42, 107, 167, 0.2);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(42, 107, 167, 0.4);
+}
+
 /* ===== No Scrollbar Utility ===== */
 .no-scrollbar {
   -ms-overflow-style: none;
@@ -653,13 +672,23 @@ body.mobile-menu-open .floating-wa {
 }
 
 @keyframes gwallLeft {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-25%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-25%);
+  }
 }
 
 @keyframes gwallRight {
-  0% { transform: translateX(-25%); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(-25%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .gwall-thumb {
