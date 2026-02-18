@@ -143,7 +143,7 @@ export default function HargaPage() {
             const ctx = gsap.context(() => {
                 ScrollTrigger.create({
                     trigger: sidebarRef.current,
-                    start: "top 112px",
+                    start: "top 99px",
                     endTrigger: containerRef.current,
                     end: "bottom bottom",
                     pin: true,
