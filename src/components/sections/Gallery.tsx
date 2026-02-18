@@ -6,51 +6,51 @@ import { motion, AnimatePresence } from "framer-motion";
 
 // Pool foto — akan di-shuffle dan didistribusikan ke banyak baris
 const allPhotos = [
-    "https://images.unsplash.com/photo-1556761175-4b46a572b786?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1552664730-d307ca884978?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1560264280-88b68371db39?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1606857521015-7f9fcf423740?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1573164574572-cb89e39749b4?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1497366216548-37526070297c?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1553484771-047a44eee27b?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1556155092-490a1ba16284?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1531973576160-7125cd663d86?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1600478689706-72a14c113679?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1551434678-e076c223a692?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1553028826-f4804a6dba3b?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1556745753-b2904692b3cd?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1542744094-3a31f272c490?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1573497491765-dccce02b29df?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1557425955-df376b5903c8?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1556155092-490a1ba16284?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1573164574572-cb89e39749b4?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=240&h=160&fit=crop",
-    "https://images.unsplash.com/photo-1560264280-88b68371db39?w=240&h=160&fit=crop",
+    "https://images.unsplash.com/photo-1556761175-4b46a572b786?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1552664730-d307ca884978?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1560264280-88b68371db39?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1606857521015-7f9fcf423740?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1573164574572-cb89e39749b4?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1497366216548-37526070297c?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1553484771-047a44eee27b?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1556155092-490a1ba16284?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1531973576160-7125cd663d86?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1600478689706-72a14c113679?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1551434678-e076c223a692?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1553028826-f4804a6dba3b?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1556745753-b2904692b3cd?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1542744094-3a31f272c490?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1573497491765-dccce02b29df?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1557425955-df376b5903c8?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1556155092-490a1ba16284?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1573164574572-cb89e39749b4?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=180&h=260&fit=crop",
+    "https://images.unsplash.com/photo-1560264280-88b68371db39?w=180&h=260&fit=crop",
 ];
 
 // Konfigurasi 5 baris dengan kecepatan & arah berbeda
@@ -114,8 +114,8 @@ function MarqueeStrip({
                         <Image
                             src={src}
                             alt="Dokumentasi penyerahan"
-                            width={240}
-                            height={160}
+                            width={180}
+                            height={260}
                             className="gwall-img"
                             loading="lazy"
                         />
@@ -238,10 +238,10 @@ export default function Gallery() {
                                 <span className="material-symbols-outlined text-xl">close</span>
                             </button>
                             <Image
-                                src={lightbox.replace(/w=\d+&h=\d+/, "w=1200&h=900")}
+                                src={lightbox.replace(/w=\d+&h=\d+/, "w=800&h=1200")}
                                 alt="Dokumentasi penyerahan"
-                                width={1200}
-                                height={900}
+                                width={800}
+                                height={1200}
                                 className="gwall-lb-img"
                                 priority
                             />
