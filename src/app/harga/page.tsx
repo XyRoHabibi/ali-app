@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 // Kalkulator Services - All 80 services for calculator
 const kalkulatorServices = [
@@ -127,6 +129,36 @@ export default function HargaPage() {
     const [activeTab, setActiveTab] = useState("all");
     const [cart, setCart] = useState<CartItem[]>([]);
     const sectionRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const sidebarRef = useRef<HTMLElement>(null);
+
+    // GSAP ScrollTrigger for sticky sidebar
+    useEffect(() => {
+        gsap.registerPlugin(ScrollTrigger);
+
+        const ctx = gsap.context(() => {
+            ScrollTrigger.matchMedia({
+                "(min-width: 1024px)": function () {
+                    const sidebar = sidebarRef.current;
+                    const container = containerRef.current;
+
+                    if (!sidebar || !container) return;
+
+                    ScrollTrigger.create({
+                        trigger: sidebar,
+                        start: "top 100px",
+                        endTrigger: container,
+                        end: "bottom bottom",
+                        pin: true,
+                        pinSpacing: false,
+                        markers: false,
+                    });
+                }
+            });
+        });
+
+        return () => ctx.revert();
+    }, [cart]);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -241,7 +273,7 @@ export default function HargaPage() {
                     </div>
                 </div>
 
-                <div className="flex flex-col lg:flex-row gap-8 items-start">
+                <div ref={containerRef} className="flex flex-col lg:flex-row gap-8 items-start relative">
                     {/* Service Grid */}
                     <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4 reveal-up">
                         {filteredServices.map((service) => {
@@ -306,7 +338,7 @@ export default function HargaPage() {
                     </div>
 
                     {/* Right: Sticky Summary */}
-                    <aside className="w-full lg:w-96 sticky top-24">
+                    <aside ref={sidebarRef} className="w-full lg:w-96">
                         <div className="bg-white rounded-2xl border border-[#2a6ba7]/20 shadow-xl overflow-hidden">
                             <div className="p-6 border-b border-gray-100">
                                 <h4 className="text-lg font-bold flex items-center gap-2">
