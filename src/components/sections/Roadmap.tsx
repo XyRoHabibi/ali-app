@@ -160,30 +160,37 @@ export default function Roadmap() {
     useEffect(() => {
         if (!contentRef.current) return;
 
-        // Reset animasi sebelumnya jika user scroll cepat
-        gsap.killTweensOf(contentRef.current.children);
+        const ctx = gsap.context(() => {
+            if (!contentRef.current) return;
 
-        // Animasi Masuk Staggered (Icon -> Judul -> Detail)
-        // Ini membuat efek elemen masuk satu per satu
-        gsap.fromTo(
-            contentRef.current.children,
-            {
-                y: 30,          // Mulai dari sedikit ke bawah
-                opacity: 0,     // Mulai transparan
-                filter: "blur(5px)", // Mulai agak blur
-                scale: 0.95     // Sedikit lebih kecil
-            },
-            {
-                y: 0,
-                opacity: 1,
-                filter: "blur(0px)",
-                scale: 1,
-                duration: 0.5,
-                stagger: 0.1,   // Jeda 0.1 detik antar elemen (Icon, Text, Box AI)
-                ease: "back.out(1.2)", // Sedikit efek mantul (bouncy) biar menarik
-                overwrite: "auto"
+            // Reset animasi sebelumnya jika user scroll cepat
+            gsap.killTweensOf(contentRef.current.children);
+
+            // Animasi Masuk Staggered (Icon -> Judul -> Detail)
+            if (contentRef.current.children.length > 0) {
+                gsap.fromTo(
+                    contentRef.current.children,
+                    {
+                        y: 30,
+                        opacity: 0,
+                        filter: "blur(5px)",
+                        scale: 0.95
+                    },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        filter: "blur(0px)",
+                        scale: 1,
+                        duration: 0.5,
+                        stagger: 0.1,
+                        ease: "back.out(1.2)",
+                        overwrite: "auto"
+                    }
+                );
             }
-        );
+        });
+
+        return () => ctx.revert();
     }, [currentStep]);
 
     const handleStepClick = (index: number) => {
@@ -204,199 +211,202 @@ export default function Roadmap() {
     const step = roadmapSteps[currentStep];
 
     return (
-        <section
-            id="roadmap-section"
-            ref={sectionRef}
-            className="relative bg-[#F9FAFB] overflow-hidden pb-40"
-        >
-            {/* Background Blob */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-tr from-blue-50 to-purple-50 rounded-full blur-[120px] -z-10" />
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
+        <div className="roadmap-outer-wrapper overflow-hidden">
+            <section
+                id="roadmap-section"
+                ref={sectionRef}
+                className="relative bg-[#F9FAFB] lg:pb-40"
+            >
+                {/* Background Blob */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-tr from-blue-50 to-purple-50 rounded-full blur-[120px] -z-10" />
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
 
-            {/* Container Utama */}
-            <div className="w-full px-6 pt-32 lg:min-h-screen lg:flex lg:flex-col lg:justify-center relative z-10">
+                {/* Container Utama */}
+                <div className="w-full px-6 pt-32 lg:min-h-screen lg:flex lg:flex-col lg:justify-center relative z-10">
 
-                <div className="max-w-[1200px] mx-auto w-full">
-                    {/* Header */}
-                    <div className="text-center mb-10 lg:mb-20">
-                        <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-4">
-                            Alur <span className="text-[#2a6ba7] italic">Pendirian Legalitas</span>
-                        </h2>
-                        <p className="text-base md:text-lg text-gray-500 font-medium">
-                            Pantau progres legalitas Anda layaknya memantau paket belanja online.
-                        </p>
-                    </div>
-
-                    {/* --- DESKTOP VIEW (Pinned Layout) --- */}
-                    <div className="hidden lg:grid grid-cols-12 gap-8 items-stretch h-[600px]">
-                        {/* Roadmap Sidebar */}
-                        <div className="col-span-4 flex flex-col h-full">
-                            <div className="roadmap-container overflow-y-auto px-6 py-4 space-y-4 h-full scrollbar-thin scrollbar-thumb-gray-200">
-                                {roadmapSteps.map((s, index) => (
-                                    <div
-                                        key={s.id}
-                                        className={`flex items-center gap-4 p-4 rounded-xl border-l-4 transition-all duration-200 cursor-pointer ${index === currentStep
-                                            ? "bg-white !border-l-[#f3b444] shadow-[0_15px_35px_-10px_rgba(0,0,0,0.1)] scale-[1.05] !opacity-100 z-10"
-                                            : "border-l-transparent opacity-20 grayscale hover:opacity-100 hover:grayscale-0"
-                                            }`}
-                                    >
-                                        <div
-                                            className={`step-number size-9 rounded-lg flex items-center justify-center font-black text-xs transition-colors duration-300 ${index === currentStep
-                                                ? "!bg-[#f3b444] text-[#2a6ba7] shadow-[0_0_15px_rgba(243,180,68,0.4)]"
-                                                : "bg-gray-200 text-gray-500"
-                                                }`}
-                                        >
-                                            {index + 1}
-                                        </div>
-                                        <div className="flex-1">
-                                            <h4 className={`text-xs font-black uppercase tracking-tight transition-colors ${index === currentStep ? "text-[#2a6ba7]" : "text-gray-600"
-                                                }`}>
-                                                {s.title}
-                                            </h4>
-                                            <p className="text-[9px] text-gray-500 font-bold uppercase tracking-widest">
-                                                Step 0{index + 1}
-                                            </p>
-                                        </div>
-                                        <span
-                                            className={`material-symbols-outlined text-xl transition-all duration-300 ${index === currentStep ? iconColors[index] : "text-gray-400"
-                                                }`}
-                                        >
-                                            {s.icon}
-                                        </span>
-                                    </div>
-                                ))}
-                            </div>
+                    <div className="max-w-[1200px] mx-auto w-full">
+                        {/* Header */}
+                        <div className="text-center mb-10 lg:mb-20">
+                            <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-4">
+                                Alur <span className="text-[#2a6ba7] italic">Pendirian Legalitas</span>
+                            </h2>
+                            <p className="text-base md:text-lg text-gray-500 font-medium">
+                                Pantau progres legalitas Anda layaknya memantau paket belanja online.
+                            </p>
                         </div>
 
-                        {/* Display Panel (Mac Browser Look) - Desktop Only */}
-                        <div className="col-span-8 h-full">
-                            <div className="bg-white rounded-[2rem] h-full flex flex-col overflow-hidden relative shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] border border-gray-200 transition-all duration-500">
-                                {/* Mac Browser Header */}
-                                <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/80 backdrop-blur-md flex items-center justify-between sticky top-0 z-20">
-                                    <div className="flex gap-2">
-                                        <div className="w-3 h-3 rounded-full bg-[#FF5F57] border border-red-400/30" />
-                                        <div className="w-3 h-3 rounded-full bg-[#FEBC2E] border border-yellow-400/30" />
-                                        <div className="w-3 h-3 rounded-full bg-[#28C840] border border-green-400/30" />
+                        {/* --- DESKTOP VIEW (Pinned Layout) --- */}
+                        <div className="hidden lg:grid grid-cols-12 gap-8 items-stretch h-[600px]">
+                            {/* Roadmap Sidebar */}
+                            <div className="col-span-4 flex flex-col h-full">
+                                <div className="roadmap-container overflow-y-auto px-6 py-4 space-y-4 h-full scrollbar-thin scrollbar-thumb-gray-200">
+                                    {roadmapSteps.map((s, index) => (
+                                        <div
+                                            key={s.id}
+                                            className={`flex items-center gap-4 p-4 rounded-xl border-l-4 transition-all duration-200 cursor-pointer ${index === currentStep
+                                                ? "bg-white !border-l-[#f3b444] shadow-[0_15px_35px_-10px_rgba(0,0,0,0.1)] scale-[1.05] !opacity-100 z-10"
+                                                : "border-l-transparent opacity-20 grayscale hover:opacity-100 hover:grayscale-0"
+                                                }`}
+                                            onClick={() => handleStepClick(index)}
+                                        >
+                                            <div
+                                                className={`step-number size-9 rounded-lg flex items-center justify-center font-black text-xs transition-colors duration-300 ${index === currentStep
+                                                    ? "!bg-[#f3b444] text-[#2a6ba7] shadow-[0_0_15px_rgba(243,180,68,0.4)]"
+                                                    : "bg-gray-200 text-gray-500"
+                                                    }`}
+                                            >
+                                                {index + 1}
+                                            </div>
+                                            <div className="flex-1">
+                                                <h4 className={`text-xs font-black uppercase tracking-tight transition-colors ${index === currentStep ? "text-[#2a6ba7]" : "text-gray-600"
+                                                    }`}>
+                                                    {s.title}
+                                                </h4>
+                                                <p className="text-[9px] text-gray-500 font-bold uppercase tracking-widest">
+                                                    Step 0{index + 1}
+                                                </p>
+                                            </div>
+                                            <span
+                                                className={`material-symbols-outlined text-xl transition-all duration-300 ${index === currentStep ? iconColors[index] : "text-gray-400"
+                                                    }`}
+                                            >
+                                                {s.icon}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Display Panel (Mac Browser Look) - Desktop Only */}
+                            <div className="col-span-8 h-full">
+                                <div className="bg-white rounded-[2rem] h-full flex flex-col overflow-hidden relative shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] border border-gray-200 transition-all duration-500">
+                                    {/* Mac Browser Header */}
+                                    <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/80 backdrop-blur-md flex items-center justify-between sticky top-0 z-20">
+                                        <div className="flex gap-2">
+                                            <div className="w-3 h-3 rounded-full bg-[#FF5F57] border border-red-400/30" />
+                                            <div className="w-3 h-3 rounded-full bg-[#FEBC2E] border border-yellow-400/30" />
+                                            <div className="w-3 h-3 rounded-full bg-[#28C840] border border-green-400/30" />
+                                        </div>
+                                        <div className="flex items-center gap-2 px-4 py-1.5 bg-white rounded-lg border border-gray-200 shadow-sm w-1/2 justify-center">
+                                            <span className="material-symbols-outlined text-[10px] text-gray-400">lock</span>
+                                            <span className="text-[10px] font-bold text-gray-500 tracking-wide">
+                                                system.akseslegal.id/monitoring
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <div className="px-3 py-1 bg-green-500/10 rounded-full border border-green-500/20 flex items-center gap-1.5">
+                                                <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+                                                <span className="text-[9px] font-bold text-green-600 uppercase tracking-wider">Live</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="flex items-center gap-2 px-4 py-1.5 bg-white rounded-lg border border-gray-200 shadow-sm w-1/2 justify-center">
-                                        <span className="material-symbols-outlined text-[10px] text-gray-400">lock</span>
-                                        <span className="text-[10px] font-bold text-gray-500 tracking-wide">
-                                            system.akseslegal.id/monitoring
-                                        </span>
+
+                                    {/* Content Area with Animation Target */}
+                                    <div className="flex-1 p-12 flex flex-col items-center justify-center text-center relative z-10">
+                                        <div ref={contentRef} className="space-y-8 w-full">
+
+                                            {/* Child 1: Icon */}
+                                            <div className="size-24 bg-[#2a6ba7]/5 rounded-[2rem] flex items-center justify-center text-4xl text-[#2a6ba7] mx-auto shadow-inner ring-4 ring-white">
+                                                <span className="material-symbols-outlined text-5xl">
+                                                    {step.icon}
+                                                </span>
+                                            </div>
+
+                                            {/* Child 2: Title & Desc */}
+                                            <div className="space-y-4">
+                                                <h4 className="text-3xl font-black text-gray-900">
+                                                    {step.title}
+                                                </h4>
+                                                <div className="bg-[#2a6ba7]/5 p-6 rounded-2xl border border-[#2a6ba7]/10 max-w-lg mx-auto">
+                                                    <p className="text-gray-500 leading-relaxed text-base italic font-medium">
+                                                        &quot;{step.desc}&quot;
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            {/* Child 3: Detail Box */}
+                                            <div className="flex items-start gap-4 text-left p-4 rounded-xl border-l-4 border-[#f3b444] bg-[#f3b444]/5 max-w-md mx-auto">
+                                                <span className="material-symbols-outlined text-[#2a6ba7] text-xl mt-0.5">smart_toy</span>
+                                                <p className="text-[11px] text-gray-500 leading-relaxed">
+                                                    <span className="font-black text-[#2a6ba7] uppercase mr-1">AI Intelligence:</span>
+                                                    {step.detail}
+                                                </p>
+                                            </div>
+
+                                        </div>
                                     </div>
-                                    <div className="flex items-center gap-2">
-                                        <div className="px-3 py-1 bg-green-500/10 rounded-full border border-green-500/20 flex items-center gap-1.5">
-                                            <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-                                            <span className="text-[9px] font-bold text-green-600 uppercase tracking-wider">Live</span>
+
+                                    {/* Footer */}
+                                    <div className="px-8 py-5 bg-white border-t border-gray-100 flex justify-between items-center relative z-10">
+                                        <div className="flex items-center gap-3 opacity-60">
+                                            <span className="material-symbols-outlined text-[#2a6ba7] text-xl">verified_user</span>
+                                            <div className="text-left">
+                                                <p className="text-[10px] font-bold text-gray-900 uppercase">Verified Partner</p>
+                                                <p className="text-[9px] text-gray-400">Kemenkumham RI</p>
+                                            </div>
+                                        </div>
+                                        <div className="text-right opacity-60">
+                                            <p className="text-[10px] font-bold text-[#2a6ba7] uppercase">Est. Time</p>
+                                            <p className="text-[10px] font-bold text-gray-500">1-3 Working Days</p>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
 
-                                {/* Content Area with Animation Target */}
-                                <div className="flex-1 p-12 flex flex-col items-center justify-center text-center relative z-10">
-                                    <div ref={contentRef} className="space-y-8 w-full">
+                        {/* --- MOBILE VIEW (Vertical Timeline) --- */}
+                        <div className="lg:hidden relative space-y-8 pl-4">
+                            {/* Vertical Line */}
+                            <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200" />
 
-                                        {/* Child 1: Icon */}
-                                        <div className="size-24 bg-[#2a6ba7]/5 rounded-[2rem] flex items-center justify-center text-4xl text-[#2a6ba7] mx-auto shadow-inner ring-4 ring-white">
-                                            <span className="material-symbols-outlined text-5xl">
-                                                {step.icon}
-                                            </span>
-                                        </div>
+                            {roadmapSteps.map((s, index) => (
+                                <div key={s.id} className="mobile-card relative pl-8">
+                                    {/* Dot on timeline (Added mobile-dot class for GSAP targeting) */}
+                                    <div className={`mobile-dot absolute left-0 top-6 -translate-x-1/2 size-8 rounded-full border-4 border-[#F9FAFB] flex items-center justify-center z-10 ${index <= 8 ? "bg-[#2a6ba7] text-white" : "bg-white text-gray-400 border-gray-200"
+                                        }`}>
+                                        <span className="text-[10px]  font-bold">{index + 1}</span>
+                                    </div>
 
-                                        {/* Child 2: Title & Desc */}
-                                        <div className="space-y-4">
-                                            <h4 className="text-3xl font-black text-gray-900">
-                                                {step.title}
-                                            </h4>
-                                            <div className="bg-[#2a6ba7]/5 p-6 rounded-2xl border border-[#2a6ba7]/10 max-w-lg mx-auto">
-                                                <p className="text-gray-500 leading-relaxed text-base italic font-medium">
-                                                    &quot;{step.desc}&quot;
+                                    {/* Mobile Card Content */}
+                                    <div className="mobile-content bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <div className="size-10 rounded-lg bg-[#2a6ba7]/10 flex items-center justify-center text-[#2a6ba7]">
+                                                <span className="material-symbols-outlined text-xl">
+                                                    {s.icon}
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <h4 className="text-lg font-black text-gray-900">
+                                                    {s.title}
+                                                </h4>
+                                                <p className="text-[10px] font-bold text-gray-400  uppercase tracking-widest">
+                                                    Step 0{index + 1}
                                                 </p>
                                             </div>
                                         </div>
 
-                                        {/* Child 3: Detail Box */}
-                                        <div className="flex items-start gap-4 text-left p-4 rounded-xl border-l-4 border-[#f3b444] bg-[#f3b444]/5 max-w-md mx-auto">
-                                            <span className="material-symbols-outlined text-[#2a6ba7] text-xl mt-0.5">smart_toy</span>
-                                            <p className="text-[11px] text-gray-500 leading-relaxed">
-                                                <span className="font-black text-[#2a6ba7] uppercase mr-1">AI Intelligence:</span>
-                                                {step.detail}
-                                            </p>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                {/* Footer */}
-                                <div className="px-8 py-5 bg-white border-t border-gray-100 flex justify-between items-center relative z-10">
-                                    <div className="flex items-center gap-3 opacity-60">
-                                        <span className="material-symbols-outlined text-[#2a6ba7] text-xl">verified_user</span>
-                                        <div className="text-left">
-                                            <p className="text-[10px] font-bold text-gray-900 uppercase">Verified Partner</p>
-                                            <p className="text-[9px] text-gray-400">Kemenkumham RI</p>
-                                        </div>
-                                    </div>
-                                    <div className="text-right opacity-60">
-                                        <p className="text-[10px] font-bold text-[#2a6ba7] uppercase">Est. Time</p>
-                                        <p className="text-[10px] font-bold text-gray-500">1-3 Working Days</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* --- MOBILE VIEW (Vertical Timeline) --- */}
-                    <div className="lg:hidden relative space-y-8 pl-4">
-                        {/* Vertical Line */}
-                        <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200" />
-
-                        {roadmapSteps.map((s, index) => (
-                            <div key={s.id} className="mobile-card relative pl-8">
-                                {/* Dot on timeline (Added mobile-dot class for GSAP targeting) */}
-                                <div className={`mobile-dot absolute left-0 top-6 -translate-x-1/2 size-8 rounded-full border-4 border-[#F9FAFB] flex items-center justify-center z-10 ${index <= 8 ? "bg-[#2a6ba7] text-white" : "bg-white text-gray-400 border-gray-200"
-                                    }`}>
-                                    <span className="text-[10px]  font-bold">{index + 1}</span>
-                                </div>
-
-                                {/* Mobile Card Content */}
-                                <div className="mobile-content bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                                    <div className="flex items-center gap-3 mb-4">
-                                        <div className="size-10 rounded-lg bg-[#2a6ba7]/10 flex items-center justify-center text-[#2a6ba7]">
-                                            <span className="material-symbols-outlined text-xl">
-                                                {s.icon}
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <h4 className="text-lg font-black text-gray-900">
-                                                {s.title}
-                                            </h4>
-                                            <p className="text-[10px] font-bold text-gray-400  uppercase tracking-widest">
-                                                Step 0{index + 1}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <p className="text-sm text-gray-600 leading-relaxed mb-4">
-                                        {s.desc}
-                                    </p>
-
-                                    {/* Mobile Detail Box */}
-                                    <div className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100">
-                                        <span className="material-symbols-outlined text-[#f3b444] text-lg">
-                                            smart_toy
-                                        </span>
-                                        <p className="text-[11px] text-gray-500">
-                                            <span className="font-bold text-gray-700">AI: </span>
-                                            {s.detail}
+                                        <p className="text-sm text-gray-600 leading-relaxed mb-4">
+                                            {s.desc}
                                         </p>
+
+                                        {/* Mobile Detail Box */}
+                                        <div className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100">
+                                            <span className="material-symbols-outlined text-[#f3b444] text-lg">
+                                                smart_toy
+                                            </span>
+                                            <p className="text-[11px] text-gray-500">
+                                                <span className="font-bold text-gray-700">AI: </span>
+                                                {s.detail}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
 
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
     );
 }

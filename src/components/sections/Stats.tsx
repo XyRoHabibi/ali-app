@@ -13,6 +13,8 @@ export default function Stats() {
     const countersRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        const timers: NodeJS.Timeout[] = [];
+
         const animateCounter = (element: HTMLElement, target: number, hasPlus: boolean) => {
             const duration = 2000;
             const steps = 60;
@@ -27,8 +29,11 @@ export default function Stats() {
                     current = target;
                     clearInterval(timer);
                 }
-                element.textContent = (isDecimal ? current.toFixed(1) : Math.floor(current).toString()) + (hasPlus && current >= target ? "+" : "");
+                if (element) {
+                    element.textContent = (isDecimal ? current.toFixed(1) : Math.floor(current).toString()) + (hasPlus && current >= target ? "+" : "");
+                }
             }, stepDuration);
+            timers.push(timer);
         };
 
         const observer = new IntersectionObserver(
@@ -53,7 +58,10 @@ export default function Stats() {
             observer.observe(countersRef.current);
         }
 
-        return () => observer.disconnect();
+        return () => {
+            observer.disconnect();
+            timers.forEach(timer => clearInterval(timer));
+        };
     }, []);
 
     return (
