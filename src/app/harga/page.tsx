@@ -5,6 +5,8 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+gsap.registerPlugin(ScrollTrigger);
+
 // Kalkulator Services - All 80 services for calculator
 const kalkulatorServices = [
     { id: "ptp", name: "PT Perorangan", price: 999000, category: "usaha", icon: "person", color: "primary" },
@@ -129,36 +131,45 @@ export default function HargaPage() {
     const [activeTab, setActiveTab] = useState("all");
     const [cart, setCart] = useState<CartItem[]>([]);
     const sectionRef = useRef<HTMLDivElement>(null);
+    const sidebarRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    const sidebarRef = useRef<HTMLElement>(null);
 
-    // GSAP ScrollTrigger for sticky sidebar
     useEffect(() => {
-        gsap.registerPlugin(ScrollTrigger);
+        if (!sidebarRef.current || !containerRef.current) return;
 
-        const ctx = gsap.context(() => {
-            ScrollTrigger.matchMedia({
-                "(min-width: 1024px)": function () {
-                    const sidebar = sidebarRef.current;
-                    const container = containerRef.current;
+        const mm = gsap.matchMedia();
 
-                    if (!sidebar || !container) return;
-
-                    ScrollTrigger.create({
-                        trigger: sidebar,
-                        start: "top 100px",
-                        endTrigger: container,
-                        end: "bottom bottom",
-                        pin: true,
-                        pinSpacing: false,
-                        markers: false,
-                    });
-                }
+        mm.add("(min-width: 1024px)", () => {
+            const ctx = gsap.context(() => {
+                ScrollTrigger.create({
+                    trigger: sidebarRef.current,
+                    start: "top 112px",
+                    endTrigger: containerRef.current,
+                    end: "bottom bottom",
+                    pin: true,
+                    pinSpacing: true,
+                    anticipatePin: 1,
+                    invalidateOnRefresh: true,
+                });
             });
+
+            return () => ctx.revert();
         });
 
-        return () => ctx.revert();
-    }, [cart]);
+        // Use a ResizeObserver to catch height changes from content switching
+        const resizeObserver = new ResizeObserver(() => {
+            ScrollTrigger.refresh();
+        });
+
+        if (containerRef.current) {
+            resizeObserver.observe(containerRef.current);
+        }
+
+        return () => {
+            resizeObserver.disconnect();
+            mm.revert();
+        };
+    }, []); // Removed activeTab from deps because ResizeObserver handles it
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -273,7 +284,7 @@ export default function HargaPage() {
                     </div>
                 </div>
 
-                <div ref={containerRef} className="flex flex-col lg:flex-row gap-8 items-start relative">
+                <div className="flex flex-col lg:flex-row gap-8 items-start relative min-h-[800px]" ref={containerRef}>
                     {/* Service Grid */}
                     <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4 reveal-up">
                         {filteredServices.map((service) => {
@@ -337,8 +348,116 @@ export default function HargaPage() {
                         })}
                     </div>
 
-                    {/* Right: Sticky Summary */}
-                    <aside ref={sidebarRef} className="w-full lg:w-96">
+                    {/* Right: Summary (Pinned) */}
+                    <div className="hidden lg:block lg:w-96 flex-none" ref={sidebarRef}>
+                        <aside className="w-full lg:w-96 z-40" key={activeTab}>
+                            <div className="bg-white rounded-2xl border border-[#2a6ba7]/20 shadow-xl overflow-hidden">
+                                <div className="p-6 border-b border-gray-100">
+                                    <h4 className="text-lg font-bold flex items-center gap-2">
+                                        <span className="material-symbols-outlined text-[#2a6ba7]">
+                                            shopping_cart
+                                        </span>
+                                        Ringkasan Pesanan
+                                    </h4>
+                                    <p className="text-xs text-[#57748e] mt-1">
+                                        Estimasi pengerjaan: 1-3 Hari Kerja
+                                    </p>
+                                </div>
+
+                                <div className="p-6 space-y-4 max-h-[calc(100vh-450px)] overflow-y-auto custom-scrollbar" id="cart-items">
+                                    {cart.length === 0 ? (
+                                        <div className="text-center py-8 text-gray-400 italic text-sm">
+                                            Belum ada layanan dipilih
+                                        </div>
+                                    ) : (
+                                        cart.map((item) => (
+                                            <div
+                                                key={item.id}
+                                                className="flex justify-between items-center animate-in fade-in slide-in-from-right-4 duration-300"
+                                            >
+                                                <div className="flex flex-col">
+                                                    <span className="text-sm font-black text-gray-900">{item.name}</span>
+                                                    <button
+                                                        onClick={() => removeFromCart(item.id)}
+                                                        className="text-[10px] text-red-500 font-bold text-left hover:underline"
+                                                    >
+                                                        Hapus Layanan
+                                                    </button>
+                                                </div>
+                                                <span className="text-sm font-black text-gray-900">
+                                                    {formatCurrency(item.price)}
+                                                </span>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+
+                                <div className="p-6 pt-0">
+                                    <div className="pt-4 border-t border-dashed border-gray-200">
+                                        <div className="flex justify-between items-center mb-1">
+                                            <span className="text-sm text-[#57748e]">Subtotal</span>
+                                            <span className="text-sm font-bold">{formatCurrency(subtotal)}</span>
+                                        </div>
+                                        <div className="flex justify-between items-center mb-6">
+                                            <span className="text-sm text-[#57748e]">Pajak (PPN 11%)</span>
+                                            <span className="text-sm font-bold">{formatCurrency(tax)}</span>
+                                        </div>
+                                        <div className="flex justify-between items-end mb-8">
+                                            <span className="text-base font-bold">Total Harga</span>
+                                            <span className="text-3xl font-black text-[#2a6ba7]">
+                                                {formatCurrency(total)}
+                                            </span>
+                                        </div>
+                                        <Link
+                                            href={cart.length > 0 ? generateWhatsAppLink() : "#"}
+                                            target={cart.length > 0 ? "_blank" : undefined}
+                                            className={`w-full py-4 rounded-xl font-bold text-base shadow-lg shadow-[#2a6ba7]/20 transition-transform active:scale-95 flex items-center justify-center ${cart.length > 0
+                                                ? "bg-[#2a6ba7] text-white hover:scale-[1.02]"
+                                                : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                                                }`}
+                                        >
+                                            Pesan Sekarang
+                                        </Link>
+
+                                        <div className="mt-6 flex flex-col gap-3">
+                                            <div className="flex items-center gap-2 text-[11px] font-bold text-[#57748e] uppercase tracking-widest">
+                                                <span className="material-symbols-outlined text-sm text-green-500">
+                                                    verified
+                                                </span>
+                                                Tanpa Biaya Tersembunyi
+                                            </div>
+                                            <div className="flex items-center gap-2 text-[11px] font-bold text-[#57748e] uppercase tracking-widest">
+                                                <span className="material-symbols-outlined text-sm text-green-500">
+                                                    speed
+                                                </span>
+                                                Proses Tercepat di Indonesia
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Promo Card */}
+                            <div className="mt-4 p-4 bg-gradient-to-br from-[#2a6ba7] to-[#1a2c3d] rounded-2xl text-white relative overflow-hidden">
+                                <div className="relative z-10">
+                                    <p className="text-[10px] font-bold uppercase tracking-wider mb-1 opacity-80">
+                                        Promo UMK Baru
+                                    </p>
+                                    <p className="text-sm font-bold leading-snug">
+                                        Bundling PT Perorangan + NIB + Merek hanya Rp 2.2jt!
+                                    </p>
+                                </div>
+                                <span className="material-symbols-outlined absolute -bottom-2 -right-2 text-6xl opacity-10">
+                                    redeem
+                                </span>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+
+                {/* Mobile: Summary (Non-Sticky) */}
+                <div className="lg:hidden mt-12">
+                    <aside className="w-full">
                         <div className="bg-white rounded-2xl border border-[#2a6ba7]/20 shadow-xl overflow-hidden">
                             <div className="p-6 border-b border-gray-100">
                                 <h4 className="text-lg font-bold flex items-center gap-2">
@@ -352,7 +471,7 @@ export default function HargaPage() {
                                 </p>
                             </div>
 
-                            <div className="p-6 space-y-4" id="cart-items">
+                            <div className="p-6 space-y-4 max-h-[400px] overflow-y-auto" id="cart-items-mobile">
                                 {cart.length === 0 ? (
                                     <div className="text-center py-8 text-gray-400 italic text-sm">
                                         Belum ada layanan dipilih
@@ -360,8 +479,8 @@ export default function HargaPage() {
                                 ) : (
                                     cart.map((item) => (
                                         <div
-                                            key={item.id}
-                                            className="flex justify-between items-center animate-in fade-in slide-in-from-right-4 duration-300"
+                                            key={`mob-${item.id}`}
+                                            className="flex justify-between items-center"
                                         >
                                             <div className="flex flex-col">
                                                 <span className="text-sm font-black text-gray-900">{item.name}</span>
@@ -400,44 +519,14 @@ export default function HargaPage() {
                                         href={cart.length > 0 ? generateWhatsAppLink() : "#"}
                                         target={cart.length > 0 ? "_blank" : undefined}
                                         className={`w-full py-4 rounded-xl font-bold text-base shadow-lg shadow-[#2a6ba7]/20 transition-transform active:scale-95 flex items-center justify-center ${cart.length > 0
-                                            ? "bg-[#2a6ba7] text-white hover:scale-[1.02]"
+                                            ? "bg-[#2a6ba7] text-white"
                                             : "bg-gray-200 text-gray-400 cursor-not-allowed"
                                             }`}
                                     >
                                         Pesan Sekarang
                                     </Link>
-
-                                    <div className="mt-6 flex flex-col gap-3">
-                                        <div className="flex items-center gap-2 text-[11px] font-bold text-[#57748e] uppercase tracking-widest">
-                                            <span className="material-symbols-outlined text-sm text-green-500">
-                                                verified
-                                            </span>
-                                            Tanpa Biaya Tersembunyi
-                                        </div>
-                                        <div className="flex items-center gap-2 text-[11px] font-bold text-[#57748e] uppercase tracking-widest">
-                                            <span className="material-symbols-outlined text-sm text-green-500">
-                                                speed
-                                            </span>
-                                            Proses Tercepat di Indonesia
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        {/* Promo Card */}
-                        <div className="mt-4 p-4 bg-gradient-to-br from-[#2a6ba7] to-[#1a2c3d] rounded-2xl text-white relative overflow-hidden">
-                            <div className="relative z-10">
-                                <p className="text-[10px] font-bold uppercase tracking-wider mb-1 opacity-80">
-                                    Promo UMK Baru
-                                </p>
-                                <p className="text-sm font-bold leading-snug">
-                                    Bundling PT Perorangan + NIB + Merek hanya Rp 2.2jt!
-                                </p>
-                            </div>
-                            <span className="material-symbols-outlined absolute -bottom-2 -right-2 text-6xl opacity-10">
-                                redeem
-                            </span>
                         </div>
                     </aside>
                 </div>
@@ -468,7 +557,7 @@ export default function HargaPage() {
             {/* Floating Cart Button (Mobile Only) */}
             <button
                 onClick={() => {
-                    document.querySelector("aside")?.scrollIntoView({ behavior: "smooth" });
+                    document.querySelector("#cart-items-mobile")?.scrollIntoView({ behavior: "smooth" });
                 }}
                 className={`lg:hidden fixed bottom-6 left-6 z-[90] flex items-center gap-3 bg-[#101519] text-white px-5 py-3 rounded-full shadow-2xl shadow-[#2a6ba7]/20 transition-all duration-500 border border-gray-800 ${cart.length > 0 ? "translate-y-0" : "translate-y-[200%]"
                     }`}
