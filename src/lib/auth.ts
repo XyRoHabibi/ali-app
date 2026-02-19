@@ -45,6 +45,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     email: user.email,
                     name: user.name,
                     image: user.image,
+                    role: user.role,
                 };
             },
         }),
@@ -52,9 +53,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
-                token.id = user.id;
+                token.id = user.id!;
                 token.name = user.name;
                 token.email = user.email;
+                // Try to get role from authorize() return value
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                token.role = (user as any).role || "USER";
+            }
+            // If role is still missing, fetch from DB as fallback
+            if (!token.role && token.email) {
+                try {
+                    const dbUser = await prisma.user.findUnique({
+                        where: { email: token.email as string },
+                        select: { role: true },
+                    });
+                    token.role = dbUser?.role || "USER";
+                } catch {
+                    token.role = "USER";
+                }
             }
             return token;
         },
@@ -63,6 +79,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 session.user.id = token.id as string;
                 session.user.name = token.name as string;
                 session.user.email = token.email as string;
+                session.user.role = (token.role as "USER" | "SUPER_ADMIN") || "USER";
             }
             return session;
         },

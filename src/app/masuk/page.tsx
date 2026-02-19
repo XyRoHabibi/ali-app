@@ -29,7 +29,15 @@ export default function MasukPage() {
             if (result?.error) {
                 setError("Email atau password salah");
             } else {
-                router.push("/dashboard");
+                // Check role to determine redirect
+                const sessionRes = await fetch("/api/auth/session");
+                const session = await sessionRes.json();
+
+                if (session?.user?.role === "SUPER_ADMIN") {
+                    router.push("/super-admin");
+                } else {
+                    router.push("/dashboard");
+                }
                 router.refresh();
             }
         } catch {

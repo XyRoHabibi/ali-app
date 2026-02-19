@@ -4,6 +4,7 @@ import { hash } from "bcryptjs";
 import { randomBytes } from "crypto";
 import prisma from "@/lib/prisma";
 import nodemailer from "nodemailer";
+import { auth } from "@/lib/auth";
 
 const app = new Hono().basePath("/api/hono");
 
@@ -209,5 +210,77 @@ app.post("/reset-password", async (c) => {
     }
 });
 
+// ==========================================
+// GET /api/hono/admin/users (Admin Only)
+// ==========================================
+app.get("/admin/users", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+            return c.json({ error: "Unauthorized" }, 403);
+        }
+
+        const users = await prisma.user.findMany({
+            orderBy: { createdAt: "desc" },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                role: true,
+                alamat: true,
+                telepon: true,
+                createdAt: true,
+            },
+        });
+
+        return c.json({ users });
+    } catch (error) {
+        console.error("Admin get users error:", error);
+        return c.json({ error: "Terjadi kesalahan" }, 500);
+    }
+});
+
+// ==========================================
+// DELETE /api/hono/admin/users/:id (Admin Only)
+// ==========================================
+app.delete("/admin/users/:id", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+            return c.json({ error: "Unauthorized" }, 403);
+        }
+
+        const userId = c.req.param("id");
+
+        // Prevent deleting yourself
+        if (userId === session.user.id) {
+            return c.json({ error: "Tidak dapat menghapus akun sendiri" }, 400);
+        }
+
+        // Check if user exists and is not a super admin
+        const targetUser = await prisma.user.findUnique({
+            where: { id: userId },
+        });
+
+        if (!targetUser) {
+            return c.json({ error: "User tidak ditemukan" }, 404);
+        }
+
+        if (targetUser.role === "SUPER_ADMIN") {
+            return c.json({ error: "Tidak dapat menghapus super admin" }, 400);
+        }
+
+        await prisma.user.delete({
+            where: { id: userId },
+        });
+
+        return c.json({ message: "User berhasil dihapus" });
+    } catch (error) {
+        console.error("Admin delete user error:", error);
+        return c.json({ error: "Terjadi kesalahan saat menghapus user" }, 500);
+    }
+});
+
 export const GET = handle(app);
 export const POST = handle(app);
+export const DELETE = handle(app);
