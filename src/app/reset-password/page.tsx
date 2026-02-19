@@ -3,6 +3,7 @@
 import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import {
     Lock,
     Eye,
@@ -266,12 +267,7 @@ export default function ResetPasswordPage() {
             <div className="w-full max-w-md relative z-10">
                 {/* Logo */}
                 <div className="flex items-center gap-3 mb-8 justify-center">
-                    <div className="w-10 h-10 bg-[#2a6ba7] rounded-xl flex items-center justify-center">
-                        <Shield className="w-6 h-6 text-white" />
-                    </div>
-                    <span className="text-lg font-bold text-[#1a2c3d]">
-                        Akses Legal Indonesia
-                    </span>
+                    <Image src="/images/logo-color.png" alt="Logo" width={50} height={50} />
                 </div>
 
                 <Suspense
