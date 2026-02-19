@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 // Sidebar navigation items
 const sidebarNavItems = [
@@ -122,9 +123,12 @@ export default function DashboardShell({
                             <span className="absolute top-2.5 right-2.5 size-2 bg-red-500 rounded-full border-2 border-white"></span>
                         </button>
                         <div className="h-8 w-px bg-slate-200"></div>
-                        <Link href="/" className="text-sm font-black text-slate-500 hover:text-[#2a6ba7] transition-colors">
+                        <button
+                            onClick={() => signOut({ callbackUrl: "/masuk" })}
+                            className="text-sm font-black text-slate-500 hover:text-[#2a6ba7] transition-colors cursor-pointer"
+                        >
                             Keluar
-                        </Link>
+                        </button>
                     </div>
                 </nav>
 
