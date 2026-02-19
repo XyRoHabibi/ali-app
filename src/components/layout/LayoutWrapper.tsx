@@ -15,14 +15,15 @@ export default function LayoutWrapper({
 
     // Pages that should not show the main header/footer
     const isDashboard = pathname?.startsWith("/dashboard");
+    const isSuperAdmin = pathname?.startsWith("/super-admin");
     const isAuthPage =
         pathname?.startsWith("/masuk") ||
         pathname?.startsWith("/daftar") ||
         pathname?.startsWith("/lupa-password") ||
         pathname?.startsWith("/reset-password");
 
-    if (isDashboard || isAuthPage) {
-        // Dashboard and auth pages have their own layouts
+    if (isDashboard || isAuthPage || isSuperAdmin) {
+        // Dashboard, Super Admin, and auth pages have their own layouts
         return <>{children}</>;
     }
 

@@ -159,8 +159,8 @@ export default async function SuperAdminDashboard() {
                                     <td className="px-6 py-4">
                                         <span
                                             className={`inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider ${user.role === "SUPER_ADMIN"
-                                                    ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20"
-                                                    : "bg-slate-500/10 text-slate-400 border border-slate-500/20"
+                                                ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20"
+                                                : "bg-slate-500/10 text-slate-400 border border-slate-500/20"
                                                 }`}
                                         >
                                             {user.role === "SUPER_ADMIN"
