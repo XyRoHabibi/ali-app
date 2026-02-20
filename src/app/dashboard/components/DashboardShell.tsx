@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 // Sidebar navigation items
 const sidebarNavItems = [
@@ -22,6 +22,16 @@ export default function DashboardShell({
 }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const pathname = usePathname();
+    const { data: session } = useSession();
+
+    const userInitials = session?.user?.name
+        ? session.user.name
+            .split(" ")
+            .map((n) => n[0])
+            .join("")
+            .toUpperCase()
+            .slice(0, 2)
+        : "PG";
 
     return (
         <div className="min-h-screen bg-[#f8fafc]">
@@ -75,10 +85,10 @@ export default function DashboardShell({
                 <div className="p-4 border-t border-slate-200 mt-auto">
                     <div className="flex items-center gap-3 px-4 py-3">
                         <div className="size-10 rounded-full bg-[#2a6ba7] text-white flex items-center justify-center font-bold text-sm">
-                            JD
+                            {userInitials}
                         </div>
                         <div className="flex flex-col">
-                            <span className="text-sm font-black">John Doe</span>
+                            <span className="text-sm font-black">{session?.user?.name || "Pengguna"}</span>
                             <span className="text-[10px] font-bold text-slate-400">Premium Member</span>
                         </div>
                     </div>

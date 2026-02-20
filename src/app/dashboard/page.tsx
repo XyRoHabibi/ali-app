@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 // Stats data
 const statsData = [
@@ -83,12 +84,14 @@ const readyDocuments = [
 ];
 
 export default function DashboardPage() {
+    const { data: session } = useSession();
+
     return (
         <>
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
                 <div className="space-y-2">
-                    <h1 className="text-3xl font-black tracking-tight">Selamat Datang, John! 👋</h1>
+                    <h1 className="text-3xl font-black tracking-tight">Selamat Datang, {session?.user?.name || "Pengguna"}! 👋</h1>
                     <p className="text-slate-500 font-bold">
                         Pantau proses legalitas bisnis Anda secara real-time.
                     </p>

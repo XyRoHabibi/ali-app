@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Outfit } from "next/font/google";
 import "./globals.css";
 import LayoutWrapper from "@/components/layout/LayoutWrapper";
+import { Providers } from "@/components/providers/Providers";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -74,7 +75,9 @@ export default function RootLayout({
       <body
         className={`${plusJakartaSans.variable} ${outfit.variable} bg-[#f9fafb] text-[#101519] min-h-screen overflow-x-hidden font-[family-name:var(--font-display)]`}
       >
-        <LayoutWrapper>{children}</LayoutWrapper>
+        <Providers>
+          <LayoutWrapper>{children}</LayoutWrapper>
+        </Providers>
       </body>
     </html>
   );
