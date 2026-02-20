@@ -13,6 +13,13 @@ enum Role {
   SUPER_ADMIN
 }
 
+enum ApplicationStatus {
+  PENDING
+  PROCESS
+  COMPLETED
+  CANCELLED
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String
@@ -28,8 +35,15 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  accounts Account[]
-  sessions Session[]
+  // Storage quota tracking
+  storageUsed  BigInt  @default(0)
+  storageLimit BigInt  @default(52428800) // 50MB
+  isPro        Boolean @default(false)
+
+  accounts      Account[]
+  sessions      Session[]
+  userDocuments UserDocument[]
+  applications  Application[]
 }
 
 model Account {
@@ -66,4 +80,60 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+// ===== Document Management System =====
+
+model Service {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Float    @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  applications Application[]
+}
+
+model Application {
+  id        String            @id @default(cuid())
+  userId    String
+  serviceId String
+  name      String            @default("") // Nama bisnis, misal: "PT Maju Bersama"
+  status    ApplicationStatus @default(PENDING)
+  estimate  String?           // Estimasi selesai
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  service   Service  @relation(fields: [serviceId], references: [id])
+  documents ApplicationDocument[]
+}
+
+model ApplicationDocument {
+  id            String   @id @default(cuid())
+  applicationId String
+  name          String
+  fileUrl       String
+  fileSize      Int      @default(0)
+  fileType      String?
+  category      String?  // Legalitas, Perpajakan, etc.
+  adminNote     String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+}
+
+model UserDocument {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  fileUrl   String
+  fileSize  Int
+  fileType  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

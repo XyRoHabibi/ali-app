@@ -5,6 +5,13 @@ import { randomBytes } from "crypto";
 import prisma from "@/lib/prisma";
 import nodemailer from "nodemailer";
 import { auth } from "@/lib/auth";
+import {
+    supabaseAdmin,
+    BUCKET_LEGAL_DOCS,
+    BUCKET_USER_VAULT,
+    ALLOWED_FILE_TYPES,
+    MAX_FILE_SIZE,
+} from "@/lib/supabase";
 
 const app = new Hono().basePath("/api/hono");
 
@@ -281,6 +288,456 @@ app.delete("/admin/users/:id", async (c) => {
     }
 });
 
+// ==========================================
+// SERVICES CRUD (Admin Only)
+// ==========================================
+
+// GET /api/hono/admin/services
+app.get("/admin/services", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+            return c.json({ error: "Unauthorized" }, 403);
+        }
+
+        const services = await prisma.service.findMany({
+            orderBy: { createdAt: "desc" },
+            include: { _count: { select: { applications: true } } },
+        });
+
+        return c.json({ services });
+    } catch (error) {
+        console.error("Get services error:", error);
+        return c.json({ error: "Terjadi kesalahan" }, 500);
+    }
+});
+
+// POST /api/hono/admin/services
+app.post("/admin/services", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+            return c.json({ error: "Unauthorized" }, 403);
+        }
+
+        const { name, description, price } = await c.req.json();
+        if (!name) return c.json({ error: "Nama layanan harus diisi" }, 400);
+
+        const service = await prisma.service.create({
+            data: { name, description: description || null, price: price || 0 },
+        });
+
+        return c.json({ service }, 201);
+    } catch (error) {
+        console.error("Create service error:", error);
+        return c.json({ error: "Terjadi kesalahan" }, 500);
+    }
+});
+
+// ==========================================
+// APPLICATIONS MANAGEMENT
+// ==========================================
+
+// GET /api/hono/applications (User: own, Admin: all or by userId)
+app.get("/applications", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user) return c.json({ error: "Unauthorized" }, 401);
+
+        const userId = c.req.query("userId");
+        const isAdmin = session.user.role === "SUPER_ADMIN";
+
+        const where = isAdmin && userId
+            ? { userId }
+            : isAdmin
+                ? {}
+                : { userId: session.user.id };
+
+        const applications = await prisma.application.findMany({
+            where,
+            orderBy: { createdAt: "desc" },
+            include: {
+                service: true,
+                documents: true,
+                user: { select: { id: true, name: true, email: true } },
+            },
+        });
+
+        return c.json({ applications });
+    } catch (error) {
+        console.error("Get applications error:", error);
+        return c.json({ error: "Terjadi kesalahan" }, 500);
+    }
+});
+
+// POST /api/hono/admin/applications (Admin: add service to user)
+app.post("/admin/applications", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+            return c.json({ error: "Unauthorized" }, 403);
+        }
+
+        const { userId, serviceId, name, status, estimate } = await c.req.json();
+        if (!userId || !serviceId) {
+            return c.json({ error: "userId dan serviceId harus diisi" }, 400);
+        }
+
+        const application = await prisma.application.create({
+            data: {
+                userId,
+                serviceId,
+                name: name || "",
+                status: status || "PENDING",
+                estimate: estimate || null,
+            },
+            include: { service: true },
+        });
+
+        return c.json({ application }, 201);
+    } catch (error) {
+        console.error("Create application error:", error);
+        return c.json({ error: "Terjadi kesalahan" }, 500);
+    }
+});
+
+// PATCH /api/hono/admin/applications/:id (Admin: update status)
+app.patch("/admin/applications/:id", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+            return c.json({ error: "Unauthorized" }, 403);
+        }
+
+        const id = c.req.param("id");
+        const body = await c.req.json();
+
+        const application = await prisma.application.update({
+            where: { id },
+            data: {
+                ...(body.status && { status: body.status }),
+                ...(body.name && { name: body.name }),
+                ...(body.estimate !== undefined && { estimate: body.estimate }),
+            },
+            include: { service: true },
+        });
+
+        return c.json({ application });
+    } catch (error) {
+        console.error("Update application error:", error);
+        return c.json({ error: "Terjadi kesalahan" }, 500);
+    }
+});
+
+// ==========================================
+// APPLICATION DOCUMENTS (Admin Only)
+// ==========================================
+
+// POST /api/hono/admin/applications/:id/documents
+app.post("/admin/applications/:id/documents", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+            return c.json({ error: "Unauthorized" }, 403);
+        }
+
+        const applicationId = c.req.param("id");
+        const formData = await c.req.formData();
+        const file = formData.get("file") as File | null;
+        const docName = formData.get("name") as string || "";
+        const category = formData.get("category") as string || "";
+        const adminNote = formData.get("adminNote") as string || "";
+
+        if (!file) return c.json({ error: "File harus diupload" }, 400);
+        if (file.size > MAX_FILE_SIZE) {
+            return c.json({ error: "Ukuran file maksimal 5MB" }, 400);
+        }
+        if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+            return c.json({ error: "Format file tidak didukung" }, 400);
+        }
+
+        // Upload to Supabase Storage
+        const fileName = `${applicationId}/${Date.now()}-${file.name}`;
+        const arrayBuffer = await file.arrayBuffer();
+        const { error: uploadError } = await supabaseAdmin.storage
+            .from(BUCKET_LEGAL_DOCS)
+            .upload(fileName, arrayBuffer, { contentType: file.type });
+
+        if (uploadError) {
+            console.error("Upload error:", uploadError);
+            return c.json({ error: "Gagal mengunggah file: " + uploadError.message }, 500);
+        }
+
+        const { data: urlData } = supabaseAdmin.storage
+            .from(BUCKET_LEGAL_DOCS)
+            .getPublicUrl(fileName);
+
+        const doc = await prisma.applicationDocument.create({
+            data: {
+                applicationId,
+                name: docName || file.name,
+                fileUrl: urlData.publicUrl,
+                fileSize: file.size,
+                fileType: file.type,
+                category: category || null,
+                adminNote: adminNote || null,
+            },
+        });
+
+        return c.json({ document: doc }, 201);
+    } catch (error) {
+        console.error("Upload app doc error:", error);
+        return c.json({ error: "Terjadi kesalahan saat upload" }, 500);
+    }
+});
+
+// DELETE /api/hono/admin/applications/:id/documents/:docId
+app.delete("/admin/applications/:id/documents/:docId", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+            return c.json({ error: "Unauthorized" }, 403);
+        }
+
+        const docId = c.req.param("docId");
+
+        const doc = await prisma.applicationDocument.findUnique({ where: { id: docId } });
+        if (!doc) return c.json({ error: "Dokumen tidak ditemukan" }, 404);
+
+        // Delete from Supabase Storage
+        const path = doc.fileUrl.split(`${BUCKET_LEGAL_DOCS}/`).pop();
+        if (path) {
+            await supabaseAdmin.storage.from(BUCKET_LEGAL_DOCS).remove([path]);
+        }
+
+        await prisma.applicationDocument.delete({ where: { id: docId } });
+
+        return c.json({ message: "Dokumen berhasil dihapus" });
+    } catch (error) {
+        console.error("Delete app doc error:", error);
+        return c.json({ error: "Terjadi kesalahan" }, 500);
+    }
+});
+
+// ==========================================
+// USER DOCUMENTS (User self-service)
+// ==========================================
+
+// GET /api/hono/user-documents
+app.get("/user-documents", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user) return c.json({ error: "Unauthorized" }, 401);
+
+        const documents = await prisma.userDocument.findMany({
+            where: { userId: session.user.id },
+            orderBy: { createdAt: "desc" },
+        });
+
+        const user = await prisma.user.findUnique({
+            where: { id: session.user.id },
+            select: { storageUsed: true, storageLimit: true, isPro: true },
+        });
+
+        return c.json({
+            documents,
+            storage: {
+                used: Number(user?.storageUsed || 0),
+                limit: Number(user?.storageLimit || 52428800),
+                isPro: user?.isPro || false,
+            },
+        });
+    } catch (error) {
+        console.error("Get user docs error:", error);
+        return c.json({ error: "Terjadi kesalahan" }, 500);
+    }
+});
+
+// POST /api/hono/user-documents
+app.post("/user-documents", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user) return c.json({ error: "Unauthorized" }, 401);
+
+        const formData = await c.req.formData();
+        const file = formData.get("file") as File | null;
+
+        if (!file) return c.json({ error: "File harus diupload" }, 400);
+        if (file.size > MAX_FILE_SIZE) {
+            return c.json({ error: "Ukuran file maksimal 5MB per file" }, 400);
+        }
+        if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+            return c.json({ error: "Format file tidak didukung. Gunakan PDF, JPG, PNG, atau DOC/DOCX" }, 400);
+        }
+
+        // Check storage quota
+        const user = await prisma.user.findUnique({
+            where: { id: session.user.id },
+            select: { storageUsed: true, storageLimit: true },
+        });
+
+        if (!user) return c.json({ error: "User tidak ditemukan" }, 404);
+
+        const storageUsed = Number(user.storageUsed);
+        const storageLimit = Number(user.storageLimit);
+
+        if (storageUsed + file.size > storageLimit) {
+            return c.json({
+                error: "Penyimpanan penuh. Hapus beberapa dokumen atau upgrade ke Pro untuk menambah kapasitas.",
+                code: "STORAGE_FULL",
+            }, 403);
+        }
+
+        // Upload to Supabase Storage
+        const fileName = `${session.user.id}/${Date.now()}-${file.name}`;
+        const arrayBuffer = await file.arrayBuffer();
+        const { error: uploadError } = await supabaseAdmin.storage
+            .from(BUCKET_USER_VAULT)
+            .upload(fileName, arrayBuffer, { contentType: file.type });
+
+        if (uploadError) {
+            console.error("Upload error:", uploadError);
+            return c.json({ error: "Gagal mengunggah file: " + uploadError.message }, 500);
+        }
+
+        const { data: urlData } = supabaseAdmin.storage
+            .from(BUCKET_USER_VAULT)
+            .getPublicUrl(fileName);
+
+        // Save document record + update storage used
+        const [doc] = await prisma.$transaction([
+            prisma.userDocument.create({
+                data: {
+                    userId: session.user.id,
+                    name: file.name,
+                    fileUrl: urlData.publicUrl,
+                    fileSize: file.size,
+                    fileType: file.type,
+                },
+            }),
+            prisma.user.update({
+                where: { id: session.user.id },
+                data: { storageUsed: { increment: file.size } },
+            }),
+        ]);
+
+        return c.json({ document: doc }, 201);
+    } catch (error) {
+        console.error("Upload user doc error:", error);
+        return c.json({ error: "Terjadi kesalahan saat upload" }, 500);
+    }
+});
+
+// DELETE /api/hono/user-documents/:id
+app.delete("/user-documents/:id", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user) return c.json({ error: "Unauthorized" }, 401);
+
+        const docId = c.req.param("id");
+
+        const doc = await prisma.userDocument.findFirst({
+            where: { id: docId, userId: session.user.id },
+        });
+
+        if (!doc) return c.json({ error: "Dokumen tidak ditemukan" }, 404);
+
+        // Delete from Supabase Storage
+        const path = doc.fileUrl.split(`${BUCKET_USER_VAULT}/`).pop();
+        if (path) {
+            await supabaseAdmin.storage.from(BUCKET_USER_VAULT).remove([path]);
+        }
+
+        // Delete record + decrement storage
+        await prisma.$transaction([
+            prisma.userDocument.delete({ where: { id: docId } }),
+            prisma.user.update({
+                where: { id: session.user.id },
+                data: { storageUsed: { decrement: doc.fileSize } },
+            }),
+        ]);
+
+        return c.json({ message: "Dokumen berhasil dihapus" });
+    } catch (error) {
+        console.error("Delete user doc error:", error);
+        return c.json({ error: "Terjadi kesalahan" }, 500);
+    }
+});
+
+// ==========================================
+// USER STORAGE INFO
+// ==========================================
+app.get("/user-storage", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user) return c.json({ error: "Unauthorized" }, 401);
+
+        const user = await prisma.user.findUnique({
+            where: { id: session.user.id },
+            select: { storageUsed: true, storageLimit: true, isPro: true },
+        });
+
+        return c.json({
+            used: Number(user?.storageUsed || 0),
+            limit: Number(user?.storageLimit || 52428800),
+            isPro: user?.isPro || false,
+        });
+    } catch (error) {
+        console.error("Get storage info error:", error);
+        return c.json({ error: "Terjadi kesalahan" }, 500);
+    }
+});
+
+// ==========================================
+// ADMIN: Get user detail with applications
+// ==========================================
+app.get("/admin/users/:id", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+            return c.json({ error: "Unauthorized" }, 403);
+        }
+
+        const userId = c.req.param("id");
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                role: true,
+                alamat: true,
+                telepon: true,
+                storageUsed: true,
+                storageLimit: true,
+                isPro: true,
+                createdAt: true,
+                applications: {
+                    orderBy: { createdAt: "desc" },
+                    include: {
+                        service: true,
+                        documents: { orderBy: { createdAt: "desc" } },
+                    },
+                },
+            },
+        });
+
+        if (!user) return c.json({ error: "User tidak ditemukan" }, 404);
+
+        return c.json({
+            user: {
+                ...user,
+                storageUsed: Number(user.storageUsed),
+                storageLimit: Number(user.storageLimit),
+            },
+        });
+    } catch (error) {
+        console.error("Get user detail error:", error);
+        return c.json({ error: "Terjadi kesalahan" }, 500);
+    }
+});
+
 export const GET = handle(app);
 export const POST = handle(app);
 export const DELETE = handle(app);
+export const PATCH = handle(app);
