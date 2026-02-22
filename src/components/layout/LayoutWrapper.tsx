@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import FloatingWhatsApp from "@/components/ui/FloatingWhatsApp";
+import LoadingScreen from "@/components/ui/LoadingScreen";
 import { ReactLenis } from 'lenis/react';
 
 export default function LayoutWrapper({
@@ -30,6 +31,7 @@ export default function LayoutWrapper({
     // Default layout with Header and Footer
     return (
         <div className="flex flex-col min-h-screen w-full overflow-x-hidden">
+            <LoadingScreen />
             <ReactLenis root />
             <Header />
             <main className="relative flex-grow w-full pt-20">{children}</main>
