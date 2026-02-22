@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 interface User {
     id: string;
@@ -160,9 +161,9 @@ export default function UsersPage() {
                                             <div className="flex items-center gap-3">
                                                 <div
                                                     className={`size-9 rounded-full flex items-center justify-center text-white text-xs font-bold ${user.role ===
-                                                            "SUPER_ADMIN"
-                                                            ? "bg-gradient-to-br from-indigo-500 to-purple-600"
-                                                            : "bg-gradient-to-br from-slate-500 to-slate-600"
+                                                        "SUPER_ADMIN"
+                                                        ? "bg-gradient-to-br from-indigo-500 to-purple-600"
+                                                        : "bg-gradient-to-br from-slate-500 to-slate-600"
                                                         }`}
                                                 >
                                                     {user.name
@@ -191,8 +192,8 @@ export default function UsersPage() {
                                         <td className="px-6 py-4">
                                             <span
                                                 className={`inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider ${user.role === "SUPER_ADMIN"
-                                                        ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20"
-                                                        : "bg-slate-500/10 text-slate-400 border border-slate-500/20"
+                                                    ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20"
+                                                    : "bg-slate-500/10 text-slate-400 border border-slate-500/20"
                                                     }`}
                                             >
                                                 {user.role === "SUPER_ADMIN"
@@ -210,33 +211,44 @@ export default function UsersPage() {
                                             })}
                                         </td>
                                         <td className="px-6 py-4 text-right">
-                                            {user.role !== "SUPER_ADMIN" ? (
-                                                <button
-                                                    onClick={() =>
-                                                        handleDelete(
-                                                            user.id,
-                                                            user.name
-                                                        )
-                                                    }
-                                                    disabled={
-                                                        deleting === user.id
-                                                    }
-                                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-red-400 hover:text-red-300 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                            <div className="flex items-center justify-end gap-2">
+                                                <Link
+                                                    href={`/super-admin/users/${user.id}`}
+                                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10 border border-transparent hover:border-indigo-500/20 transition-all"
                                                 >
-                                                    {deleting === user.id ? (
-                                                        <div className="w-3.5 h-3.5 border-2 border-red-400/30 border-t-red-400 rounded-full animate-spin" />
-                                                    ) : (
-                                                        <span className="material-symbols-outlined text-base">
-                                                            delete
-                                                        </span>
-                                                    )}
-                                                    Hapus
-                                                </button>
-                                            ) : (
-                                                <span className="text-xs text-slate-600 font-bold">
-                                                    —
-                                                </span>
-                                            )}
+                                                    <span className="material-symbols-outlined text-base">
+                                                        visibility
+                                                    </span>
+                                                    Detail
+                                                </Link>
+                                                {user.role !== "SUPER_ADMIN" ? (
+                                                    <button
+                                                        onClick={() =>
+                                                            handleDelete(
+                                                                user.id,
+                                                                user.name
+                                                            )
+                                                        }
+                                                        disabled={
+                                                            deleting === user.id
+                                                        }
+                                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-red-400 hover:text-red-300 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                                    >
+                                                        {deleting === user.id ? (
+                                                            <div className="w-3.5 h-3.5 border-2 border-red-400/30 border-t-red-400 rounded-full animate-spin" />
+                                                        ) : (
+                                                            <span className="material-symbols-outlined text-base">
+                                                                delete
+                                                            </span>
+                                                        )}
+                                                        Hapus
+                                                    </button>
+                                                ) : (
+                                                    <span className="text-xs text-slate-600 font-bold">
+                                                        —
+                                                    </span>
+                                                )}
+                                            </div>
                                         </td>
                                     </tr>
                                 ))
