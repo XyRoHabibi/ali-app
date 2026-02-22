@@ -108,6 +108,56 @@ model Application {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   service   Service  @relation(fields: [serviceId], references: [id])
   documents ApplicationDocument[]
+  companyData CompanyData?
+}
+
+model CompanyData {
+  id            String   @id @default(cuid())
+  applicationId String   @unique
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  // Data Penting
+  emailPerusahaan   String?
+  emailPassword     String?
+  akunOss           String?
+  akunOssPassword   String?
+  
+  directors     Director[]
+  agreements    Agreement[]
+  taxReports    TaxReport[]
+}
+
+model Director {
+  id            String      @id @default(cuid())
+  companyDataId String
+  companyData   CompanyData @relation(fields: [companyDataId], references: [id], onDelete: Cascade)
+  
+  name          String
+  jabatan       String
+  masaJabatan   String?     // e.g. "5 Tahun"
+  akhirMenjabat DateTime?
+  status        String      @default("Aktif")
+}
+
+model Agreement {
+  id            String      @id @default(cuid())
+  companyDataId String
+  companyData   CompanyData @relation(fields: [companyDataId], references: [id], onDelete: Cascade)
+  
+  title         String
+  validUntil    DateTime?
+  status        String      // Aktif, Expired
+}
+
+model TaxReport {
+  id            String      @id @default(cuid())
+  companyDataId String
+  companyData   CompanyData @relation(fields: [companyDataId], references: [id], onDelete: Cascade)
+  
+  title         String      // e.g. "Laporan Pajak Masa Mei"
+  description   String?
+  status        String      // SELESAI, BELUM LAPOR
+  date          DateTime?
 }
 
 model ApplicationDocument {

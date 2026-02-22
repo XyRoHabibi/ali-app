@@ -396,6 +396,13 @@ export default function UserDetailPage() {
                                                     <span className="material-symbols-outlined text-base">upload_file</span>
                                                     Upload Dokumen
                                                 </button>
+                                                <Link
+                                                    href={`/super-admin/applications/${app.id}`}
+                                                    className="h-9 px-4 bg-slate-100 text-slate-600 rounded-lg text-sm font-bold hover:bg-slate-200 transition-colors flex items-center gap-1"
+                                                >
+                                                    <span className="material-symbols-outlined text-base">settings</span>
+                                                    Kelola Profil
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>

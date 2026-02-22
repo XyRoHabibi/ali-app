@@ -14,6 +14,47 @@ interface ApplicationDoc {
     createdAt: string;
 }
 
+
+
+interface Director {
+    id: string;
+    companyDataId: string;
+    name: string;
+    jabatan: string;
+    masaJabatan: string | null;
+    akhirMenjabat: string | null;
+    status: string;
+}
+
+interface Agreement {
+    id: string;
+    companyDataId: string;
+    title: string;
+    validUntil: string | null;
+    status: string;
+}
+
+interface TaxReport {
+    id: string;
+    companyDataId: string;
+    title: string;
+    description: string | null;
+    status: string;
+    date: string | null;
+}
+
+interface CompanyData {
+    id: string;
+    applicationId: string;
+    emailPerusahaan: string | null;
+    emailPassword: string | null;
+    akunOss: string | null;
+    akunOssPassword: string | null;
+    directors: Director[];
+    agreements: Agreement[];
+    taxReports: TaxReport[];
+}
+
 interface Application {
     id: string;
     name: string;
@@ -22,6 +63,7 @@ interface Application {
     createdAt: string;
     service: { id: string; name: string };
     documents: ApplicationDoc[];
+    companyData: CompanyData | null;
 }
 
 interface UserDoc {
@@ -372,6 +414,11 @@ function DokumenContent() {
                                                 </div>
                                             </div>
 
+                                            {/* Company Profile (Expanded if filter match) */}
+                                            {app.id === filterAppId && app.companyData && (
+                                                <CompanyProfileView companyData={app.companyData} />
+                                            )}
+
                                             {/* Documents Grid */}
                                             {docs.length > 0 ? (
                                                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 p-5">
@@ -580,5 +627,135 @@ function DokumenContent() {
                 )}
             </div>
         </>
+    );
+}
+
+function CompanyProfileView({ companyData }: { companyData: CompanyData }) {
+    return (
+        <div className="bg-slate-50 border-y border-slate-200 p-6 space-y-8 animate-[fadeIn_0.5s_ease]">
+            <div className="flex items-center gap-2 mb-4">
+                <span className="material-symbols-outlined text-[#2a6ba7]">domain</span>
+                <h3 className="font-bold text-slate-700">Profil Perusahaan & Legalitas</h3>
+            </div>
+
+            {/* Directors */}
+            <div>
+                <h4 className="text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">Direksi & Komisaris</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {companyData.directors.length === 0 ? (
+                        <p className="text-sm text-slate-400 italic">Belum ada data direksi.</p>
+                    ) : (
+                        companyData.directors.map(d => (
+                            <div key={d.id} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4 hover:border-[#2a6ba7]/30 transition-all">
+                                <div className="h-10 w-10 rounded-full bg-blue-50 text-[#2a6ba7] flex items-center justify-center font-bold text-sm border border-blue-100">
+                                    {d.name.charAt(0)}
+                                </div>
+                                <div>
+                                    <p className="font-bold text-slate-800 text-sm">{d.name}</p>
+                                    <p className="text-xs text-slate-500">{d.jabatan}</p>
+                                    <div className="flex items-center gap-2 mt-1">
+                                        <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${d.status === 'Aktif' ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-500'}`}>{d.status}</span>
+                                        {d.akhirMenjabat && <span className="text-[10px] text-slate-400">Exp: {new Date(d.akhirMenjabat).getFullYear()}</span>}
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Agreements & Credentials */}
+                <div className="space-y-6">
+                    <div>
+                        <h4 className="text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">Perjanjian & Legalitas</h4>
+                        {companyData.agreements.length === 0 ? (
+                            <p className="text-sm text-slate-400 italic bg-white p-4 rounded-xl border border-dashed border-slate-200">Belum ada perjanjian tercatat.</p>
+                        ) : (
+                            <ul className="space-y-2">
+                                {companyData.agreements.map(ag => (
+                                    <li key={ag.id} className="bg-white p-3 rounded-lg border border-slate-200 shadow-sm flex justify-between items-center group hover:border-[#2a6ba7]/30 transition-all">
+                                        <div className="flex items-center gap-3">
+                                            <span className="material-symbols-outlined text-slate-300 group-hover:text-[#2a6ba7]">description</span>
+                                            <span className="text-sm font-medium">{ag.title}</span>
+                                        </div>
+                                        <div className="text-right">
+                                            <span className={`text-[10px] px-2 py-0.5 rounded font-bold block w-fit ml-auto mb-0.5 ${ag.status === 'Aktif' ? 'bg-emerald-100 text-emerald-600' : 'bg-red-100 text-red-600'}`}>
+                                                {ag.status}
+                                            </span>
+                                            {ag.validUntil && <span className="text-[10px] text-slate-400">Valid: {new Date(ag.validUntil).toLocaleDateString("id-ID")}</span>}
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+
+                    {/* Credentials */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="bg-blue-50/50 p-4 rounded-xl border border-blue-100 relative group overflow-hidden">
+                            <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
+                                <span className="material-symbols-outlined text-4xl text-[#2a6ba7]">email</span>
+                            </div>
+                            <p className="text-xs font-bold text-[#2a6ba7] mb-1 uppercase tracking-wider">Email Perusahaan</p>
+                            <p className="font-mono text-sm font-medium text-slate-700 select-all">{companyData.emailPerusahaan || "-"}</p>
+                            {companyData.emailPassword && (
+                                <div className="mt-2 pt-2 border-t border-blue-100 flex justify-between items-center">
+                                    <span className="text-[10px] text-slate-400">Password</span>
+                                    <span className="font-mono text-xs text-slate-600 bg-white/50 px-2 py-0.5 rounded select-all">{companyData.emailPassword}</span>
+                                </div>
+                            )}
+                        </div>
+                        <div className="bg-purple-50/50 p-4 rounded-xl border border-purple-100 relative group overflow-hidden">
+                            <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
+                                <span className="material-symbols-outlined text-4xl text-purple-600">vpn_key</span>
+                            </div>
+                            <p className="text-xs font-bold text-purple-600 mb-1 uppercase tracking-wider">Akun OSS</p>
+                            <p className="font-mono text-sm font-medium text-slate-700 select-all">{companyData.akunOss || "-"}</p>
+                            {companyData.akunOssPassword && (
+                                <div className="mt-2 pt-2 border-t border-purple-100 flex justify-between items-center">
+                                    <span className="text-[10px] text-slate-400">Password</span>
+                                    <span className="font-mono text-xs text-slate-600 bg-white/50 px-2 py-0.5 rounded select-all">{companyData.akunOssPassword}</span>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Tax Reports */}
+                <div>
+                    <h4 className="text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">Pajak & Perizinan (History)</h4>
+                    {companyData.taxReports.length === 0 ? (
+                        <p className="text-sm text-slate-400 italic bg-white p-4 rounded-xl border border-dashed border-slate-200">Belum ada history laporan.</p>
+                    ) : (
+                        <div className="space-y-4 relative pl-2">
+                            <div className="absolute left-[7px] top-2 bottom-2 w-0.5 bg-slate-100 rounded-full"></div>
+                            {companyData.taxReports.slice(0, 5).map(tax => (
+                                <div key={tax.id} className="relative pl-6 group">
+                                    <div className={`absolute left-0 top-1.5 w-4 h-4 rounded-full border-2 border-white shadow-sm z-10 ${tax.status === 'SELESAI' ? 'bg-emerald-500' : 'bg-orange-500'}`}></div>
+                                    <div className="bg-white p-3 rounded-lg border border-slate-200 shadow-sm group-hover:border-[#2a6ba7]/30 transition-all">
+                                        <div className="flex justify-between items-start mb-1">
+                                            <p className="text-sm font-bold text-slate-700">{tax.title}</p>
+                                            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${tax.status === 'SELESAI' ? 'bg-emerald-50 text-emerald-600' : 'bg-orange-50 text-orange-600'}`}>
+                                                {tax.status}
+                                            </span>
+                                        </div>
+                                        <p className="text-xs text-slate-500 mb-2">{tax.description || "Tidak ada keterangan"}</p>
+                                        {tax.date && <p className="text-[10px] text-slate-400 font-mono bg-slate-50 w-fit px-2 py-0.5 rounded">{new Date(tax.date).toLocaleDateString("id-ID", { dateStyle: 'full' })}</p>}
+                                    </div>
+                                </div>
+                            ))}
+                            {companyData.taxReports.length > 5 && (
+                                <div className="pl-6 pt-2">
+                                    <button className="text-xs font-bold text-[#2a6ba7] hover:underline bg-blue-50 px-3 py-1.5 rounded-full">
+                                        + {companyData.taxReports.length - 5} history lainnya
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
     );
 }

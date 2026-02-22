@@ -360,6 +360,13 @@ app.get("/applications", async (c) => {
                 service: true,
                 documents: true,
                 user: { select: { id: true, name: true, email: true } },
+                companyData: {
+                    include: {
+                        directors: true,
+                        agreements: true,
+                        taxReports: { orderBy: { date: "desc" } }
+                    }
+                }
             },
         });
 
@@ -426,6 +433,202 @@ app.patch("/admin/applications/:id", async (c) => {
     } catch (error) {
         console.error("Update application error:", error);
         return c.json({ error: "Terjadi kesalahan" }, 500);
+    }
+});
+
+// GET /api/hono/admin/applications/:id
+app.get("/admin/applications/:id", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+            return c.json({ error: "Unauthorized" }, 403);
+        }
+
+        const id = c.req.param("id");
+        const application = await prisma.application.findUnique({
+            where: { id },
+            include: {
+                service: true,
+                documents: true,
+                user: {
+                    select: { name: true, email: true }
+                },
+                companyData: {
+                    include: {
+                        directors: true,
+                        agreements: true,
+                        taxReports: {
+                            orderBy: { date: "desc" }
+                        }
+                    }
+                }
+            },
+        });
+
+        if (!application) return c.json({ error: "Application not found" }, 404);
+
+        return c.json({ application });
+    } catch (error) {
+        console.error("Get application detail error:", error);
+        return c.json({ error: "Terjadi kesalahan" }, 500);
+    }
+});
+
+// PUT /api/hono/admin/applications/:id/company-data (Update/Create Company Data)
+app.put("/admin/applications/:id/company-data", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+            return c.json({ error: "Unauthorized" }, 403);
+        }
+
+        const applicationId = c.req.param("id");
+        const body = await c.req.json();
+
+        const companyData = await prisma.companyData.upsert({
+            where: { applicationId },
+            update: {
+                emailPerusahaan: body.emailPerusahaan,
+                emailPassword: body.emailPassword,
+                akunOss: body.akunOss,
+                akunOssPassword: body.akunOssPassword,
+            },
+            create: {
+                applicationId,
+                emailPerusahaan: body.emailPerusahaan,
+                emailPassword: body.emailPassword,
+                akunOss: body.akunOss,
+                akunOssPassword: body.akunOssPassword,
+            },
+        });
+
+        return c.json({ companyData });
+    } catch (error) {
+        console.error("Update company data error:", error);
+        return c.json({ error: "Terjadi kesalahan" }, 500);
+    }
+});
+
+// POST /api/hono/admin/company-data/:id/directors (Add Director)
+app.post("/admin/company-data/:id/directors", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+            return c.json({ error: "Unauthorized" }, 403);
+        }
+
+        const companyDataId = c.req.param("id");
+        const body = await c.req.json();
+
+        const director = await prisma.director.create({
+            data: {
+                companyDataId,
+                name: body.name,
+                jabatan: body.jabatan,
+                masaJabatan: body.masaJabatan,
+                akhirMenjabat: body.akhirMenjabat ? new Date(body.akhirMenjabat) : null,
+                status: body.status || "Aktif",
+            },
+        });
+
+        return c.json({ director });
+    } catch (error) {
+        return c.json({ error: "Gagal menambah direktur" }, 500);
+    }
+});
+
+// DELETE /api/hono/admin/directors/:id
+app.delete("/admin/directors/:id", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+            return c.json({ error: "Unauthorized" }, 403);
+        }
+        await prisma.director.delete({ where: { id: c.req.param("id") } });
+        return c.json({ success: true });
+    } catch (error) {
+        return c.json({ error: "Gagal menghapus direktur" }, 500);
+    }
+});
+
+// POST /api/hono/admin/company-data/:id/agreements (Add Agreement)
+app.post("/admin/company-data/:id/agreements", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+            return c.json({ error: "Unauthorized" }, 403);
+        }
+
+        const companyDataId = c.req.param("id");
+        const body = await c.req.json();
+
+        const agreement = await prisma.agreement.create({
+            data: {
+                companyDataId,
+                title: body.title,
+                validUntil: body.validUntil ? new Date(body.validUntil) : null,
+                status: body.status || "Aktif",
+            },
+        });
+
+        return c.json({ agreement });
+    } catch (error) {
+        return c.json({ error: "Gagal menambah perjanjian" }, 500);
+    }
+});
+
+// DELETE /api/hono/admin/agreements/:id
+app.delete("/admin/agreements/:id", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+            return c.json({ error: "Unauthorized" }, 403);
+        }
+        await prisma.agreement.delete({ where: { id: c.req.param("id") } });
+        return c.json({ success: true });
+    } catch (error) {
+        return c.json({ error: "Gagal menghapus perjanjian" }, 500);
+    }
+});
+
+// POST /api/hono/admin/company-data/:id/tax-reports (Add Tax Report)
+app.post("/admin/company-data/:id/tax-reports", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+            return c.json({ error: "Unauthorized" }, 403);
+        }
+
+        const companyDataId = c.req.param("id");
+        const body = await c.req.json();
+
+        const report = await prisma.taxReport.create({
+            data: {
+                companyDataId,
+                title: body.title,
+                description: body.description,
+                status: body.status || "BELUM LAPOR",
+                date: body.date ? new Date(body.date) : new Date(),
+            },
+        });
+
+        return c.json({ report });
+    } catch (error) {
+        return c.json({ error: "Gagal menambah laporan pajak" }, 500);
+    }
+});
+
+// DELETE /api/hono/admin/tax-reports/:id
+app.delete("/admin/tax-reports/:id", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+            return c.json({ error: "Unauthorized" }, 403);
+        }
+        await prisma.taxReport.delete({ where: { id: c.req.param("id") } });
+        return c.json({ success: true });
+    } catch (error) {
+        return c.json({ error: "Gagal menghapus laporan pajak" }, 500);
     }
 });
 
@@ -740,4 +943,5 @@ app.get("/admin/users/:id", async (c) => {
 export const GET = handle(app);
 export const POST = handle(app);
 export const DELETE = handle(app);
-export const PATCH = handle(app);
+export const PATCH = handle(app);
+export const PUT = handle(app);
