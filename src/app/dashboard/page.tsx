@@ -182,53 +182,96 @@ export default function DashboardPage() {
                                 </p>
                             </div>
                         ) : (
-                            <table className="w-full text-left">
-                                <thead className="bg-slate-50 border-b border-slate-200">
-                                    <tr className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                        <th className="px-6 py-4">Layanan</th>
-                                        <th className="px-6 py-4">Status</th>
-                                        <th className="px-6 py-4">Estimasi</th>
-                                        <th className="px-6 py-4">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-slate-100">
+                            <>
+                                {/* Mobile Card Layout */}
+                                <div className="md:hidden divide-y divide-slate-100">
                                     {recentApps.map((app) => {
                                         const status = STATUS_MAP[app.status] || STATUS_MAP.PENDING;
                                         const icon = ICON_MAP[app.status] || ICON_MAP.PENDING;
                                         return (
-                                            <tr key={app.id} className="hover:bg-slate-50/50 transition-colors">
-                                                <td className="px-6 py-4">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className={`h-10 w-10 rounded-xl ${icon.bg} flex items-center justify-center flex-shrink-0`}>
-                                                            <span className={`material-symbols-outlined ${icon.color}`}>business</span>
-                                                        </div>
-                                                        <div className="min-w-0">
-                                                            <p className="font-bold text-sm truncate">{app.name || app.service.name}</p>
-                                                            <p className="text-xs text-slate-400 truncate">{app.service.name}</p>
-                                                        </div>
+                                            <div key={app.id} className="p-4 hover:bg-slate-50/50 transition-colors">
+                                                <div className="flex items-start gap-3 mb-3">
+                                                    <div className={`h-10 w-10 rounded-xl ${icon.bg} flex items-center justify-center flex-shrink-0`}>
+                                                        <span className={`material-symbols-outlined ${icon.color}`}>business</span>
                                                     </div>
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    <span className={`px-3 py-1 text-xs font-bold rounded-full ${status.color}`}>
-                                                        {status.label}
-                                                    </span>
-                                                </td>
-                                                <td className="px-6 py-4 text-sm text-slate-500 font-medium">
-                                                    {app.estimate || "-"}
-                                                </td>
-                                                <td className="px-6 py-4">
+                                                    <div className="flex-1 min-w-0">
+                                                        <p className="font-bold text-sm truncate">{app.name || app.service.name}</p>
+                                                        <p className="text-xs text-slate-400 truncate">{app.service.name}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center justify-between ml-[52px]">
+                                                    <div className="flex items-center gap-3">
+                                                        <span className={`px-3 py-1 text-xs font-bold rounded-full ${status.color}`}>
+                                                            {status.label}
+                                                        </span>
+                                                        {app.estimate && (
+                                                            <span className="text-xs text-slate-400 font-medium flex items-center gap-1">
+                                                                <span className="material-symbols-outlined text-[14px]">schedule</span>
+                                                                {app.estimate}
+                                                            </span>
+                                                        )}
+                                                    </div>
                                                     <Link
                                                         href={`/dashboard/dokumen?appId=${app.id}`}
-                                                        className="text-[#2a6ba7] hover:text-[#2a6ba7]/70 transition-colors"
+                                                        className="h-8 w-8 rounded-lg bg-[#2a6ba7]/10 flex items-center justify-center text-[#2a6ba7] hover:bg-[#2a6ba7] hover:text-white transition-all"
                                                     >
-                                                        <span className="material-symbols-outlined">visibility</span>
+                                                        <span className="material-symbols-outlined text-[18px]">visibility</span>
                                                     </Link>
-                                                </td>
-                                            </tr>
+                                                </div>
+                                            </div>
                                         );
                                     })}
-                                </tbody>
-                            </table>
+                                </div>
+
+                                {/* Desktop Table Layout */}
+                                <table className="w-full text-left hidden md:table">
+                                    <thead className="bg-slate-50 border-b border-slate-200">
+                                        <tr className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                            <th className="px-6 py-4">Layanan</th>
+                                            <th className="px-6 py-4">Status</th>
+                                            <th className="px-6 py-4">Estimasi</th>
+                                            <th className="px-6 py-4">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-slate-100">
+                                        {recentApps.map((app) => {
+                                            const status = STATUS_MAP[app.status] || STATUS_MAP.PENDING;
+                                            const icon = ICON_MAP[app.status] || ICON_MAP.PENDING;
+                                            return (
+                                                <tr key={app.id} className="hover:bg-slate-50/50 transition-colors">
+                                                    <td className="px-6 py-4">
+                                                        <div className="flex items-center gap-3">
+                                                            <div className={`h-10 w-10 rounded-xl ${icon.bg} flex items-center justify-center flex-shrink-0`}>
+                                                                <span className={`material-symbols-outlined ${icon.color}`}>business</span>
+                                                            </div>
+                                                            <div className="min-w-0">
+                                                                <p className="font-bold text-sm truncate">{app.name || app.service.name}</p>
+                                                                <p className="text-xs text-slate-400 truncate">{app.service.name}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-4">
+                                                        <span className={`px-3 py-1 text-xs font-bold rounded-full ${status.color}`}>
+                                                            {status.label}
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-6 py-4 text-sm text-slate-500 font-medium">
+                                                        {app.estimate || "-"}
+                                                    </td>
+                                                    <td className="px-6 py-4">
+                                                        <Link
+                                                            href={`/dashboard/dokumen?appId=${app.id}`}
+                                                            className="text-[#2a6ba7] hover:text-[#2a6ba7]/70 transition-colors"
+                                                        >
+                                                            <span className="material-symbols-outlined">visibility</span>
+                                                        </Link>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
+                            </>
                         )}
                     </div>
                 </div>
