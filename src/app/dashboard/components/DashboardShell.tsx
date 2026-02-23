@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -24,6 +24,14 @@ export default function DashboardShell({
     const pathname = usePathname();
     const { data: session } = useSession();
 
+    // Company logo state
+    const [companyLogo, setCompanyLogo] = useState<string | null>(null);
+    const [logoLoading, setLogoLoading] = useState(true);
+    const [uploading, setUploading] = useState(false);
+    const [showLogoMenu, setShowLogoMenu] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const menuRef = useRef<HTMLDivElement>(null);
+
     const userInitials = session?.user?.name
         ? session.user.name
             .split(" ")
@@ -33,6 +41,102 @@ export default function DashboardShell({
             .slice(0, 2)
         : "PG";
 
+    // Fetch company logo on mount
+    useEffect(() => {
+        async function fetchLogo() {
+            try {
+                const res = await fetch("/api/hono/company-logo");
+                if (res.ok) {
+                    const data = await res.json();
+                    setCompanyLogo(data.companyLogo);
+                }
+            } catch (err) {
+                console.error("Failed to fetch company logo:", err);
+            } finally {
+                setLogoLoading(false);
+            }
+        }
+        fetchLogo();
+    }, []);
+
+    // Close menu when clicking outside
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setShowLogoMenu(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    // Handle logo upload
+    async function handleLogoUpload(e: React.ChangeEvent<HTMLInputElement>) {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        // Client-side validation
+        const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+        if (!allowedTypes.includes(file.type)) {
+            alert("Format file tidak didukung. Gunakan JPG, PNG, atau WebP.");
+            return;
+        }
+        if (file.size > 2 * 1024 * 1024) {
+            alert("Ukuran logo maksimal 2MB.");
+            return;
+        }
+
+        setUploading(true);
+        setShowLogoMenu(false);
+
+        try {
+            const formData = new FormData();
+            formData.append("file", file);
+
+            const res = await fetch("/api/hono/company-logo", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                setCompanyLogo(data.companyLogo);
+            } else {
+                const data = await res.json();
+                alert(data.error || "Gagal mengunggah logo.");
+            }
+        } catch (err) {
+            console.error("Upload logo error:", err);
+            alert("Terjadi kesalahan saat mengunggah logo.");
+        } finally {
+            setUploading(false);
+            // Reset the file input
+            if (fileInputRef.current) fileInputRef.current.value = "";
+        }
+    }
+
+    // Handle logo delete
+    async function handleLogoDelete() {
+        setShowLogoMenu(false);
+        if (!confirm("Hapus logo perusahaan?")) return;
+
+        try {
+            const res = await fetch("/api/hono/company-logo", {
+                method: "DELETE",
+            });
+
+            if (res.ok) {
+                setCompanyLogo(null);
+            } else {
+                const data = await res.json();
+                alert(data.error || "Gagal menghapus logo.");
+            }
+        } catch (err) {
+            console.error("Delete logo error:", err);
+            alert("Terjadi kesalahan saat menghapus logo.");
+        }
+    }
+
     return (
         <div className="min-h-screen bg-[#f8fafc]">
             {/* Sidebar */}
@@ -41,15 +145,105 @@ export default function DashboardShell({
                     } lg:translate-x-0 lg:flex`}
             >
                 <div className="p-6">
-                    <Link href="/" className="flex items-center gap-2 group">
-                        <Image
-                            src="/images/logo-color.png"
-                            alt="ALI Logo"
-                            width={160}
-                            height={96}
-                            className="h-24 w-auto object-contain"
+                    {/* Logo Area with Upload */}
+                    <div className="relative group" ref={menuRef}>
+                        {/* Hidden file input */}
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp"
+                            className="hidden"
+                            onChange={handleLogoUpload}
+                            id="logo-upload-input"
                         />
-                    </Link>
+
+                        {/* Logo Display */}
+                        <div
+                            className="relative cursor-pointer rounded-xl overflow-hidden transition-all duration-200 hover:ring-2 hover:ring-[#2a6ba7]/20"
+                            onClick={() => setShowLogoMenu(!showLogoMenu)}
+                        >
+                            {logoLoading ? (
+                                <div className="h-24 w-full flex items-center justify-center">
+                                    <div className="h-8 w-8 border-2 border-slate-200 border-t-[#2a6ba7] rounded-full animate-spin" />
+                                </div>
+                            ) : companyLogo ? (
+                                <div className="relative">
+                                    <Image
+                                        src={companyLogo}
+                                        alt="Logo Perusahaan"
+                                        width={160}
+                                        height={96}
+                                        className="h-24 w-auto object-contain mx-auto"
+                                        unoptimized
+                                    />
+                                    {/* Hover overlay */}
+                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-200 rounded-xl flex items-center justify-center">
+                                        <span className="material-symbols-outlined text-transparent group-hover:text-slate-600 transition-colors duration-200 text-sm bg-white/80 rounded-full p-1.5 opacity-0 group-hover:opacity-100">
+                                            edit
+                                        </span>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="relative">
+                                    <Link href="/" className="flex items-center gap-2">
+                                        <Image
+                                            src="/images/logo-color.png"
+                                            alt="ALI Logo"
+                                            width={160}
+                                            height={96}
+                                            className="h-24 w-auto object-contain"
+                                        />
+                                    </Link>
+                                    {/* Upload hint overlay */}
+                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-200 rounded-xl flex items-center justify-center">
+                                        <span className="material-symbols-outlined text-transparent group-hover:text-slate-600 transition-colors duration-200 text-sm bg-white/80 rounded-full p-1.5 opacity-0 group-hover:opacity-100">
+                                            add_photo_alternate
+                                        </span>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Uploading overlay */}
+                            {uploading && (
+                                <div className="absolute inset-0 bg-white/80 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                                    <div className="flex flex-col items-center gap-2">
+                                        <div className="h-6 w-6 border-2 border-slate-200 border-t-[#2a6ba7] rounded-full animate-spin" />
+                                        <span className="text-xs font-bold text-slate-500">Mengunggah...</span>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Context Menu */}
+                        {showLogoMenu && !uploading && (
+                            <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg shadow-slate-200/80 border border-slate-200 overflow-hidden z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                                <button
+                                    onClick={() => {
+                                        setShowLogoMenu(false);
+                                        fileInputRef.current?.click();
+                                    }}
+                                    className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors"
+                                >
+                                    <span className="material-symbols-outlined text-[18px] text-[#2a6ba7]">upload</span>
+                                    {companyLogo ? "Ganti Logo" : "Upload Logo"}
+                                </button>
+                                {companyLogo && (
+                                    <button
+                                        onClick={handleLogoDelete}
+                                        className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-red-500 hover:bg-red-50 transition-colors border-t border-slate-100"
+                                    >
+                                        <span className="material-symbols-outlined text-[18px]">delete</span>
+                                        Hapus Logo
+                                    </button>
+                                )}
+                                <div className="px-4 py-2 border-t border-slate-100">
+                                    <p className="text-[10px] font-bold text-slate-400">
+                                        JPG, PNG, WebP • Maks 2MB
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto">

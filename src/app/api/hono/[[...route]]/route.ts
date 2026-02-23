@@ -940,6 +940,124 @@ app.get("/admin/users/:id", async (c) => {
     }
 });
 
+// ==========================================
+// COMPANY LOGO (User self-service)
+// ==========================================
+
+// GET /api/hono/company-logo
+app.get("/company-logo", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user) return c.json({ error: "Unauthorized" }, 401);
+
+        const user = await prisma.user.findUnique({
+            where: { id: session.user.id },
+            select: { companyLogo: true },
+        });
+
+        return c.json({ companyLogo: user?.companyLogo || null });
+    } catch (error) {
+        console.error("Get company logo error:", error);
+        return c.json({ error: "Terjadi kesalahan" }, 500);
+    }
+});
+
+// POST /api/hono/company-logo
+app.post("/company-logo", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user) return c.json({ error: "Unauthorized" }, 401);
+
+        const formData = await c.req.formData();
+        const file = formData.get("file") as File | null;
+
+        if (!file) return c.json({ error: "File harus diupload" }, 400);
+
+        // Only allow image types
+        const allowedImageTypes = ["image/jpeg", "image/png", "image/webp"];
+        if (!allowedImageTypes.includes(file.type)) {
+            return c.json({ error: "Format file tidak didukung. Gunakan JPG, PNG, atau WebP" }, 400);
+        }
+
+        // Max 2MB for logo
+        const maxLogoSize = 2 * 1024 * 1024;
+        if (file.size > maxLogoSize) {
+            return c.json({ error: "Ukuran logo maksimal 2MB" }, 400);
+        }
+
+        // Delete old logo from Supabase if exists
+        const currentUser = await prisma.user.findUnique({
+            where: { id: session.user.id },
+            select: { companyLogo: true },
+        });
+
+        if (currentUser?.companyLogo) {
+            const oldPath = currentUser.companyLogo.split(`${BUCKET_USER_VAULT}/`).pop();
+            if (oldPath) {
+                await supabaseAdmin.storage.from(BUCKET_USER_VAULT).remove([oldPath]);
+            }
+        }
+
+        // Upload to Supabase Storage
+        const ext = file.name.split(".").pop()?.toLowerCase() || "png";
+        const fileName = `${session.user.id}/company-logo-${Date.now()}.${ext}`;
+        const arrayBuffer = await file.arrayBuffer();
+        const { error: uploadError } = await supabaseAdmin.storage
+            .from(BUCKET_USER_VAULT)
+            .upload(fileName, arrayBuffer, { contentType: file.type });
+
+        if (uploadError) {
+            console.error("Upload logo error:", uploadError);
+            return c.json({ error: "Gagal mengunggah logo: " + uploadError.message }, 500);
+        }
+
+        const { data: urlData } = supabaseAdmin.storage
+            .from(BUCKET_USER_VAULT)
+            .getPublicUrl(fileName);
+
+        // Update user record
+        await prisma.user.update({
+            where: { id: session.user.id },
+            data: { companyLogo: urlData.publicUrl },
+        });
+
+        return c.json({ companyLogo: urlData.publicUrl }, 201);
+    } catch (error) {
+        console.error("Upload company logo error:", error);
+        return c.json({ error: "Terjadi kesalahan saat upload logo" }, 500);
+    }
+});
+
+// DELETE /api/hono/company-logo
+app.delete("/company-logo", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user) return c.json({ error: "Unauthorized" }, 401);
+
+        const user = await prisma.user.findUnique({
+            where: { id: session.user.id },
+            select: { companyLogo: true },
+        });
+
+        if (user?.companyLogo) {
+            const path = user.companyLogo.split(`${BUCKET_USER_VAULT}/`).pop();
+            if (path) {
+                await supabaseAdmin.storage.from(BUCKET_USER_VAULT).remove([path]);
+            }
+        }
+
+        await prisma.user.update({
+            where: { id: session.user.id },
+            data: { companyLogo: null },
+        });
+
+        return c.json({ message: "Logo berhasil dihapus" });
+    } catch (error) {
+        console.error("Delete company logo error:", error);
+        return c.json({ error: "Terjadi kesalahan" }, 500);
+    }
+});
+
 export const GET = handle(app);
 export const POST = handle(app);
 export const DELETE = handle(app);
