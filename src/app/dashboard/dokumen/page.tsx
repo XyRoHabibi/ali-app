@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 
 // ── Interfaces ──────────────────────────────────────────
@@ -155,6 +155,8 @@ function DokumenContent() {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const searchParams = useSearchParams();
+    const router = useRouter();
+    const pathname = usePathname();
     const filterAppId = searchParams.get("appId");
 
     // Auto-select from URL param
@@ -234,7 +236,7 @@ function DokumenContent() {
                 <span className="material-symbols-outlined text-[16px]">chevron_right</span>
                 {selectedAppId && activeApp ? (
                     <>
-                        <button onClick={() => setSelectedAppId(null)} className="hover:text-[#2a6ba7] transition-colors">Brankas Dokumen</button>
+                        <button onClick={() => { setSelectedAppId(null); router.push(pathname); }} className="hover:text-[#2a6ba7] transition-colors">Brankas Dokumen</button>
                         <span className="material-symbols-outlined text-[16px]">chevron_right</span>
                         <span className="text-[#2a6ba7] font-bold">{activeApp.name || activeApp.service.name}</span>
                     </>
@@ -250,7 +252,7 @@ function DokumenContent() {
                         {selectedAppId && activeApp ? (
                             <>
                                 <button
-                                    onClick={() => setSelectedAppId(null)}
+                                    onClick={() => { setSelectedAppId(null); router.push(pathname); }}
                                     className="text-sm text-[#2a6ba7] font-medium flex items-center gap-1 hover:underline mb-1"
                                 >
                                     <span className="material-symbols-outlined text-base">arrow_back</span>
@@ -339,7 +341,7 @@ function DokumenContent() {
                                         return (
                                             <button
                                                 key={app.id}
-                                                onClick={() => { setSelectedAppId(app.id); setSearchQuery(""); setActiveCategory("Semua"); }}
+                                                onClick={() => { setSelectedAppId(app.id); setSearchQuery(""); setActiveCategory("Semua"); router.push(`${pathname}?appId=${app.id}`); }}
                                                 className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm hover:shadow-lg hover:border-[#2a6ba7]/30 transition-all text-left group relative overflow-hidden"
                                             >
                                                 <div className="absolute top-0 right-0 w-20 h-20 bg-[#2a6ba7]/5 rounded-bl-full -mr-6 -mt-6 group-hover:bg-[#2a6ba7]/10 transition-colors" />
@@ -518,14 +520,7 @@ function DokumenContent() {
                                                 </div>
                                                 {d.masaJabatan && (
                                                     <div className="flex gap-2 mt-auto">
-                                                        <div className="flex-1 bg-slate-50 rounded px-3 py-2 flex items-center gap-2 border border-slate-100">
-                                                            <span className="material-symbols-outlined text-sm text-emerald-500">check_circle</span>
-                                                            <span className="text-xs font-medium">Akta</span>
-                                                        </div>
-                                                        <div className="flex-1 bg-slate-50 rounded px-3 py-2 flex items-center gap-2 border border-slate-100">
-                                                            <span className="material-symbols-outlined text-sm text-emerald-500">check_circle</span>
-                                                            <span className="text-xs font-medium">SK</span>
-                                                        </div>
+
                                                     </div>
                                                 )}
                                             </div>
