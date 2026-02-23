@@ -621,26 +621,26 @@ function DokumenContent() {
                                             <span className="material-symbols-outlined text-slate-400">lock</span>
                                             Data Penting
                                         </h2>
-                                        <div className="grid gap-4">
+                                        <div className="grid gap-4 min-w-0">
                                             {/* Email */}
-                                            <div className="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                                            <div className="bg-slate-50 p-4 rounded-lg border border-slate-100 min-w-0 overflow-hidden">
                                                 <div className="flex justify-between items-start mb-2">
-                                                    <div className="bg-white p-2 rounded-md shadow-sm">
+                                                    <div className="bg-white p-2 rounded-md shadow-sm flex-shrink-0">
                                                         <span className="material-symbols-outlined text-[#2a6ba7] text-sm">email</span>
                                                     </div>
                                                     <button
                                                         onClick={() => { if (companyData?.emailPerusahaan) navigator.clipboard.writeText(companyData.emailPerusahaan); }}
-                                                        className="text-slate-400 hover:text-[#2a6ba7]"
+                                                        className="text-slate-400 hover:text-[#2a6ba7] flex-shrink-0"
                                                     >
                                                         <span className="material-symbols-outlined text-sm">content_copy</span>
                                                     </button>
                                                 </div>
                                                 <p className="text-xs text-slate-500 mb-1">Email Perusahaan</p>
-                                                <p className="font-mono text-sm truncate">{companyData.emailPerusahaan || "-"}</p>
-                                                <div className="mt-3 flex items-center justify-between">
+                                                <p className="font-mono text-sm break-all">{companyData.emailPerusahaan || "-"}</p>
+                                                <div className="mt-3 flex flex-wrap items-center justify-between gap-1">
                                                     <p className="text-xs text-slate-400">Password Email</p>
                                                     <div className="flex items-center gap-2">
-                                                        <span className="font-mono text-xs tracking-widest text-slate-600">
+                                                        <span className="font-mono text-xs tracking-widest text-slate-600 break-all">
                                                             {showPassEmail ? (companyData.emailPassword || "-") : "••••••••"}
                                                         </span>
                                                         <button onClick={() => setShowPassEmail(!showPassEmail)}>
@@ -653,24 +653,24 @@ function DokumenContent() {
                                             </div>
 
                                             {/* OSS */}
-                                            <div className="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                                            <div className="bg-slate-50 p-4 rounded-lg border border-slate-100 min-w-0 overflow-hidden">
                                                 <div className="flex justify-between items-start mb-2">
-                                                    <div className="bg-white p-2 rounded-md shadow-sm">
+                                                    <div className="bg-white p-2 rounded-md shadow-sm flex-shrink-0">
                                                         <span className="material-symbols-outlined text-purple-500 text-sm">vpn_key</span>
                                                     </div>
                                                     <button
                                                         onClick={() => { if (companyData?.akunOss) navigator.clipboard.writeText(companyData.akunOss); }}
-                                                        className="text-slate-400 hover:text-[#2a6ba7]"
+                                                        className="text-slate-400 hover:text-[#2a6ba7] flex-shrink-0"
                                                     >
                                                         <span className="material-symbols-outlined text-sm">content_copy</span>
                                                     </button>
                                                 </div>
                                                 <p className="text-xs text-slate-500 mb-1">Akun OSS / Perizinan</p>
-                                                <p className="font-mono text-sm">{companyData.akunOss || "-"}</p>
-                                                <div className="mt-3 flex items-center justify-between">
+                                                <p className="font-mono text-sm break-all">{companyData.akunOss || "-"}</p>
+                                                <div className="mt-3 flex flex-wrap items-center justify-between gap-1">
                                                     <p className="text-xs text-slate-400">Password</p>
                                                     <div className="flex items-center gap-2">
-                                                        <span className="font-mono text-xs tracking-widest text-slate-600">
+                                                        <span className="font-mono text-xs tracking-widest text-slate-600 break-all">
                                                             {showPassOss ? (companyData.akunOssPassword || "-") : "••••••••"}
                                                         </span>
                                                         <button onClick={() => setShowPassOss(!showPassOss)}>
