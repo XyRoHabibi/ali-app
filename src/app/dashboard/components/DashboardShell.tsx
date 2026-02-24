@@ -248,7 +248,9 @@ export default function DashboardShell({
 
                 <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
                     {sidebarNavItems.map((item) => {
-                        const isActive = pathname === item.href;
+                        const isActive = item.href === "/dashboard"
+                            ? pathname === "/dashboard"
+                            : pathname.startsWith(item.href);
                         return (
                             <Link
                                 key={item.href}
