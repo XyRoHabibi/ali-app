@@ -168,8 +168,8 @@ export default function Header() {
                                 <Link
                                     href={link.href}
                                     className={`text-sm font-bold transition-all relative group py-2 inline-flex items-center gap-1 ${isLayananActive
-                                            ? "text-[#2a6ba7]"
-                                            : "text-gray-600 hover:text-[#2a6ba7]"
+                                        ? "text-[#2a6ba7]"
+                                        : "text-gray-600 hover:text-[#2a6ba7]"
                                         }`}
                                 >
                                     {link.label}
@@ -181,8 +181,8 @@ export default function Header() {
                                     </span>
                                     <span
                                         className={`absolute bottom-0 left-0 h-0.5 bg-[#2a6ba7] transition-all duration-300 ${isLayananActive
-                                                ? "w-full"
-                                                : "w-0 group-hover:w-full"
+                                            ? "w-full"
+                                            : "w-0 group-hover:w-full"
                                             }`}
                                     />
                                 </Link>
@@ -193,15 +193,15 @@ export default function Header() {
                                 key={link.href}
                                 href={link.href}
                                 className={`text-sm font-bold transition-all relative group py-2 ${isActive(link.href)
-                                        ? "text-[#2a6ba7]"
-                                        : "text-gray-600 hover:text-[#2a6ba7]"
+                                    ? "text-[#2a6ba7]"
+                                    : "text-gray-600 hover:text-[#2a6ba7]"
                                     }`}
                             >
                                 {link.label}
                                 <span
                                     className={`absolute bottom-0 left-0 h-0.5 bg-[#2a6ba7] transition-all duration-300 ${isActive(link.href)
-                                            ? "w-full"
-                                            : "w-0 group-hover:w-full"
+                                        ? "w-full"
+                                        : "w-0 group-hover:w-full"
                                         }`}
                                 />
                             </Link>
@@ -214,8 +214,8 @@ export default function Header() {
                     <Link
                         href="/dashboard"
                         className={`hidden lg:flex text-sm font-black px-4 py-2.5 rounded-xl transition-all ${isActive("/dashboard")
-                                ? "bg-[#2a6ba7] text-white"
-                                : "text-[#2a6ba7] bg-[#2a6ba7]/10 hover:bg-[#2a6ba7] hover:text-white"
+                            ? "bg-[#2a6ba7] text-white"
+                            : "text-[#2a6ba7] bg-[#2a6ba7]/10 hover:bg-[#2a6ba7] hover:text-white"
                             }`}
                     >
                         Dashboard
@@ -264,12 +264,12 @@ export default function Header() {
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 className={`hidden md:block absolute top-full left-0 right-0 w-full transition-all duration-300 ease-out ${isMegaMenuOpen
-                        ? "opacity-100 visible translate-y-0"
-                        : "opacity-0 invisible -translate-y-3 pointer-events-none"
+                    ? "opacity-100 visible translate-y-0"
+                    : "opacity-0 invisible -translate-y-3 pointer-events-auto"
                     }`}
             >
                 {/* Backdrop shadow */}
-                <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-transparent h-[600px] pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-transparent h-[600px] pointer-events-auto" />
 
                 <div className="relative bg-white border-b border-gray-200 shadow-[0_30px_80px_rgba(0,0,0,0.10)]">
                     <div className="max-w-[1200px] mx-auto px-6 py-10">
@@ -416,8 +416,8 @@ export default function Header() {
             <div
                 data-lenis-prevent
                 className={`md:hidden fixed inset-0 z-[9999] bg-white p-6 flex flex-col h-[100dvh] overflow-y-auto overscroll-none transition-all duration-300 ${isMobileMenuOpen
-                        ? "translate-x-0 opacity-100 visible"
-                        : "translate-x-full opacity-0 invisible pointer-events-none"
+                    ? "translate-x-0 opacity-100 visible"
+                    : "translate-x-full opacity-0 invisible pointer-events-none"
                     }`}
             >
                 <div className="flex items-center justify-between mb-6">
@@ -445,15 +445,15 @@ export default function Header() {
                                         setIsMobileLayananOpen(!isMobileLayananOpen)
                                     }
                                     className={`w-full flex items-center justify-between group py-2 border-b border-gray-100 ${isLayananActive
-                                            ? "text-[#2a6ba7]"
-                                            : "text-gray-900"
+                                        ? "text-[#2a6ba7]"
+                                        : "text-gray-900"
                                         }`}
                                 >
                                     <span>{link.label}</span>
                                     <span
                                         className={`material-symbols-outlined transition-transform duration-300 ${isLayananActive
-                                                ? "text-[#2a6ba7]"
-                                                : "text-gray-400"
+                                            ? "text-[#2a6ba7]"
+                                            : "text-gray-400"
                                             } ${isMobileLayananOpen ? "rotate-180" : ""}`}
                                     >
                                         expand_more
@@ -463,8 +463,8 @@ export default function Header() {
                                 {/* Mobile Accordion Content */}
                                 <div
                                     className={`overflow-hidden transition-all duration-300 ease-in-out ${isMobileLayananOpen
-                                            ? "max-h-[800px] opacity-100"
-                                            : "max-h-0 opacity-0"
+                                        ? "max-h-[800px] opacity-100"
+                                        : "max-h-0 opacity-0"
                                         }`}
                                 >
                                     <div className="pt-4 pb-2 space-y-5">
@@ -550,15 +550,15 @@ export default function Header() {
                                 href={link.href}
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 className={`flex items-center justify-between group py-2 border-b border-gray-100 ${isActive(link.href)
-                                        ? "text-[#2a6ba7]"
-                                        : "text-gray-900"
+                                    ? "text-[#2a6ba7]"
+                                    : "text-gray-900"
                                     }`}
                             >
                                 {link.label}
                                 <span
                                     className={`material-symbols-outlined ${isActive(link.href)
-                                            ? "text-[#2a6ba7]"
-                                            : "text-gray-400"
+                                        ? "text-[#2a6ba7]"
+                                        : "text-gray-400"
                                         }`}
                                 >
                                     chevron_right
@@ -570,8 +570,8 @@ export default function Header() {
                         href="/dashboard"
                         onClick={() => setIsMobileMenuOpen(false)}
                         className={`flex items-center justify-between group py-2 border-b border-gray-100 ${isActive("/dashboard")
-                                ? "text-[#2a6ba7]"
-                                : "text-gray-900"
+                            ? "text-[#2a6ba7]"
+                            : "text-gray-900"
                             }`}
                     >
                         Dashboard
