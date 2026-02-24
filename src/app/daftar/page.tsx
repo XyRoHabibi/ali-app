@@ -324,7 +324,7 @@ export default function DaftarPage() {
                                         className={`flex items-center gap-1.5 ${passwordChecks.match ? "text-green-600" : "text-red-500"}`}
                                     >
                                         <CheckCircle2 className="w-3.5 h-3.5" />
-                                        Password cocok
+                                        {passwordChecks.match ? "Password cocok" : "Password tidak cocok"}
                                     </div>
                                 )}
                             </div>
