@@ -14,12 +14,12 @@ const megaMenuCategories = [
         bg: "bg-[#2a6ba7]/10",
         href: "/layanan?category=usaha",
         items: [
-            { name: "PT Perorangan", price: "Rp 999.000", href: "/layanan/pendirian/1" },
-            { name: "CV", price: "Rp 1.999.000", href: "/layanan/pendirian/3" },
-            { name: "PT Umum", price: "Rp 3.999.000", href: "/layanan/pendirian/5" },
-            { name: "Yayasan", price: "Rp 3.499.000", href: "/layanan/pendirian/15" },
-            { name: "PT PMA (Asing)", price: "Rp 8.999.000", href: "/layanan/pendirian/10" },
-            { name: "Koperasi", price: "Rp 1.999.000", href: "/layanan/pendirian/13" },
+            { name: "PT Perorangan", desc: "Badan usaha untuk 1 pemilik", href: "/layanan/pendirian/1" },
+            { name: "CV", desc: "Kemitraan usaha sederhana", href: "/layanan/pendirian/3" },
+            { name: "PT Umum", desc: "Badan hukum untuk 2+ pemegang saham", href: "/layanan/pendirian/5" },
+            { name: "Yayasan", desc: "Badan hukum sosial & nirlaba", href: "/layanan/pendirian/15" },
+            { name: "PT PMA (Asing)", desc: "Perusahaan dengan modal asing", href: "/layanan/pendirian/10" },
+            { name: "Koperasi", desc: "Badan usaha berbasis anggota", href: "/layanan/pendirian/13" },
         ],
     },
     {
@@ -29,12 +29,12 @@ const megaMenuCategories = [
         bg: "bg-emerald-50",
         href: "/layanan?category=lanjutan",
         items: [
-            { name: "Merek", price: "Rp 1.899.000", href: "/layanan/lanjutan/22" },
-            { name: "BPOM", price: "Rp 9.499.000", href: "/layanan/lanjutan/31" },
-            { name: "SBU Konstruksi", price: "Rp 2.999.000", href: "/layanan/lanjutan/32" },
-            { name: "ISO 9001", price: "Rp 12.000.000", href: "/layanan/lanjutan/38" },
-            { name: "Halal - PIRT", price: "Rp 999.000", href: "/layanan/lanjutan/28" },
-            { name: "PIRT", price: "Rp 399.000", href: "/layanan/lanjutan/27" },
+            { name: "Merek", desc: "Perlindungan hak kekayaan intelektual", href: "/layanan/lanjutan/22" },
+            { name: "BPOM", desc: "Izin edar obat & makanan", href: "/layanan/lanjutan/31" },
+            { name: "SBU Konstruksi", desc: "Sertifikasi badan usaha konstruksi", href: "/layanan/lanjutan/32" },
+            { name: "ISO 9001", desc: "Standar manajemen mutu internasional", href: "/layanan/lanjutan/38" },
+            { name: "Halal - PIRT", desc: "Sertifikasi halal produk rumahan", href: "/layanan/lanjutan/28" },
+            { name: "PIRT", desc: "Izin produksi pangan rumah tangga", href: "/layanan/lanjutan/27" },
         ],
     },
     {
@@ -44,10 +44,10 @@ const megaMenuCategories = [
         bg: "bg-amber-50",
         href: "/layanan?category=pajak",
         items: [
-            { name: "PKP", price: "Rp 1.499.000", href: "/layanan/perpajakan/74" },
-            { name: "EFIN Pribadi", price: "Rp 150.000", href: "/layanan/perpajakan/75" },
-            { name: "CORETax Pribadi", price: "Rp 350.000", href: "/layanan/perpajakan/76" },
-            { name: "CORETax Badan", price: "Rp 500.000", href: "/layanan/perpajakan/77" },
+            { name: "PKP", desc: "Pengukuhan pengusaha kena pajak", href: "/layanan/perpajakan/74" },
+            { name: "EFIN Pribadi", desc: "Aktivasi e-filing pajak pribadi", href: "/layanan/perpajakan/75" },
+            { name: "CORETax Pribadi", desc: "Registrasi sistem pajak baru pribadi", href: "/layanan/perpajakan/76" },
+            { name: "CORETax Badan", desc: "Registrasi sistem pajak baru badan", href: "/layanan/perpajakan/77" },
         ],
     },
 ];
@@ -306,13 +306,13 @@ export default function Header() {
                                             <Link
                                                 key={item.name}
                                                 href={item.href}
-                                                className="flex items-center justify-between py-2.5 px-3 -mx-3 rounded-xl hover:bg-gray-50 transition-all group/item"
+                                                className="flex flex-col py-2.5 px-3 -mx-3 rounded-xl hover:bg-gray-50 transition-all group/item"
                                             >
                                                 <span className="text-[13px] font-semibold text-gray-600 group-hover/item:text-gray-900 transition-colors">
                                                     {item.name}
                                                 </span>
-                                                <span className="text-[11px] font-bold text-gray-400 group-hover/item:text-[#2a6ba7] transition-colors whitespace-nowrap ml-2">
-                                                    {item.price}
+                                                <span className="text-[11px] font-medium text-gray-400 group-hover/item:text-gray-500 transition-colors mt-0.5">
+                                                    {item.desc}
                                                 </span>
                                             </Link>
                                         ))}
@@ -463,7 +463,7 @@ export default function Header() {
                                 {/* Mobile Accordion Content */}
                                 <div
                                     className={`overflow-hidden transition-all duration-300 ease-in-out ${isMobileLayananOpen
-                                        ? "max-h-[800px] opacity-100"
+                                        ? "max-h-[1500px] opacity-100"
                                         : "max-h-0 opacity-0"
                                         }`}
                                 >
@@ -499,13 +499,13 @@ export default function Header() {
                                                             onClick={() =>
                                                                 setIsMobileMenuOpen(false)
                                                             }
-                                                            className="flex items-center justify-between py-2 text-sm"
+                                                            className="flex flex-col py-2 text-sm"
                                                         >
                                                             <span className="font-semibold text-gray-600">
                                                                 {item.name}
                                                             </span>
-                                                            <span className="text-[11px] font-bold text-gray-400 ml-2">
-                                                                {item.price}
+                                                            <span className="text-[11px] font-medium text-gray-400 mt-0.5">
+                                                                {item.desc}
                                                             </span>
                                                         </Link>
                                                     ))}
