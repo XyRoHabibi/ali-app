@@ -142,17 +142,12 @@ export default function DokumenPage() {
 
 function DokumenContent() {
     const [applications, setApplications] = useState<Application[]>([]);
-    const [userDocs, setUserDocs] = useState<UserDoc[]>([]);
-    const [storage, setStorage] = useState<StorageInfo>({ used: 0, limit: 52428800, isPro: false });
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
     const [activeCategory, setActiveCategory] = useState("Semua");
-    const [uploading, setUploading] = useState(false);
-    const [message, setMessage] = useState("");
     const [showPassEmail, setShowPassEmail] = useState(false);
     const [showPassOss, setShowPassOss] = useState(false);
     const [selectedAppId, setSelectedAppId] = useState<string | null>(null);
-    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -167,42 +162,14 @@ function DokumenContent() {
     const fetchAll = useCallback(async () => {
         setLoading(true);
         try {
-            const [appRes, docRes] = await Promise.all([
-                fetch("/api/hono/applications"),
-                fetch("/api/hono/user-documents"),
-            ]);
+            const appRes = await fetch("/api/hono/applications");
             if (appRes.ok) { const d = await appRes.json(); setApplications(d.applications || []); }
-            if (docRes.ok) { const d = await docRes.json(); setUserDocs(d.documents || []); setStorage(d.storage || { used: 0, limit: 52428800, isPro: false }); }
         } catch (err) { console.error(err); }
         setLoading(false);
     }, []);
 
     useEffect(() => { fetchAll(); }, [fetchAll]);
 
-    const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-        setUploading(true);
-        setMessage("");
-        try {
-            const fd = new FormData();
-            fd.append("file", file);
-            const res = await fetch("/api/hono/user-documents", { method: "POST", body: fd });
-            const data = await res.json();
-            if (res.ok) { setMessage("Dokumen berhasil diunggah!"); fetchAll(); }
-            else { setMessage(data.error || "Gagal mengunggah"); }
-        } catch { setMessage("Terjadi kesalahan saat upload"); }
-        finally { setUploading(false); if (fileInputRef.current) fileInputRef.current.value = ""; setTimeout(() => setMessage(""), 4000); }
-    };
-
-    const handleDeleteUserDoc = async (docId: string) => {
-        if (!confirm("Hapus dokumen ini?")) return;
-        try {
-            const res = await fetch(`/api/hono/user-documents/${docId}`, { method: "DELETE" });
-            if (res.ok) { setMessage("Dihapus!"); fetchAll(); }
-        } catch { setMessage("Gagal menghapus"); }
-        setTimeout(() => setMessage(""), 3000);
-    };
 
     // ── Derived data ────────────────────────────────────
     const activeApp = selectedAppId ? applications.find(a => a.id === selectedAppId) : null;
@@ -218,17 +185,10 @@ function DokumenContent() {
     const directors = companyData?.directors || [];
     const agreements = companyData?.agreements || [];
     const taxReports = companyData?.taxReports || [];
-    const storagePercent = Math.round((storage.used / storage.limit) * 100);
 
     // ── Render ──────────────────────────────────────────
     return (
         <div className="p-6 lg:p-10 flex-1">
-            {/* Toast */}
-            {message && (
-                <div className="fixed top-6 right-6 z-50 bg-[#2a6ba7] text-white px-6 py-3 rounded-xl shadow-xl font-bold animate-[fadeIn_0.3s_ease]">
-                    {message}
-                </div>
-            )}
 
             {/* Breadcrumb */}
             <div className="hidden lg:flex items-center text-slate-500 text-sm gap-2 mb-6">
@@ -272,15 +232,6 @@ function DokumenContent() {
                             </>
                         )}
                     </div>
-                    <button
-                        onClick={() => fileInputRef.current?.click()}
-                        disabled={uploading}
-                        className="bg-[#2a6ba7] hover:bg-[#1e5a8a] text-white px-5 py-2.5 rounded-lg text-sm font-medium flex items-center gap-2 transition-all shadow-lg shadow-blue-500/30 disabled:opacity-50"
-                    >
-                        <span className="material-symbols-outlined text-[20px]">{uploading ? "hourglass_empty" : "upload_file"}</span>
-                        {uploading ? "Mengunggah..." : "Unggah Dokumen"}
-                    </button>
-                    <input ref={fileInputRef} type="file" className="hidden" accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx" onChange={handleUpload} />
                 </div>
 
                 {/* Search & Filters — only show when a service is selected */}
@@ -422,41 +373,7 @@ function DokumenContent() {
                             </>
                         )}
 
-                        {/* User-uploaded docs (Brankas) — always visible in overview */}
-                        {userDocs.length > 0 && (
-                            <div>
-                                <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-slate-400">folder_special</span>
-                                    Brankas Pribadi
-                                </h2>
-                                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-                                    {userDocs.map(doc => (
-                                        <div key={doc.id} className="bg-white rounded-xl p-5 border shadow-sm hover:shadow-md transition-shadow relative overflow-hidden border-slate-200">
-                                            <div className="flex justify-between items-start mb-4 relative z-10">
-                                                <div className="bg-slate-50 p-2.5 rounded-lg text-slate-500">
-                                                    <span className="material-symbols-outlined">{doc.fileType?.includes("pdf") ? "picture_as_pdf" : doc.fileType?.includes("image") ? "image" : "description"}</span>
-                                                </div>
-                                                <span className="bg-blue-100 text-blue-700 text-xs font-medium px-2 py-1 rounded-full">Brankas</span>
-                                            </div>
-                                            <h3 className="font-bold text-lg mb-1 line-clamp-1">{doc.name}</h3>
-                                            <p className="text-xs text-slate-400 mb-3 font-mono">{formatBytes(doc.fileSize)}</p>
-                                            <div className="flex items-center gap-2 text-slate-500 text-sm mb-6">
-                                                <span className="material-symbols-outlined text-sm">calendar_today</span>
-                                                <span>{formatDate(doc.createdAt)}</span>
-                                            </div>
-                                            <div className="flex gap-2">
-                                                <a href={doc.fileUrl} target="_blank" rel="noopener noreferrer" className="flex-1 bg-slate-50 hover:bg-slate-100 text-slate-700 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-1 transition-colors">
-                                                    <span className="material-symbols-outlined text-sm">visibility</span> Lihat
-                                                </a>
-                                                <button onClick={() => handleDeleteUserDoc(doc.id)} className="flex-1 border border-red-200 hover:bg-red-50 text-red-600 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-1 transition-colors">
-                                                    <span className="material-symbols-outlined text-sm">delete</span> Hapus
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
+
                     </div>
                 ) : (
                     /* ═══════ SELECTED SERVICE DETAIL VIEW ═══════ */
@@ -722,20 +639,7 @@ function DokumenContent() {
                                         </div>
                                     </div>
 
-                                    {/* Storage Info */}
-                                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-                                        <h3 className="font-bold text-sm mb-3 text-slate-600">Penyimpanan Brankas</h3>
-                                        <div className="flex items-baseline gap-1 mb-2">
-                                            <span className="text-lg font-black">{formatBytes(storage.used)}</span>
-                                            <span className="text-xs text-slate-400">/ {formatBytes(storage.limit)}</span>
-                                        </div>
-                                        <div className="w-full bg-slate-100 rounded-full h-2">
-                                            <div
-                                                className={`h-2 rounded-full transition-all ${storagePercent > 80 ? "bg-red-500" : "bg-[#2a6ba7]"}`}
-                                                style={{ width: `${Math.min(storagePercent, 100)}%` }}
-                                            />
-                                        </div>
-                                    </div>
+
 
                                     {/* CTA */}
                                     <div className="bg-gradient-to-br from-[#2a6ba7] to-blue-600 rounded-xl shadow-lg shadow-blue-500/30 p-6 text-white relative overflow-hidden">
