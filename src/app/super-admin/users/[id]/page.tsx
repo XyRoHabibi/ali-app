@@ -360,106 +360,121 @@ export default function UserDetailPage() {
                             <p className="text-sm text-slate-400">Klik &quot;Tambah Layanan&quot; untuk menambahkan layanan ke user ini.</p>
                         </div>
                     ) : (
-                        user.applications.map((app) => {
-                            const statusOpt = STATUS_OPTIONS.find(s => s.value === app.status);
-                            return (
-                                <div key={app.id} className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
-                                    {/* Application Header */}
-                                    <div className="p-6 border-b border-slate-100">
-                                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                                            <div className="flex items-center gap-4">
-                                                <div className="h-12 w-12 rounded-xl bg-[#2a6ba7]/10 flex items-center justify-center">
-                                                    <span className="material-symbols-outlined text-[#2a6ba7]">business</span>
-                                                </div>
-                                                <div>
-                                                    <h3 className="font-black text-lg">{app.name || app.service.name}</h3>
-                                                    <p className="text-sm text-slate-500">{app.service.name} • {formatDate(app.createdAt)}</p>
+                        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+                            {/* Desktop Table */}
+                            <table className="w-full text-left hidden md:table">
+                                <thead className="bg-slate-50 border-b border-slate-200">
+                                    <tr className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                        <th className="px-6 py-4 w-14">No</th>
+                                        <th className="px-6 py-4">Jenis Layanan</th>
+                                        <th className="px-6 py-4">Tanggal Pengajuan</th>
+                                        <th className="px-6 py-4">Status</th>
+                                        <th className="px-6 py-4">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-slate-100">
+                                    {user.applications.map((app, index) => {
+                                        const statusOpt = STATUS_OPTIONS.find(s => s.value === app.status);
+                                        return (
+                                            <tr key={app.id} className="hover:bg-slate-50/50 transition-colors">
+                                                <td className="px-6 py-4 text-sm font-bold text-slate-400">{index + 1}</td>
+                                                <td className="px-6 py-4">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="h-10 w-10 rounded-xl bg-[#2a6ba7]/10 flex items-center justify-center flex-shrink-0">
+                                                            <span className="material-symbols-outlined text-[#2a6ba7]">business</span>
+                                                        </div>
+                                                        <div className="min-w-0">
+                                                            <p className="font-bold text-sm truncate">{app.name || app.service.name}</p>
+                                                            <p className="text-xs text-slate-400 truncate">{app.service.name} • {app.documents.length} dokumen</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 text-sm text-slate-500 font-medium">
+                                                    {formatDate(app.createdAt)}
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <select
+                                                        value={app.status}
+                                                        onChange={(e) => handleStatusChange(app.id, e.target.value)}
+                                                        className={`px-3 py-1.5 rounded-lg text-xs font-bold border-0 cursor-pointer ${statusOpt?.color || ""}`}
+                                                    >
+                                                        {STATUS_OPTIONS.map(opt => (
+                                                            <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                                        ))}
+                                                    </select>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <div className="flex items-center gap-2">
+                                                        <button
+                                                            onClick={() => setShowUploadDoc(app.id)}
+                                                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#2a6ba7]/10 text-[#2a6ba7] text-xs font-bold hover:bg-[#2a6ba7]/20 transition-colors"
+                                                        >
+                                                            <span className="material-symbols-outlined text-[14px]">upload_file</span>
+                                                            Upload
+                                                        </button>
+                                                        <Link
+                                                            href={`/super-admin/applications/${app.id}`}
+                                                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 text-xs font-bold hover:bg-slate-200 transition-colors"
+                                                        >
+                                                            <span className="material-symbols-outlined text-[14px]">settings</span>
+                                                            Kelola
+                                                        </Link>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+
+                            {/* Mobile List */}
+                            <div className="md:hidden divide-y divide-slate-100">
+                                {user.applications.map((app, index) => {
+                                    const statusOpt = STATUS_OPTIONS.find(s => s.value === app.status);
+                                    return (
+                                        <div key={app.id} className="p-4 hover:bg-slate-50/50 transition-colors">
+                                            <div className="flex items-start gap-3 mb-3">
+                                                <span className="text-xs font-bold text-slate-400 mt-1 w-5 flex-shrink-0">{index + 1}</span>
+                                                <div className="flex items-center gap-3 flex-1 min-w-0">
+                                                    <div className="h-10 w-10 rounded-xl bg-[#2a6ba7]/10 flex items-center justify-center flex-shrink-0">
+                                                        <span className="material-symbols-outlined text-[#2a6ba7]">business</span>
+                                                    </div>
+                                                    <div className="min-w-0">
+                                                        <p className="font-bold text-sm truncate">{app.name || app.service.name}</p>
+                                                        <p className="text-xs text-slate-400">{app.service.name} • {formatDate(app.createdAt)}</p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div className="flex items-center gap-3">
+                                            <div className="flex items-center justify-between ml-8">
                                                 <select
                                                     value={app.status}
                                                     onChange={(e) => handleStatusChange(app.id, e.target.value)}
-                                                    className={`px-3 py-1.5 rounded-lg text-sm font-bold border-0 cursor-pointer ${statusOpt?.color || ""}`}
+                                                    className={`px-2 py-1 rounded-lg text-xs font-bold border-0 cursor-pointer ${statusOpt?.color || ""}`}
                                                 >
                                                     {STATUS_OPTIONS.map(opt => (
                                                         <option key={opt.value} value={opt.value}>{opt.label}</option>
                                                     ))}
                                                 </select>
-                                                {app.estimate && (
-                                                    <span className="text-xs text-slate-400">Est: {app.estimate}</span>
-                                                )}
-                                                <button
-                                                    onClick={() => setShowUploadDoc(app.id)}
-                                                    className="h-9 px-4 bg-[#2a6ba7]/10 text-[#2a6ba7] rounded-lg text-sm font-bold hover:bg-[#2a6ba7]/20 transition-colors flex items-center gap-1"
-                                                >
-                                                    <span className="material-symbols-outlined text-base">upload_file</span>
-                                                    Upload Dokumen
-                                                </button>
-                                                <Link
-                                                    href={`/super-admin/applications/${app.id}`}
-                                                    className="h-9 px-4 bg-slate-100 text-slate-600 rounded-lg text-sm font-bold hover:bg-slate-200 transition-colors flex items-center gap-1"
-                                                >
-                                                    <span className="material-symbols-outlined text-base">settings</span>
-                                                    Kelola Profil
-                                                </Link>
+                                                <div className="flex gap-1.5">
+                                                    <button
+                                                        onClick={() => setShowUploadDoc(app.id)}
+                                                        className="h-8 w-8 rounded-lg bg-[#2a6ba7]/10 flex items-center justify-center text-[#2a6ba7]"
+                                                    >
+                                                        <span className="material-symbols-outlined text-[16px]">upload_file</span>
+                                                    </button>
+                                                    <Link
+                                                        href={`/super-admin/applications/${app.id}`}
+                                                        className="h-8 w-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600"
+                                                    >
+                                                        <span className="material-symbols-outlined text-[16px]">settings</span>
+                                                    </Link>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    {/* Documents */}
-                                    {app.documents.length > 0 ? (
-                                        <div className="divide-y divide-slate-50">
-                                            {app.documents.map((doc) => (
-                                                <div key={doc.id} className="px-6 py-4 flex items-center justify-between hover:bg-slate-50/50 transition-colors">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="h-10 w-10 rounded-lg bg-red-500/10 flex items-center justify-center">
-                                                            <span className="material-symbols-outlined text-red-500 text-xl">
-                                                                {doc.fileType?.includes("pdf") ? "picture_as_pdf" : doc.fileType?.includes("image") ? "image" : "description"}
-                                                            </span>
-                                                        </div>
-                                                        <div>
-                                                            <p className="font-bold text-sm">{doc.name}</p>
-                                                            <p className="text-xs text-slate-400">
-                                                                {formatBytes(doc.fileSize)} • {doc.category || "Umum"} • {formatDate(doc.createdAt)}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="flex items-center gap-2">
-                                                        <a
-                                                            href={doc.fileUrl}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="h-8 w-8 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors"
-                                                        >
-                                                            <span className="material-symbols-outlined text-base text-slate-600">visibility</span>
-                                                        </a>
-                                                        <a
-                                                            href={doc.fileUrl}
-                                                            download
-                                                            className="h-8 w-8 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors"
-                                                        >
-                                                            <span className="material-symbols-outlined text-base text-slate-600">download</span>
-                                                        </a>
-                                                        <button
-                                                            onClick={() => handleDeleteDoc(app.id, doc.id)}
-                                                            className="h-8 w-8 rounded-lg bg-red-50 hover:bg-red-100 flex items-center justify-center transition-colors"
-                                                        >
-                                                            <span className="material-symbols-outlined text-base text-red-500">delete</span>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    ) : (
-                                        <div className="px-6 py-8 text-center">
-                                            <span className="material-symbols-outlined text-3xl text-slate-300 mb-2 block">note_stack</span>
-                                            <p className="text-sm text-slate-400">Belum ada dokumen</p>
-                                        </div>
-                                    )}
-                                </div>
-                            );
-                        })
+                                    );
+                                })}
+                            </div>
+                        </div>
                     )}
                 </div>
             </div>

@@ -322,7 +322,7 @@ function DokumenContent() {
                         ))}
                     </div>
                 ) : !selectedAppId ? (
-                    /* ═══════ SERVICE PICKER OVERVIEW ═══════ */
+                    /* ═══════ SERVICE PICKER OVERVIEW (TABLE) ═══════ */
                     <div className="space-y-8">
                         {applications.length === 0 ? (
                             <div className="bg-white rounded-xl border border-slate-200 p-16 text-center">
@@ -333,53 +333,91 @@ function DokumenContent() {
                         ) : (
                             <>
                                 <p className="text-sm text-slate-500 font-medium">Pilih layanan untuk melihat dokumen dan detail perusahaan:</p>
-                                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                                    {applications.map(app => {
-                                        const status = STATUS_MAP[app.status] || STATUS_MAP.PENDING;
-                                        const docCount = app.documents.length;
-                                        const hasCompany = !!app.companyData;
-                                        return (
-                                            <button
-                                                key={app.id}
-                                                onClick={() => { setSelectedAppId(app.id); setSearchQuery(""); setActiveCategory("Semua"); router.push(`${pathname}?appId=${app.id}`); }}
-                                                className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm hover:shadow-lg hover:border-[#2a6ba7]/30 transition-all text-left group relative overflow-hidden"
-                                            >
-                                                <div className="absolute top-0 right-0 w-20 h-20 bg-[#2a6ba7]/5 rounded-bl-full -mr-6 -mt-6 group-hover:bg-[#2a6ba7]/10 transition-colors" />
-                                                <div className="flex items-start gap-4 mb-4">
-                                                    <div className="h-12 w-12 rounded-xl bg-[#2a6ba7]/10 flex items-center justify-center group-hover:bg-[#2a6ba7]/20 transition-colors flex-shrink-0">
-                                                        <span className="material-symbols-outlined text-[#2a6ba7]">business</span>
+                                <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                                    {/* Mobile List Layout */}
+                                    <div className="md:hidden divide-y divide-slate-100">
+                                        {applications.map((app, index) => {
+                                            const status = STATUS_MAP[app.status] || STATUS_MAP.PENDING;
+                                            return (
+                                                <div key={app.id} className="p-4 hover:bg-slate-50/50 transition-colors">
+                                                    <div className="flex items-start gap-3 mb-3">
+                                                        <span className="text-xs font-bold text-slate-400 mt-1 w-5 flex-shrink-0">{index + 1}</span>
+                                                        <div className="flex-1 min-w-0">
+                                                            <p className="font-bold text-sm truncate">{app.name || app.service.name}</p>
+                                                            <p className="text-xs text-slate-400">{app.service.name}</p>
+                                                        </div>
                                                     </div>
-                                                    <div className="flex-1 min-w-0">
-                                                        <h3 className="font-bold text-base truncate group-hover:text-[#2a6ba7] transition-colors">{app.name || app.service.name}</h3>
-                                                        <p className="text-xs text-slate-400">{app.service.name}</p>
+                                                    <div className="flex items-center justify-between ml-8">
+                                                        <div className="flex items-center gap-3">
+                                                            <span className={`px-2.5 py-1 rounded-full text-xs font-medium border ${status.color}`}>
+                                                                <span className="material-symbols-outlined text-xs mr-1 align-middle">{status.icon}</span>
+                                                                {status.label}
+                                                            </span>
+                                                            <span className="text-xs text-slate-400">{formatDate(app.createdAt)}</span>
+                                                        </div>
+                                                        <button
+                                                            onClick={() => { setSelectedAppId(app.id); setSearchQuery(""); setActiveCategory("Semua"); router.push(`${pathname}?appId=${app.id}`); }}
+                                                            className="h-8 w-8 rounded-lg bg-[#2a6ba7]/10 flex items-center justify-center text-[#2a6ba7] hover:bg-[#2a6ba7] hover:text-white transition-all"
+                                                        >
+                                                            <span className="material-symbols-outlined text-[18px]">visibility</span>
+                                                        </button>
                                                     </div>
                                                 </div>
-                                                <div className="flex items-center justify-between mb-4">
-                                                    <span className={`px-2.5 py-1 rounded-full text-xs font-medium border ${status.color}`}>
-                                                        <span className="material-symbols-outlined text-xs mr-1 align-middle">{status.icon}</span>
-                                                        {status.label}
-                                                    </span>
-                                                    <span className="text-xs text-slate-400">{formatDate(app.createdAt)}</span>
-                                                </div>
-                                                <div className="flex gap-3 text-xs text-slate-500">
-                                                    <span className="flex items-center gap-1">
-                                                        <span className="material-symbols-outlined text-sm">description</span>
-                                                        {docCount} dokumen
-                                                    </span>
-                                                    {hasCompany && (
-                                                        <span className="flex items-center gap-1">
-                                                            <span className="material-symbols-outlined text-sm">domain</span>
-                                                            Profil lengkap
-                                                        </span>
-                                                    )}
-                                                </div>
-                                                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center gap-1 text-xs font-medium text-[#2a6ba7] opacity-0 group-hover:opacity-100 transition-opacity">
-                                                    <span>Lihat Detail</span>
-                                                    <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                                                </div>
-                                            </button>
-                                        );
-                                    })}
+                                            );
+                                        })}
+                                    </div>
+
+                                    {/* Desktop Table Layout */}
+                                    <table className="w-full text-left hidden md:table">
+                                        <thead className="bg-slate-50 border-b border-slate-200">
+                                            <tr className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                                <th className="px-6 py-4 w-14">No</th>
+                                                <th className="px-6 py-4">Jenis Layanan</th>
+                                                <th className="px-6 py-4">Tanggal Pengajuan Dokumen</th>
+                                                <th className="px-6 py-4">Status</th>
+                                                <th className="px-6 py-4">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-slate-100">
+                                            {applications.map((app, index) => {
+                                                const status = STATUS_MAP[app.status] || STATUS_MAP.PENDING;
+                                                return (
+                                                    <tr key={app.id} className="hover:bg-slate-50/50 transition-colors">
+                                                        <td className="px-6 py-4 text-sm font-bold text-slate-400">{index + 1}</td>
+                                                        <td className="px-6 py-4">
+                                                            <div className="flex items-center gap-3">
+                                                                <div className="h-10 w-10 rounded-xl bg-[#2a6ba7]/10 flex items-center justify-center flex-shrink-0">
+                                                                    <span className="material-symbols-outlined text-[#2a6ba7]">business</span>
+                                                                </div>
+                                                                <div className="min-w-0">
+                                                                    <p className="font-bold text-sm truncate">{app.name || app.service.name}</p>
+                                                                    <p className="text-xs text-slate-400 truncate">{app.service.name}</p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-6 py-4 text-sm text-slate-500 font-medium">
+                                                            {formatDate(app.createdAt)}
+                                                        </td>
+                                                        <td className="px-6 py-4">
+                                                            <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border ${status.color}`}>
+                                                                <span className="material-symbols-outlined text-xs mr-1">{status.icon}</span>
+                                                                {status.label}
+                                                            </span>
+                                                        </td>
+                                                        <td className="px-6 py-4">
+                                                            <button
+                                                                onClick={() => { setSelectedAppId(app.id); setSearchQuery(""); setActiveCategory("Semua"); router.push(`${pathname}?appId=${app.id}`); }}
+                                                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#2a6ba7]/10 text-[#2a6ba7] text-xs font-bold hover:bg-[#2a6ba7] hover:text-white transition-all"
+                                                            >
+                                                                <span className="material-symbols-outlined text-[16px]">visibility</span>
+                                                                Lihat Detail
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })}
+                                        </tbody>
+                                    </table>
                                 </div>
                             </>
                         )}
