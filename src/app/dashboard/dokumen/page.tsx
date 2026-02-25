@@ -149,6 +149,8 @@ function DokumenContent() {
     const [showPassEmail, setShowPassEmail] = useState(false);
     const [showPassOss, setShowPassOss] = useState(false);
     const [selectedAppId, setSelectedAppId] = useState<string | null>(null);
+    const [docPage, setDocPage] = useState(1);
+    const DOCS_PER_PAGE = 5;
 
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -183,6 +185,14 @@ function DokumenContent() {
         return matchSearch && matchCat;
     });
 
+    // Pagination
+    const totalDocPages = Math.max(1, Math.ceil(filteredDocs.length / DOCS_PER_PAGE));
+    const paginatedDocs = filteredDocs.slice((docPage - 1) * DOCS_PER_PAGE, docPage * DOCS_PER_PAGE);
+    const docStartIndex = (docPage - 1) * DOCS_PER_PAGE;
+
+    // Reset page when filters change
+    useEffect(() => { setDocPage(1); }, [searchQuery, activeCategory]);
+
     const directors = companyData?.directors || [];
     const agreements = companyData?.agreements || [];
     const taxReports = companyData?.taxReports || [];
@@ -208,32 +218,76 @@ function DokumenContent() {
 
             <div className="max-w-7xl mx-auto flex flex-col gap-8 pb-10">
                 {/* Header */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                    <div className="space-y-2">
-                        {selectedAppId && activeApp ? (
-                            <>
-                                <button
-                                    onClick={() => { setSelectedAppId(null); router.push(pathname); }}
-                                    className="text-sm text-[#2a6ba7] font-medium flex items-center gap-1 hover:underline mb-1"
-                                >
-                                    <span className="material-symbols-outlined text-base">arrow_back</span>
-                                    Kembali ke Pilihan Layanan
-                                </button>
-                                <h1 className="text-2xl font-bold tracking-tight">{activeApp.name || activeApp.service.name}</h1>
-                                <p className="text-slate-500 max-w-2xl">
-                                    {activeApp.service.name} • Dibuat {formatDate(activeApp.createdAt)}
-                                </p>
-                            </>
-                        ) : (
-                            <>
-                                <h1 className="text-2xl font-bold tracking-tight">Brankas Dokumen</h1>
-                                <p className="text-slate-500 max-w-2xl">
-                                    Akses dan kelola semua dokumen legalitas perusahaan Anda di satu tempat yang aman dan terenkripsi.
-                                </p>
-                            </>
-                        )}
+                {selectedAppId && activeApp ? (
+                    <div className="space-y-3">
+                        <button
+                            onClick={() => { setSelectedAppId(null); router.push(pathname); }}
+                            className="text-sm text-[#2a6ba7] font-medium flex items-center gap-1 hover:underline"
+                        >
+                            <span className="material-symbols-outlined text-base">arrow_back</span>
+                            Kembali ke Pilihan Layanan
+                        </button>
+                        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                            {/* Top Row: Icon + Name */}
+                            <div className="p-5 sm:p-6">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#2a6ba7] to-blue-500 flex items-center justify-center text-white shadow-md shadow-blue-500/20 flex-shrink-0">
+                                        <span className="material-symbols-outlined text-2xl">apartment</span>
+                                    </div>
+                                    <div className="min-w-0">
+                                        <h1 className="text-slate-900 text-xl sm:text-2xl font-extrabold leading-tight truncate">
+                                            {activeApp.name || activeApp.service.name}
+                                        </h1>
+                                        <p className="text-slate-400 text-sm mt-0.5">{activeApp.service.name}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Bottom Row: Metadata */}
+                            <div className="border-t border-slate-100 bg-slate-50/50 px-5 sm:px-6 py-4">
+                                <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
+                                    <div className="flex items-center gap-2">
+                                        <span className="material-symbols-outlined text-slate-400 text-base">category</span>
+                                        <div>
+                                            <p className="text-slate-400 text-[10px] uppercase tracking-wider font-semibold leading-none mb-0.5">Jenis Layanan</p>
+                                            <p className="text-slate-700 text-sm font-medium">{activeApp.service.name}</p>
+                                        </div>
+                                    </div>
+                                    <div className="hidden sm:block w-px h-8 bg-slate-200" />
+                                    <div className="flex items-center gap-2">
+                                        <span className="material-symbols-outlined text-slate-400 text-base">calendar_today</span>
+                                        <div>
+                                            <p className="text-slate-400 text-[10px] uppercase tracking-wider font-semibold leading-none mb-0.5">Tanggal Dibuat</p>
+                                            <p className="text-slate-700 text-sm font-medium">{formatDate(activeApp.createdAt)}</p>
+                                        </div>
+                                    </div>
+                                    <div className="hidden sm:block w-px h-8 bg-slate-200" />
+                                    <div className="flex items-center gap-2">
+                                        <span className="material-symbols-outlined text-slate-400 text-base">info</span>
+                                        <div>
+                                            <p className="text-slate-400 text-[10px] uppercase tracking-wider font-semibold leading-none mb-0.5">Status</p>
+                                            {(() => {
+                                                const status = STATUS_MAP[activeApp.status] || STATUS_MAP.PENDING;
+                                                return (
+                                                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold ${status.color}`}>
+                                                        <span className="material-symbols-outlined text-xs">{status.icon}</span>
+                                                        {status.label}
+                                                    </span>
+                                                );
+                                            })()}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    <div className="space-y-2">
+                        <h1 className="text-2xl font-bold tracking-tight">Brankas Dokumen</h1>
+                        <p className="text-slate-500 max-w-2xl">
+                            Akses dan kelola semua dokumen legalitas perusahaan Anda di satu tempat yang aman dan terenkripsi.
+                        </p>
+                    </div>
+                )}
 
                 {/* Search & Filters — only show when a service is selected */}
                 {selectedAppId && (
@@ -396,12 +450,12 @@ function DokumenContent() {
 
                                 {/* Mobile Card Layout */}
                                 <div className="lg:hidden divide-y divide-slate-100">
-                                    {filteredDocs.map((doc, index) => {
+                                    {paginatedDocs.map((doc, index) => {
                                         const icon = getDocIcon(doc.category);
                                         return (
                                             <div key={doc.id} className="p-4 hover:bg-slate-50/50 transition-colors">
                                                 <div className="flex items-start gap-3">
-                                                    <span className="text-xs font-bold text-slate-400 mt-2.5 w-5 flex-shrink-0 text-center">{index + 1}</span>
+                                                    <span className="text-xs font-bold text-slate-400 mt-2.5 w-5 flex-shrink-0 text-center">{docStartIndex + index + 1}</span>
                                                     <div className={`${icon.bg} p-2 rounded-lg ${icon.color} flex-shrink-0 mt-0.5`}>
                                                         <span className="material-symbols-outlined text-[18px]">{icon.icon}</span>
                                                     </div>
@@ -458,11 +512,11 @@ function DokumenContent() {
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-slate-100">
-                                            {filteredDocs.map((doc, index) => {
+                                            {paginatedDocs.map((doc, index) => {
                                                 const icon = getDocIcon(doc.category);
                                                 return (
                                                     <tr key={doc.id} className="hover:bg-slate-50/50 transition-colors">
-                                                        <td className="px-4 py-3 text-sm font-bold text-slate-400">{index + 1}</td>
+                                                        <td className="px-4 py-3 text-sm font-bold text-slate-400">{docStartIndex + index + 1}</td>
                                                         <td className="px-4 py-3">
                                                             <div className="flex items-center gap-2.5">
                                                                 <div className={`${icon.bg} p-1.5 rounded-lg ${icon.color} flex-shrink-0`}>
@@ -513,6 +567,43 @@ function DokumenContent() {
                                         </tbody>
                                     </table>
                                 </div>
+
+                                {/* Pagination Footer */}
+                                {filteredDocs.length > DOCS_PER_PAGE && (
+                                    <div className="border-t border-slate-100 px-4 sm:px-5 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+                                        <p className="text-sm text-slate-500">
+                                            Menampilkan <span className="font-semibold text-slate-700">{docStartIndex + 1}-{Math.min(docStartIndex + DOCS_PER_PAGE, filteredDocs.length)}</span> dari <span className="font-semibold text-slate-700">{filteredDocs.length}</span> dokumen
+                                        </p>
+                                        <div className="flex items-center gap-1">
+                                            <button
+                                                onClick={() => setDocPage(p => Math.max(1, p - 1))}
+                                                disabled={docPage === 1}
+                                                className="h-8 w-8 rounded-lg flex items-center justify-center text-slate-500 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                                            >
+                                                <span className="material-symbols-outlined text-[18px]">chevron_left</span>
+                                            </button>
+                                            {Array.from({ length: totalDocPages }, (_, i) => i + 1).map(page => (
+                                                <button
+                                                    key={page}
+                                                    onClick={() => setDocPage(page)}
+                                                    className={`h-8 w-8 rounded-lg text-sm font-semibold transition-colors ${page === docPage
+                                                            ? "bg-[#2a6ba7] text-white shadow-sm"
+                                                            : "text-slate-600 hover:bg-slate-100"
+                                                        }`}
+                                                >
+                                                    {page}
+                                                </button>
+                                            ))}
+                                            <button
+                                                onClick={() => setDocPage(p => Math.min(totalDocPages, p + 1))}
+                                                disabled={docPage === totalDocPages}
+                                                className="h-8 w-8 rounded-lg flex items-center justify-center text-slate-500 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                                            >
+                                                <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         )}
 
