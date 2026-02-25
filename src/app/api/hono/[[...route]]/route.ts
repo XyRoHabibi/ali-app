@@ -650,6 +650,7 @@ app.post("/admin/applications/:id/documents", async (c) => {
         const docName = formData.get("name") as string || "";
         const category = formData.get("category") as string || "";
         const adminNote = formData.get("adminNote") as string || "";
+        const documentNumber = formData.get("documentNumber") as string || "";
 
         if (!file) return c.json({ error: "File harus diupload" }, 400);
         if (file.size > MAX_FILE_SIZE) {
@@ -684,6 +685,7 @@ app.post("/admin/applications/:id/documents", async (c) => {
                 fileType: file.type,
                 category: category || null,
                 adminNote: adminNote || null,
+                documentNumber: documentNumber || null,
             },
         });
 
