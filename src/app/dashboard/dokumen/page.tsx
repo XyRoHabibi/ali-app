@@ -520,40 +520,40 @@ function DokumenContent() {
                         {directors.length > 0 && (
                             <div>
                                 <h2 className="text-lg font-bold mb-4">Masa Jabatan Direktur &amp; Komisaris</h2>
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
                                     {directors.map(d => {
                                         const colors = getDirectorColor(d.jabatan);
                                         const tenure = getTenureInfo(d.akhirMenjabat);
                                         const initials = d.name.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase();
                                         return (
-                                            <div key={d.id} className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
-                                                <div className="flex justify-between items-start mb-4">
+                                            <div key={d.id} className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between">
+                                                <div className="flex justify-between items-start mb-3">
                                                     <div className="flex items-center gap-3">
-                                                        <div className={`h-10 w-10 ${colors.bg} rounded-full flex items-center justify-center ${colors.text} font-bold`}>
+                                                        <div className={`h-9 w-9 text-sm ${colors.bg} rounded-full flex items-center justify-center ${colors.text} font-bold`}>
                                                             {initials}
                                                         </div>
                                                         <div>
-                                                            <h3 className="font-bold text-base">{d.name}</h3>
+                                                            <h3 className="font-bold text-sm">{d.name}</h3>
                                                             <p className="text-xs text-slate-500">{d.jabatan}</p>
                                                         </div>
                                                     </div>
-                                                    <span className="text-xs font-mono bg-slate-100 px-2 py-1 rounded">{d.status}</span>
+                                                    <span className="text-[11px] font-mono bg-slate-100 px-2 py-0.5 rounded">{d.status}</span>
                                                 </div>
-                                                <div className="mb-4">
+                                                <div className="mb-3">
                                                     <div className="flex justify-between text-sm mb-2">
                                                         <span className="text-slate-500">Masa Jabatan</span>
                                                         <span className={`font-medium ${tenure.expired ? "text-red-600" : colors.text}`}>
                                                             {tenure.remaining}
                                                         </span>
                                                     </div>
-                                                    <div className="w-full bg-slate-100 rounded-full h-2.5">
+                                                    <div className="w-full bg-slate-100 rounded-full h-2">
                                                         <div
-                                                            className={`${tenure.expired ? "bg-red-500" : colors.bar} h-2.5 rounded-full transition-all`}
+                                                            className={`${tenure.expired ? "bg-red-500" : colors.bar} h-2 rounded-full transition-all`}
                                                             style={{ width: `${tenure.percent}%` }}
                                                         />
                                                     </div>
                                                     {d.akhirMenjabat && (
-                                                        <div className="mt-2 text-xs text-right text-slate-400">
+                                                        <div className="mt-1.5 text-xs text-right text-slate-400">
                                                             Berlaku hingga: {formatDate(d.akhirMenjabat)}
                                                         </div>
                                                     )}
