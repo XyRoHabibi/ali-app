@@ -13,6 +13,7 @@ interface ApplicationDoc {
     fileType: string | null;
     category: string | null;
     adminNote: string | null;
+    documentNumber: string | null;
     createdAt: string;
 }
 
@@ -379,7 +380,7 @@ function DokumenContent() {
                     /* ═══════ SELECTED SERVICE DETAIL VIEW ═══════ */
                     <div className="space-y-8">
 
-                        {/* ═══════ DOCUMENT CARDS ═══════ */}
+                        {/* ═══════ DOCUMENT TABLE ═══════ */}
                         {filteredDocs.length === 0 ? (
                             <div className="bg-white rounded-xl border border-slate-200 p-16 text-center">
                                 <span className="material-symbols-outlined text-6xl text-slate-200 mb-4 block">note_stack</span>
@@ -387,47 +388,131 @@ function DokumenContent() {
                                 <p className="text-sm text-slate-400">Dokumen akan tersedia setelah admin mengunggahnya untuk layanan ini.</p>
                             </div>
                         ) : (
-                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-                                {filteredDocs.map(doc => {
-                                    const icon = getDocIcon(doc.category);
-                                    return (
-                                        <div key={doc.id} className="bg-white rounded-xl p-5 border shadow-sm hover:shadow-md transition-shadow relative overflow-hidden border-slate-200">
-                                            <div className="flex justify-between items-start mb-4 relative z-10">
-                                                <div className={`${icon.bg} p-2.5 rounded-lg ${icon.color}`}>
-                                                    <span className="material-symbols-outlined">{icon.icon}</span>
-                                                </div>
-                                                <span className="bg-emerald-100 text-emerald-700 text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1">
-                                                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
-                                                    Valid
-                                                </span>
-                                            </div>
-                                            <h3 className="font-bold text-lg mb-1 line-clamp-1">{doc.name}</h3>
-                                            <p className="text-xs text-slate-400 mb-3 font-mono">{doc.category || "Umum"} • {formatBytes(doc.fileSize)}</p>
-                                            <div className="flex items-center gap-2 text-slate-500 text-sm mb-6">
-                                                <span className="material-symbols-outlined text-sm">calendar_today</span>
-                                                <span>{formatDate(doc.createdAt)}</span>
-                                            </div>
-                                            <div className="flex gap-2">
-                                                <a
-                                                    href={doc.fileUrl}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="flex-1 bg-slate-50 hover:bg-slate-100 text-slate-700 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-1 transition-colors"
-                                                >
-                                                    <span className="material-symbols-outlined text-sm">visibility</span> Lihat
-                                                </a>
-                                                <a
-                                                    href={doc.fileUrl}
-                                                    download
-                                                    className="flex-1 border border-slate-200 hover:bg-slate-50 text-slate-700 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-1 transition-colors"
-                                                >
-                                                    <span className="material-symbols-outlined text-sm">download</span> Unduh
-                                                </a>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                                <div className="p-4 sm:p-5 border-b border-slate-100 flex justify-between items-center">
+                                    <h2 className="font-bold text-lg">Berkas Dokumen</h2>
+                                    <span className="text-[#2a6ba7] text-sm font-medium">{filteredDocs.length} dokumen</span>
+                                </div>
 
+                                {/* Mobile Card Layout */}
+                                <div className="lg:hidden divide-y divide-slate-100">
+                                    {filteredDocs.map((doc, index) => {
+                                        const icon = getDocIcon(doc.category);
+                                        return (
+                                            <div key={doc.id} className="p-4 hover:bg-slate-50/50 transition-colors">
+                                                <div className="flex items-start gap-3">
+                                                    <span className="text-xs font-bold text-slate-400 mt-2.5 w-5 flex-shrink-0 text-center">{index + 1}</span>
+                                                    <div className={`${icon.bg} p-2 rounded-lg ${icon.color} flex-shrink-0 mt-0.5`}>
+                                                        <span className="material-symbols-outlined text-[18px]">{icon.icon}</span>
+                                                    </div>
+                                                    <div className="flex-1 min-w-0">
+                                                        <p className="font-bold text-sm truncate">{doc.name}</p>
+                                                        <p className="text-xs text-slate-400 mt-0.5">{doc.category || "Umum"} • {formatBytes(doc.fileSize)}</p>
+                                                        <div className="flex flex-wrap items-center gap-2 mt-2">
+                                                            <span className="bg-emerald-100 text-emerald-700 text-[10px] font-medium px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                                                                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
+                                                                Valid
+                                                            </span>
+                                                            {doc.documentNumber && (
+                                                                <span className="text-[10px] text-slate-500 font-mono bg-slate-100 px-1.5 py-0.5 rounded">No: {doc.documentNumber}</span>
+                                                            )}
+                                                            <span className="text-[10px] text-slate-400">{formatDate(doc.createdAt)}</span>
+                                                        </div>
+                                                        <div className="flex gap-1.5 mt-2.5">
+                                                            <a
+                                                                href={doc.fileUrl}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#2a6ba7]/10 text-[#2a6ba7] text-xs font-bold hover:bg-[#2a6ba7] hover:text-white transition-all"
+                                                            >
+                                                                <span className="material-symbols-outlined text-[14px]">visibility</span>
+                                                                Lihat
+                                                            </a>
+                                                            <a
+                                                                href={doc.fileUrl}
+                                                                download
+                                                                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-600 text-xs font-bold hover:bg-slate-200 transition-all"
+                                                            >
+                                                                <span className="material-symbols-outlined text-[14px]">download</span>
+                                                                Unduh
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+
+                                {/* Desktop Table Layout */}
+                                <div className="hidden lg:block overflow-x-auto">
+                                    <table className="w-full text-left">
+                                        <thead className="bg-slate-50 border-b border-slate-200">
+                                            <tr className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                                <th className="px-4 py-3 w-12">No</th>
+                                                <th className="px-4 py-3 min-w-[200px]">Jenis Dokumen</th>
+                                                <th className="px-4 py-3 w-24">Status</th>
+                                                <th className="px-4 py-3 min-w-[120px]">No Dokumen</th>
+                                                <th className="px-4 py-3 whitespace-nowrap w-36">Tanggal Dokumen</th>
+                                                <th className="px-4 py-3 w-28">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-slate-100">
+                                            {filteredDocs.map((doc, index) => {
+                                                const icon = getDocIcon(doc.category);
+                                                return (
+                                                    <tr key={doc.id} className="hover:bg-slate-50/50 transition-colors">
+                                                        <td className="px-4 py-3 text-sm font-bold text-slate-400">{index + 1}</td>
+                                                        <td className="px-4 py-3">
+                                                            <div className="flex items-center gap-2.5">
+                                                                <div className={`${icon.bg} p-1.5 rounded-lg ${icon.color} flex-shrink-0`}>
+                                                                    <span className="material-symbols-outlined text-[18px]">{icon.icon}</span>
+                                                                </div>
+                                                                <div className="min-w-0">
+                                                                    <p className="font-bold text-sm truncate max-w-[220px]">{doc.name}</p>
+                                                                    <p className="text-xs text-slate-400 truncate">{doc.category || "Umum"} • {formatBytes(doc.fileSize)}</p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-4 py-3">
+                                                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-emerald-100 text-emerald-700 whitespace-nowrap">
+                                                                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-1" />
+                                                                Valid
+                                                            </span>
+                                                        </td>
+                                                        <td className="px-4 py-3 text-sm text-slate-600 font-mono whitespace-nowrap">
+                                                            {doc.documentNumber || "-"}
+                                                        </td>
+                                                        <td className="px-4 py-3 text-sm text-slate-500 font-medium whitespace-nowrap">
+                                                            {formatDate(doc.createdAt)}
+                                                        </td>
+                                                        <td className="px-4 py-3">
+                                                            <div className="flex items-center gap-1.5">
+                                                                <a
+                                                                    href={doc.fileUrl}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    title="Lihat Dokumen"
+                                                                    className="h-8 w-8 rounded-lg bg-[#2a6ba7]/10 flex items-center justify-center text-[#2a6ba7] hover:bg-[#2a6ba7] hover:text-white transition-all flex-shrink-0"
+                                                                >
+                                                                    <span className="material-symbols-outlined text-[16px]">visibility</span>
+                                                                </a>
+                                                                <a
+                                                                    href={doc.fileUrl}
+                                                                    download
+                                                                    title="Unduh Dokumen"
+                                                                    className="h-8 w-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-all flex-shrink-0"
+                                                                >
+                                                                    <span className="material-symbols-outlined text-[16px]">download</span>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         )}
 

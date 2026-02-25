@@ -22,6 +22,7 @@ interface ApplicationDoc {
     fileType: string | null;
     category: string | null;
     adminNote: string | null;
+    documentNumber: string | null;
     createdAt: string;
 }
 
@@ -93,6 +94,7 @@ export default function UserDetailPage() {
     const [docName, setDocName] = useState("");
     const [docCategory, setDocCategory] = useState("");
     const [docNote, setDocNote] = useState("");
+    const [docNumber, setDocNumber] = useState("");
     const [submitting, setSubmitting] = useState(false);
     const [actionMessage, setActionMessage] = useState("");
 
@@ -182,6 +184,7 @@ export default function UserDetailPage() {
             formData.append("name", docName || docFile.name);
             formData.append("category", docCategory);
             formData.append("adminNote", docNote);
+            formData.append("documentNumber", docNumber);
 
             const res = await fetch(`/api/hono/admin/applications/${showUploadDoc}/documents`, {
                 method: "POST",
@@ -194,6 +197,7 @@ export default function UserDetailPage() {
                 setDocName("");
                 setDocCategory("");
                 setDocNote("");
+                setDocNumber("");
                 fetchData();
             } else {
                 const data = await res.json();
@@ -579,6 +583,16 @@ export default function UserDetailPage() {
                                     value={docNote}
                                     onChange={(e) => setDocNote(e.target.value)}
                                     placeholder="Catatan opsional"
+                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 font-medium focus:ring-2 focus:ring-[#2a6ba7]/20 focus:border-[#2a6ba7] outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-sm font-bold text-slate-600 mb-1 block">No Dokumen</label>
+                                <input
+                                    type="text"
+                                    value={docNumber}
+                                    onChange={(e) => setDocNumber(e.target.value)}
+                                    placeholder="contoh: 1234567890"
                                     className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 font-medium focus:ring-2 focus:ring-[#2a6ba7]/20 focus:border-[#2a6ba7] outline-none"
                                 />
                             </div>

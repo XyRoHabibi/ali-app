@@ -52,6 +52,7 @@ interface ApplicationDoc {
     fileType: string | null;
     category: string | null;
     adminNote: string | null;
+    documentNumber: string | null;
     createdAt: string;
 }
 
@@ -65,6 +66,14 @@ interface ApplicationDetail {
     user: { name: string; email: string };
     documents: ApplicationDoc[];
     companyData: CompanyData | null;
+}
+
+function formatBytes(bytes: number) {
+    if (bytes === 0) return "0 B";
+    const k = 1024;
+    const sizes = ["B", "KB", "MB", "GB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
 }
 
 function formatDate(dateStr: string | null) {
@@ -103,6 +112,14 @@ export default function ApplicationDetailPage() {
 
     const [showAddTax, setShowAddTax] = useState(false);
     const [newTax, setNewTax] = useState({ title: "", description: "", status: "BELUM LAPOR", date: "" });
+
+    // Document upload states
+    const [showUploadDoc, setShowUploadDoc] = useState(false);
+    const [docFile, setDocFile] = useState<File | null>(null);
+    const [docName, setDocName] = useState("");
+    const [docCategory, setDocCategory] = useState("");
+    const [docNote, setDocNote] = useState("");
+    const [docNumber, setDocNumber] = useState("");
 
     const fetchData = useCallback(async () => {
         try {
@@ -279,6 +296,58 @@ export default function ApplicationDetailPage() {
         }
     };
 
+    const handleUploadDoc = async () => {
+        if (!docFile) return;
+        setSubmitting(true);
+        try {
+            const formData = new FormData();
+            formData.append("file", docFile);
+            formData.append("name", docName || docFile.name);
+            formData.append("category", docCategory);
+            formData.append("adminNote", docNote);
+            formData.append("documentNumber", docNumber);
+
+            const res = await fetch(`/api/hono/admin/applications/${appId}/documents`, {
+                method: "POST",
+                body: formData,
+            });
+            if (res.ok) {
+                setActionMessage("Dokumen berhasil diunggah!");
+                setShowUploadDoc(false);
+                setDocFile(null);
+                setDocName("");
+                setDocCategory("");
+                setDocNote("");
+                setDocNumber("");
+                fetchData();
+            } else {
+                const data = await res.json();
+                setActionMessage(data.error || "Gagal mengunggah dokumen");
+            }
+        } catch {
+            setActionMessage("Terjadi kesalahan saat upload");
+        } finally {
+            setSubmitting(false);
+            setTimeout(() => setActionMessage(""), 3000);
+        }
+    };
+
+    const handleDeleteDoc = async (docId: string) => {
+        if (!confirm("Hapus dokumen ini?")) return;
+        try {
+            const res = await fetch(`/api/hono/admin/applications/${appId}/documents/${docId}`, {
+                method: "DELETE",
+            });
+            if (res.ok) {
+                setActionMessage("Dokumen berhasil dihapus!");
+                fetchData();
+            }
+        } catch {
+            setActionMessage("Gagal menghapus dokumen");
+        }
+        setTimeout(() => setActionMessage(""), 3000);
+    };
+
     if (loading) return (
         <div className="min-h-screen flex items-center justify-center bg-slate-50">
             <div className="animate-spin h-8 w-8 border-4 border-[#2a6ba7] border-t-transparent rounded-full"></div>
@@ -328,6 +397,128 @@ export default function ApplicationDetailPage() {
             </div>
 
             <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+
+                {/* Documents Table Section */}
+                <div>
+                    <div className="flex items-center justify-between mb-4">
+                        <h2 className="text-lg font-bold">Berkas Dokumen</h2>
+                        <button
+                            onClick={() => setShowUploadDoc(true)}
+                            className="text-sm font-bold text-[#2a6ba7] flex items-center gap-1 hover:underline"
+                        >
+                            <span className="material-symbols-outlined text-base">upload_file</span> Upload Dokumen
+                        </button>
+                    </div>
+
+                    {app.documents.length === 0 ? (
+                        <div className="bg-white rounded-xl p-8 border border-slate-200 text-center text-slate-400">
+                            Belum ada dokumen diupload untuk layanan ini.
+                        </div>
+                    ) : (
+                        <div className="bg-white rounded-xl border border-slate-200">
+                            {/* Mobile Card List */}
+                            <div className="lg:hidden divide-y divide-slate-100">
+                                {app.documents.map((doc, index) => (
+                                    <div key={doc.id} className="p-4 hover:bg-slate-50/50 transition-colors">
+                                        <div className="flex items-start gap-3">
+                                            <span className="text-xs font-bold text-slate-400 mt-2.5 w-5 flex-shrink-0 text-center">{index + 1}</span>
+                                            <div className="flex-1 min-w-0">
+                                                <p className="font-bold text-sm truncate">{doc.name}</p>
+                                                <p className="text-xs text-slate-400 mt-0.5">{doc.category || "Umum"} • {formatBytes(doc.fileSize)}</p>
+                                                <div className="flex flex-wrap items-center gap-2 mt-2">
+                                                    <span className="bg-emerald-100 text-emerald-700 text-[10px] font-medium px-2 py-0.5 rounded-full">Valid</span>
+                                                    {doc.documentNumber && (
+                                                        <span className="text-[10px] text-slate-500 font-mono bg-slate-100 px-1.5 py-0.5 rounded">No: {doc.documentNumber}</span>
+                                                    )}
+                                                    <span className="text-[10px] text-slate-400">{formatDate(doc.createdAt)}</span>
+                                                </div>
+                                                <div className="flex gap-1.5 mt-2.5">
+                                                    <a href={doc.fileUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#2a6ba7]/10 text-[#2a6ba7] text-xs font-bold hover:bg-[#2a6ba7] hover:text-white transition-all">
+                                                        <span className="material-symbols-outlined text-[14px]">visibility</span>
+                                                        Lihat
+                                                    </a>
+                                                    <a href={doc.fileUrl} download className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-600 text-xs font-bold hover:bg-slate-200 transition-all">
+                                                        <span className="material-symbols-outlined text-[14px]">download</span>
+                                                        Unduh
+                                                    </a>
+                                                    <button onClick={() => handleDeleteDoc(doc.id)} className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-red-50 text-red-500 text-xs font-bold hover:bg-red-100 transition-all">
+                                                        <span className="material-symbols-outlined text-[14px]">delete</span>
+                                                        Hapus
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Desktop Table */}
+                            <div className="hidden lg:block overflow-x-auto">
+                                <table className="w-full text-left">
+                                    <thead className="bg-slate-50 border-b border-slate-200">
+                                        <tr className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                            <th className="px-4 py-3 w-12">No</th>
+                                            <th className="px-4 py-3 min-w-[200px]">Jenis Dokumen</th>
+                                            <th className="px-4 py-3 w-24">Status</th>
+                                            <th className="px-4 py-3 min-w-[120px]">No Dokumen</th>
+                                            <th className="px-4 py-3 whitespace-nowrap w-36">Tanggal Dokumen</th>
+                                            <th className="px-4 py-3 w-32">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-slate-100">
+                                        {app.documents.map((doc, index) => (
+                                            <tr key={doc.id} className="hover:bg-slate-50/50 transition-colors">
+                                                <td className="px-4 py-3 text-sm font-bold text-slate-400">{index + 1}</td>
+                                                <td className="px-4 py-3">
+                                                    <div className="min-w-0">
+                                                        <p className="font-bold text-sm truncate max-w-[220px]">{doc.name}</p>
+                                                        <p className="text-xs text-slate-400 truncate">{doc.category || "Umum"} • {formatBytes(doc.fileSize)}</p>
+                                                    </div>
+                                                </td>
+                                                <td className="px-4 py-3">
+                                                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-emerald-100 text-emerald-700 whitespace-nowrap">
+                                                        <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-1" />
+                                                        Valid
+                                                    </span>
+                                                </td>
+                                                <td className="px-4 py-3 text-sm text-slate-600 font-mono whitespace-nowrap">{doc.documentNumber || "-"}</td>
+                                                <td className="px-4 py-3 text-sm text-slate-500 font-medium whitespace-nowrap">{formatDate(doc.createdAt)}</td>
+                                                <td className="px-4 py-3">
+                                                    <div className="flex items-center gap-1.5">
+                                                        <a
+                                                            href={doc.fileUrl}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            title="Lihat Dokumen"
+                                                            className="h-8 w-8 rounded-lg bg-[#2a6ba7]/10 flex items-center justify-center text-[#2a6ba7] hover:bg-[#2a6ba7] hover:text-white transition-all flex-shrink-0"
+                                                        >
+                                                            <span className="material-symbols-outlined text-[16px]">visibility</span>
+                                                        </a>
+                                                        <a
+                                                            href={doc.fileUrl}
+                                                            download
+                                                            title="Unduh Dokumen"
+                                                            className="h-8 w-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-all flex-shrink-0"
+                                                        >
+                                                            <span className="material-symbols-outlined text-[16px]">download</span>
+                                                        </a>
+                                                        <button
+                                                            onClick={() => handleDeleteDoc(doc.id)}
+                                                            title="Hapus Dokumen"
+                                                            className="h-8 w-8 rounded-lg bg-red-50 flex items-center justify-center text-red-500 hover:bg-red-100 transition-all flex-shrink-0"
+                                                        >
+                                                            <span className="material-symbols-outlined text-[16px]">delete</span>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    )}
+                </div>
 
                 {/* Directors Section */}
                 <div>
@@ -619,6 +810,82 @@ export default function ApplicationDetailPage() {
                         </div>
                         <div className="flex justify-end gap-2 mt-4">
                             <button onClick={handleAddTax} disabled={!newTax.title} className="bg-[#2a6ba7] text-white px-4 py-2 rounded font-bold text-sm">Simpan</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Upload Document Modal */}
+            {showUploadDoc && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setShowUploadDoc(false)}>
+                    <div className="bg-white rounded-2xl w-full max-w-md p-6 mx-4 shadow-2xl" onClick={e => e.stopPropagation()}>
+                        <h3 className="text-lg font-black mb-4">Upload Dokumen</h3>
+                        <div className="space-y-4">
+                            <div>
+                                <label className="text-sm font-bold text-slate-600 mb-1 block">File</label>
+                                <input
+                                    type="file"
+                                    accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx"
+                                    onChange={(e) => setDocFile(e.target.files?.[0] || null)}
+                                    className="w-full text-sm file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-[#2a6ba7]/10 file:text-[#2a6ba7] hover:file:bg-[#2a6ba7]/20"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-sm font-bold text-slate-600 mb-1 block">Nama Dokumen</label>
+                                <input
+                                    type="text"
+                                    value={docName}
+                                    onChange={(e) => setDocName(e.target.value)}
+                                    placeholder="Opsional, default: nama file"
+                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 font-medium focus:ring-2 focus:ring-[#2a6ba7]/20 focus:border-[#2a6ba7] outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-sm font-bold text-slate-600 mb-1 block">No Dokumen</label>
+                                <input
+                                    type="text"
+                                    value={docNumber}
+                                    onChange={(e) => setDocNumber(e.target.value)}
+                                    placeholder="contoh: 1234567890"
+                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 font-medium focus:ring-2 focus:ring-[#2a6ba7]/20 focus:border-[#2a6ba7] outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-sm font-bold text-slate-600 mb-1 block">Kategori</label>
+                                <select
+                                    value={docCategory}
+                                    onChange={(e) => setDocCategory(e.target.value)}
+                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 font-medium focus:ring-2 focus:ring-[#2a6ba7]/20 focus:border-[#2a6ba7] outline-none"
+                                >
+                                    <option value="">Umum</option>
+                                    <option value="Legalitas">Legalitas</option>
+                                    <option value="Perpajakan">Perpajakan</option>
+                                    <option value="Perizinan">Perizinan</option>
+                                    <option value="Sertifikat">Sertifikat</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="text-sm font-bold text-slate-600 mb-1 block">Catatan Admin</label>
+                                <input
+                                    type="text"
+                                    value={docNote}
+                                    onChange={(e) => setDocNote(e.target.value)}
+                                    placeholder="Catatan opsional"
+                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 font-medium focus:ring-2 focus:ring-[#2a6ba7]/20 focus:border-[#2a6ba7] outline-none"
+                                />
+                            </div>
+                        </div>
+                        <div className="flex justify-end gap-3 mt-6">
+                            <button onClick={() => setShowUploadDoc(false)} className="px-5 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-100 transition-colors">
+                                Batal
+                            </button>
+                            <button
+                                onClick={handleUploadDoc}
+                                disabled={submitting || !docFile}
+                                className="px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-[#2a6ba7] hover:bg-[#1e5a8a] transition-colors disabled:opacity-50"
+                            >
+                                {submitting ? "Mengunggah..." : "Upload"}
+                            </button>
                         </div>
                     </div>
                 </div>
