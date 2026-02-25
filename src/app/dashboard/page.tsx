@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 
 interface Application {
@@ -13,6 +13,23 @@ interface Application {
     service: { id: string; name: string };
     documents: { id: string }[];
 }
+
+interface ChatMessage {
+    id: string;
+    role: "user" | "assistant";
+    content: string;
+    timestamp: Date;
+}
+
+const AI_RESPONSES = [
+    "Terima kasih atas pertanyaan Anda! Untuk layanan legalitas perusahaan, kami menyediakan pendirian PT, CV, dan berbagai jenis badan hukum lainnya. Ada yang bisa saya bantu lebih lanjut?",
+    "Proses pendirian PT biasanya memakan waktu 7-14 hari kerja. Kami akan membantu Anda di setiap tahapan prosesnya.",
+    "Untuk dokumen yang dibutuhkan, silakan siapkan KTP, NPWP, dan bukti alamat. Tim kami akan memandu Anda melalui proses selanjutnya.",
+    "Kami memiliki tim legal berpengalaman yang siap membantu segala kebutuhan legalitas bisnis Anda. Silakan order layanan yang Anda butuhkan.",
+    "Tentu! Kami bisa membantu mengurus izin usaha, perizinan, dan dokumen legal lainnya. Apa jenis usaha yang ingin Anda dirikan?",
+    "Status permohonan Anda dapat dipantau secara real-time melalui dashboard ini. Jika ada kendala, tim kami siap membantu 24/7.",
+    "Untuk biaya dan estimasi waktu, silakan kunjungi halaman Harga kami atau hubungi tim kami untuk konsultasi gratis.",
+];
 
 const STATUS_MAP: Record<string, { label: string; color: string }> = {
     PENDING: { label: "Menunggu", color: "bg-amber-500/10 text-amber-500" },
@@ -32,6 +49,18 @@ export default function DashboardPage() {
     const { data: session } = useSession();
     const [applications, setApplications] = useState<Application[]>([]);
     const [loading, setLoading] = useState(true);
+    const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
+        {
+            id: "welcome",
+            role: "assistant",
+            content: "Halo! 👋 Saya asisten AI Anda. Ada yang bisa saya bantu mengenai layanan legalitas bisnis?",
+            timestamp: new Date(),
+        },
+    ]);
+    const [chatInput, setChatInput] = useState("");
+    const [isTyping, setIsTyping] = useState(false);
+    const chatEndRef = useRef<HTMLDivElement>(null);
+    const chatContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         async function fetchApplications() {
@@ -49,6 +78,45 @@ export default function DashboardPage() {
         }
         fetchApplications();
     }, []);
+
+    // Auto-scroll chat to bottom
+    useEffect(() => {
+        chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [chatMessages, isTyping]);
+
+    const handleSendMessage = () => {
+        if (!chatInput.trim()) return;
+
+        const userMessage: ChatMessage = {
+            id: `user-${Date.now()}`,
+            role: "user",
+            content: chatInput.trim(),
+            timestamp: new Date(),
+        };
+
+        setChatMessages((prev) => [...prev, userMessage]);
+        setChatInput("");
+        setIsTyping(true);
+
+        // Simulate AI response with delay
+        setTimeout(() => {
+            const aiResponse: ChatMessage = {
+                id: `ai-${Date.now()}`,
+                role: "assistant",
+                content: AI_RESPONSES[Math.floor(Math.random() * AI_RESPONSES.length)],
+                timestamp: new Date(),
+            };
+            setChatMessages((prev) => [...prev, aiResponse]);
+            setIsTyping(false);
+        }, 1000 + Math.random() * 1500);
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage();
+        }
+    };
 
     // Calculate stats from real data
     const totalApps = applications.length;
@@ -90,8 +158,7 @@ export default function DashboardPage() {
     // Recent applications (last 5)
     const recentApps = applications.slice(0, 5);
 
-    // Completed apps with documents
-    const readyDocs = applications.filter(a => a.status === "COMPLETED" && a.documents.length > 0).slice(0, 4);
+    // (removed readyDocs — replaced with chatbot)
 
     return (
         <>
@@ -276,65 +343,149 @@ export default function DashboardPage() {
                     </div>
                 </div>
 
-                {/* Documents Ready Sidebar */}
+                {/* AI Chatbot Sidebar */}
                 <div className="space-y-6">
-                    <div className="flex items-center justify-between">
-                        <h2 className="text-xl font-black">Dokumen Siap</h2>
-                        <Link
-                            href="/dashboard/dokumen"
-                            className="text-sm font-bold text-[#2a6ba7] hover:underline"
-                        >
-                            Semua
-                        </Link>
-                    </div>
+                    <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col" style={{ height: "480px" }}>
+                        {/* Chat Header */}
+                        <div className="bg-gradient-to-r from-[#2a6ba7] to-[#1e4f7e] px-5 py-4 flex items-center gap-3">
+                            <div className="h-10 w-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                                <span className="material-symbols-outlined text-white text-xl">smart_toy</span>
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="text-white font-bold text-sm">Ali Assistant</h3>
+                                <div className="flex items-center gap-1.5">
+                                    <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    <span className="text-white/70 text-xs font-medium">Online</span>
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => setChatMessages([{
+                                    id: "welcome",
+                                    role: "assistant",
+                                    content: "Halo! 👋 Saya asisten AI Anda. Ada yang bisa saya bantu mengenai layanan legalitas bisnis?",
+                                    timestamp: new Date(),
+                                }])}
+                                className="h-8 w-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                                title="Reset chat"
+                            >
+                                <span className="material-symbols-outlined text-white text-lg">refresh</span>
+                            </button>
+                        </div>
 
-                    <div className="space-y-3">
-                        {loading ? (
-                            [1, 2, 3].map((i) => (
-                                <div key={i} className="bg-white rounded-xl border border-slate-200 p-4 animate-pulse">
-                                    <div className="flex items-center gap-3">
-                                        <div className="h-10 w-10 bg-slate-100 rounded-lg" />
-                                        <div className="flex-1 space-y-2">
-                                            <div className="h-4 bg-slate-100 rounded w-32" />
-                                            <div className="h-3 bg-slate-100 rounded w-20" />
+                        {/* Chat Messages */}
+                        <div
+                            ref={chatContainerRef}
+                            className="flex-1 overflow-y-auto px-4 py-4 space-y-4 bg-slate-50/50"
+                            style={{ scrollbarWidth: "thin" }}
+                        >
+                            {chatMessages.map((msg) => (
+                                <div
+                                    key={msg.id}
+                                    className={`flex gap-2 ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+                                >
+                                    {msg.role === "assistant" && (
+                                        <div className="h-7 w-7 rounded-full bg-gradient-to-br from-[#2a6ba7] to-[#1e4f7e] flex items-center justify-center flex-shrink-0 mt-1">
+                                            <span className="material-symbols-outlined text-white text-sm">smart_toy</span>
+                                        </div>
+                                    )}
+                                    <div
+                                        className={`max-w-[80%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed ${msg.role === "user"
+                                                ? "bg-[#2a6ba7] text-white rounded-br-md"
+                                                : "bg-white border border-slate-200 text-slate-700 rounded-bl-md shadow-sm"
+                                            }`}
+                                    >
+                                        {msg.content}
+                                        <p className={`text-[10px] mt-1.5 ${msg.role === "user" ? "text-white/50" : "text-slate-400"
+                                            }`}>
+                                            {msg.timestamp.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })}
+                                        </p>
+                                    </div>
+                                    {msg.role === "user" && (
+                                        <div className="h-7 w-7 rounded-full bg-slate-200 flex items-center justify-center flex-shrink-0 mt-1">
+                                            <span className="material-symbols-outlined text-slate-500 text-sm">person</span>
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+
+                            {/* Typing Indicator */}
+                            {isTyping && (
+                                <div className="flex gap-2 justify-start">
+                                    <div className="h-7 w-7 rounded-full bg-gradient-to-br from-[#2a6ba7] to-[#1e4f7e] flex items-center justify-center flex-shrink-0 mt-1">
+                                        <span className="material-symbols-outlined text-white text-sm">smart_toy</span>
+                                    </div>
+                                    <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
+                                        <div className="flex gap-1.5 items-center">
+                                            <span className="h-2 w-2 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: "0ms" }}></span>
+                                            <span className="h-2 w-2 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: "150ms" }}></span>
+                                            <span className="h-2 w-2 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: "300ms" }}></span>
                                         </div>
                                     </div>
                                 </div>
-                            ))
-                        ) : readyDocs.length === 0 ? (
-                            <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center">
-                                <span className="material-symbols-outlined text-4xl text-slate-300 mb-3 block">
-                                    folder_open
-                                </span>
-                                <p className="text-sm text-slate-500 font-bold mb-1">Belum ada dokumen siap</p>
-                                <p className="text-xs text-slate-400">
-                                    Dokumen akan muncul setelah layanan selesai.
-                                </p>
+                            )}
+
+                            <div ref={chatEndRef} />
+                        </div>
+
+                        {/* Quick Actions */}
+                        {chatMessages.length <= 1 && (
+                            <div className="px-4 pb-2 flex flex-wrap gap-1.5">
+                                {["Cara mendirikan PT?", "Biaya layanan?", "Dokumen apa saja?"].map((q) => (
+                                    <button
+                                        key={q}
+                                        onClick={() => {
+                                            setChatInput(q);
+                                            setTimeout(() => {
+                                                const userMessage: ChatMessage = {
+                                                    id: `user-${Date.now()}`,
+                                                    role: "user",
+                                                    content: q,
+                                                    timestamp: new Date(),
+                                                };
+                                                setChatMessages((prev) => [...prev, userMessage]);
+                                                setChatInput("");
+                                                setIsTyping(true);
+                                                setTimeout(() => {
+                                                    const aiResponse: ChatMessage = {
+                                                        id: `ai-${Date.now()}`,
+                                                        role: "assistant",
+                                                        content: AI_RESPONSES[Math.floor(Math.random() * AI_RESPONSES.length)],
+                                                        timestamp: new Date(),
+                                                    };
+                                                    setChatMessages((prev) => [...prev, aiResponse]);
+                                                    setIsTyping(false);
+                                                }, 1000 + Math.random() * 1500);
+                                            }, 100);
+                                        }}
+                                        className="text-xs px-3 py-1.5 rounded-full border border-[#2a6ba7]/20 text-[#2a6ba7] font-semibold hover:bg-[#2a6ba7]/5 transition-colors"
+                                    >
+                                        {q}
+                                    </button>
+                                ))}
                             </div>
-                        ) : (
-                            readyDocs.map((app) => (
-                                <Link
-                                    key={app.id}
-                                    href={`/dashboard/dokumen?appId=${app.id}`}
-                                    className="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-3 hover:shadow-md transition-all group block"
-                                >
-                                    <div className="h-10 w-10 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
-                                        <span className="material-symbols-outlined text-emerald-500">verified</span>
-                                    </div>
-                                    <div className="flex-1 min-w-0">
-                                        <p className="font-bold text-sm truncate group-hover:text-[#2a6ba7] transition-colors">
-                                            {app.name || app.service.name}
-                                        </p>
-                                        <p className="text-xs text-slate-400">
-                                            {app.documents.length} dokumen siap
-                                        </p>
-                                    </div>
-                                    <span className="material-symbols-outlined text-slate-300 group-hover:text-[#2a6ba7] transition-colors">
-                                        chevron_right
-                                    </span>
-                                </Link>
-                            ))
                         )}
+
+                        {/* Chat Input */}
+                        <div className="px-4 py-3 border-t border-slate-200 bg-white">
+                            <div className="flex items-center gap-2">
+                                <input
+                                    type="text"
+                                    value={chatInput}
+                                    onChange={(e) => setChatInput(e.target.value)}
+                                    onKeyDown={handleKeyDown}
+                                    placeholder="Ketik pesan..."
+                                    className="flex-1 h-10 px-4 bg-slate-100 rounded-xl text-sm border-0 outline-none focus:ring-2 focus:ring-[#2a6ba7]/30 transition-all placeholder:text-slate-400"
+                                    disabled={isTyping}
+                                />
+                                <button
+                                    onClick={handleSendMessage}
+                                    disabled={!chatInput.trim() || isTyping}
+                                    className="h-10 w-10 rounded-xl bg-[#2a6ba7] text-white flex items-center justify-center hover:bg-[#1e4f7e] disabled:opacity-40 disabled:cursor-not-allowed transition-all flex-shrink-0"
+                                >
+                                    <span className="material-symbols-outlined text-lg">send</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
