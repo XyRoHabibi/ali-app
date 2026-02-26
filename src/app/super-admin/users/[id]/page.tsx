@@ -90,7 +90,7 @@ export default function UserDetailPage() {
     const [newServiceName, setNewServiceName] = useState("");
     const [newServiceDesc, setNewServiceDesc] = useState("");
     const [newServicePrice, setNewServicePrice] = useState("");
-    const [docFile, setDocFile] = useState<File | null>(null);
+    const [docLink, setDocLink] = useState("");
     const [docName, setDocName] = useState("");
     const [docCategory, setDocCategory] = useState("");
     const [docNote, setDocNote] = useState("");
@@ -176,24 +176,24 @@ export default function UserDetailPage() {
     };
 
     const handleUploadDoc = async () => {
-        if (!docFile || !showUploadDoc) return;
+        if (!docLink || !showUploadDoc) return;
         setSubmitting(true);
         try {
-            const formData = new FormData();
-            formData.append("file", docFile);
-            formData.append("name", docName || docFile.name);
-            formData.append("category", docCategory);
-            formData.append("adminNote", docNote);
-            formData.append("documentNumber", docNumber);
-
             const res = await fetch(`/api/hono/admin/applications/${showUploadDoc}/documents`, {
                 method: "POST",
-                body: formData,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: docName,
+                    link: docLink,
+                    category: docCategory,
+                    adminNote: docNote,
+                    documentNumber: docNumber,
+                }),
             });
             if (res.ok) {
-                setActionMessage("Dokumen berhasil diunggah!");
+                setActionMessage("Link dokumen berhasil ditambahkan!");
                 setShowUploadDoc(null);
-                setDocFile(null);
+                setDocLink("");
                 setDocName("");
                 setDocCategory("");
                 setDocNote("");
@@ -201,10 +201,10 @@ export default function UserDetailPage() {
                 fetchData();
             } else {
                 const data = await res.json();
-                setActionMessage(data.error || "Gagal mengunggah dokumen");
+                setActionMessage(data.error || "Gagal menambahkan link");
             }
         } catch {
-            setActionMessage("Terjadi kesalahan saat upload");
+            setActionMessage("Terjadi kesalahan saat menyimpan link");
         } finally {
             setSubmitting(false);
             setTimeout(() => setActionMessage(""), 3000);
@@ -413,8 +413,8 @@ export default function UserDetailPage() {
                                                             onClick={() => setShowUploadDoc(app.id)}
                                                             className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#2a6ba7]/10 text-[#2a6ba7] text-xs font-bold hover:bg-[#2a6ba7]/20 transition-colors"
                                                         >
-                                                            <span className="material-symbols-outlined text-[14px]">upload_file</span>
-                                                            Upload
+                                                            <span className="material-symbols-outlined text-[14px]">add_link</span>
+                                                            Tambah Link
                                                         </button>
                                                         <Link
                                                             href={`/super-admin/applications/${app.id}`}
@@ -464,7 +464,7 @@ export default function UserDetailPage() {
                                                         onClick={() => setShowUploadDoc(app.id)}
                                                         className="h-8 w-8 rounded-lg bg-[#2a6ba7]/10 flex items-center justify-center text-[#2a6ba7]"
                                                     >
-                                                        <span className="material-symbols-outlined text-[16px]">upload_file</span>
+                                                        <span className="material-symbols-outlined text-[16px]">add_link</span>
                                                     </button>
                                                     <Link
                                                         href={`/super-admin/applications/${app.id}`}
@@ -541,15 +541,16 @@ export default function UserDetailPage() {
             {showUploadDoc && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setShowUploadDoc(null)}>
                     <div className="bg-white rounded-2xl w-full max-w-md p-6 mx-4 shadow-2xl" onClick={e => e.stopPropagation()}>
-                        <h3 className="text-lg font-black mb-4">Upload Dokumen</h3>
+                        <h3 className="text-lg font-black mb-4">Tambah Link Dokumen</h3>
                         <div className="space-y-4">
                             <div>
-                                <label className="text-sm font-bold text-slate-600 mb-1 block">File</label>
+                                <label className="text-sm font-bold text-slate-600 mb-1 block">Link Google Drive</label>
                                 <input
-                                    type="file"
-                                    accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx"
-                                    onChange={(e) => setDocFile(e.target.files?.[0] || null)}
-                                    className="w-full text-sm file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-[#2a6ba7]/10 file:text-[#2a6ba7] hover:file:bg-[#2a6ba7]/20"
+                                    type="text"
+                                    value={docLink}
+                                    onChange={(e) => setDocLink(e.target.value)}
+                                    placeholder="https://drive.google.com/..."
+                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 font-medium focus:ring-2 focus:ring-[#2a6ba7]/20 focus:border-[#2a6ba7] outline-none"
                                 />
                             </div>
                             <div>
@@ -558,7 +559,7 @@ export default function UserDetailPage() {
                                     type="text"
                                     value={docName}
                                     onChange={(e) => setDocName(e.target.value)}
-                                    placeholder="Opsional, default: nama file"
+                                    placeholder="Masukkan nama dokumen"
                                     className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 font-medium focus:ring-2 focus:ring-[#2a6ba7]/20 focus:border-[#2a6ba7] outline-none"
                                 />
                             </div>
@@ -603,10 +604,10 @@ export default function UserDetailPage() {
                             </button>
                             <button
                                 onClick={handleUploadDoc}
-                                disabled={submitting || !docFile}
+                                disabled={submitting || !docLink}
                                 className="px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-[#2a6ba7] hover:bg-[#1e5a8a] transition-colors disabled:opacity-50"
                             >
-                                {submitting ? "Mengunggah..." : "Upload"}
+                                {submitting ? "Menyimpan..." : "Simpan"}
                             </button>
                         </div>
                     </div>

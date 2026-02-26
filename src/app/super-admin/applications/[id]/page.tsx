@@ -115,7 +115,7 @@ export default function ApplicationDetailPage() {
 
     // Document upload states
     const [showUploadDoc, setShowUploadDoc] = useState(false);
-    const [docFile, setDocFile] = useState<File | null>(null);
+    const [docLink, setDocLink] = useState("");
     const [docName, setDocName] = useState("");
     const [docCategory, setDocCategory] = useState("");
     const [docNote, setDocNote] = useState("");
@@ -297,24 +297,24 @@ export default function ApplicationDetailPage() {
     };
 
     const handleUploadDoc = async () => {
-        if (!docFile) return;
+        if (!docLink) return;
         setSubmitting(true);
         try {
-            const formData = new FormData();
-            formData.append("file", docFile);
-            formData.append("name", docName || docFile.name);
-            formData.append("category", docCategory);
-            formData.append("adminNote", docNote);
-            formData.append("documentNumber", docNumber);
-
             const res = await fetch(`/api/hono/admin/applications/${appId}/documents`, {
                 method: "POST",
-                body: formData,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: docName,
+                    link: docLink,
+                    category: docCategory,
+                    adminNote: docNote,
+                    documentNumber: docNumber,
+                }),
             });
             if (res.ok) {
-                setActionMessage("Dokumen berhasil diunggah!");
+                setActionMessage("Link dokumen berhasil ditambahkan!");
                 setShowUploadDoc(false);
-                setDocFile(null);
+                setDocLink("");
                 setDocName("");
                 setDocCategory("");
                 setDocNote("");
@@ -322,10 +322,10 @@ export default function ApplicationDetailPage() {
                 fetchData();
             } else {
                 const data = await res.json();
-                setActionMessage(data.error || "Gagal mengunggah dokumen");
+                setActionMessage(data.error || "Gagal menambahkan link");
             }
         } catch {
-            setActionMessage("Terjadi kesalahan saat upload");
+            setActionMessage("Terjadi kesalahan saat menyimpan link");
         } finally {
             setSubmitting(false);
             setTimeout(() => setActionMessage(""), 3000);
@@ -406,13 +406,13 @@ export default function ApplicationDetailPage() {
                             onClick={() => setShowUploadDoc(true)}
                             className="text-sm font-bold text-[#2a6ba7] flex items-center gap-1 hover:underline"
                         >
-                            <span className="material-symbols-outlined text-base">upload_file</span> Upload Dokumen
+                            <span className="material-symbols-outlined text-base">add_link</span> Tambah Link Dokumen
                         </button>
                     </div>
 
                     {app.documents.length === 0 ? (
                         <div className="bg-white rounded-xl p-8 border border-slate-200 text-center text-slate-400">
-                            Belum ada dokumen diupload untuk layanan ini.
+                            Belum ada dokumen untuk layanan ini.
                         </div>
                     ) : (
                         <div className="bg-white rounded-xl border border-slate-200">
@@ -424,7 +424,7 @@ export default function ApplicationDetailPage() {
                                             <span className="text-xs font-bold text-slate-400 mt-2.5 w-5 flex-shrink-0 text-center">{index + 1}</span>
                                             <div className="flex-1 min-w-0">
                                                 <p className="font-bold text-sm truncate">{doc.name}</p>
-                                                <p className="text-xs text-slate-400 mt-0.5">{doc.category || "Umum"} • {formatBytes(doc.fileSize)}</p>
+                                                <p className="text-xs text-slate-400 mt-0.5">{doc.category || "Umum"}</p>
                                                 <div className="flex flex-wrap items-center gap-2 mt-2">
                                                     <span className="bg-emerald-100 text-emerald-700 text-[10px] font-medium px-2 py-0.5 rounded-full">Valid</span>
                                                     {doc.documentNumber && (
@@ -436,10 +436,6 @@ export default function ApplicationDetailPage() {
                                                     <a href={doc.fileUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#2a6ba7]/10 text-[#2a6ba7] text-xs font-bold hover:bg-[#2a6ba7] hover:text-white transition-all">
                                                         <span className="material-symbols-outlined text-[14px]">visibility</span>
                                                         Lihat
-                                                    </a>
-                                                    <a href={doc.fileUrl} download className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-600 text-xs font-bold hover:bg-slate-200 transition-all">
-                                                        <span className="material-symbols-outlined text-[14px]">download</span>
-                                                        Unduh
                                                     </a>
                                                     <button onClick={() => handleDeleteDoc(doc.id)} className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-red-50 text-red-500 text-xs font-bold hover:bg-red-100 transition-all">
                                                         <span className="material-symbols-outlined text-[14px]">delete</span>
@@ -472,7 +468,7 @@ export default function ApplicationDetailPage() {
                                                 <td className="px-4 py-3">
                                                     <div className="min-w-0">
                                                         <p className="font-bold text-sm truncate max-w-[220px]">{doc.name}</p>
-                                                        <p className="text-xs text-slate-400 truncate">{doc.category || "Umum"} • {formatBytes(doc.fileSize)}</p>
+                                                        <p className="text-xs text-slate-400 truncate">{doc.category || "Umum"}</p>
                                                     </div>
                                                 </td>
                                                 <td className="px-4 py-3">
@@ -493,14 +489,6 @@ export default function ApplicationDetailPage() {
                                                             className="h-8 w-8 rounded-lg bg-[#2a6ba7]/10 flex items-center justify-center text-[#2a6ba7] hover:bg-[#2a6ba7] hover:text-white transition-all flex-shrink-0"
                                                         >
                                                             <span className="material-symbols-outlined text-[16px]">visibility</span>
-                                                        </a>
-                                                        <a
-                                                            href={doc.fileUrl}
-                                                            download
-                                                            title="Unduh Dokumen"
-                                                            className="h-8 w-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-all flex-shrink-0"
-                                                        >
-                                                            <span className="material-symbols-outlined text-[16px]">download</span>
                                                         </a>
                                                         <button
                                                             onClick={() => handleDeleteDoc(doc.id)}
@@ -819,15 +807,16 @@ export default function ApplicationDetailPage() {
             {showUploadDoc && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setShowUploadDoc(false)}>
                     <div className="bg-white rounded-2xl w-full max-w-md p-6 mx-4 shadow-2xl" onClick={e => e.stopPropagation()}>
-                        <h3 className="text-lg font-black mb-4">Upload Dokumen</h3>
+                        <h3 className="text-lg font-black mb-4">Tambah Link Dokumen</h3>
                         <div className="space-y-4">
                             <div>
-                                <label className="text-sm font-bold text-slate-600 mb-1 block">File</label>
+                                <label className="text-sm font-bold text-slate-600 mb-1 block">Link Google Drive</label>
                                 <input
-                                    type="file"
-                                    accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx"
-                                    onChange={(e) => setDocFile(e.target.files?.[0] || null)}
-                                    className="w-full text-sm file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-[#2a6ba7]/10 file:text-[#2a6ba7] hover:file:bg-[#2a6ba7]/20"
+                                    type="text"
+                                    value={docLink}
+                                    onChange={(e) => setDocLink(e.target.value)}
+                                    placeholder="https://drive.google.com/..."
+                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 font-medium focus:ring-2 focus:ring-[#2a6ba7]/20 focus:border-[#2a6ba7] outline-none"
                                 />
                             </div>
                             <div>
@@ -836,7 +825,7 @@ export default function ApplicationDetailPage() {
                                     type="text"
                                     value={docName}
                                     onChange={(e) => setDocName(e.target.value)}
-                                    placeholder="Opsional, default: nama file"
+                                    placeholder="Masukkan nama dokumen"
                                     className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 font-medium focus:ring-2 focus:ring-[#2a6ba7]/20 focus:border-[#2a6ba7] outline-none"
                                 />
                             </div>
@@ -881,10 +870,10 @@ export default function ApplicationDetailPage() {
                             </button>
                             <button
                                 onClick={handleUploadDoc}
-                                disabled={submitting || !docFile}
+                                disabled={submitting || !docLink}
                                 className="px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-[#2a6ba7] hover:bg-[#1e5a8a] transition-colors disabled:opacity-50"
                             >
-                                {submitting ? "Mengunggah..." : "Upload"}
+                                {submitting ? "Menyimpan..." : "Simpan"}
                             </button>
                         </div>
                     </div>

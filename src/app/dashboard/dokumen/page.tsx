@@ -462,7 +462,7 @@ function DokumenContent() {
                                                     </div>
                                                     <div className="flex-1 min-w-0">
                                                         <p className="font-bold text-sm truncate">{doc.name}</p>
-                                                        <p className="text-xs text-slate-400 mt-0.5">{doc.category || "Umum"} • {formatBytes(doc.fileSize)}</p>
+                                                        <p className="text-xs text-slate-400 mt-0.5">{doc.category || "Umum"}</p>
                                                         <div className="flex flex-wrap items-center gap-2 mt-2">
                                                             <span className="bg-emerald-100 text-emerald-700 text-[10px] font-medium px-2 py-0.5 rounded-full inline-flex items-center gap-1">
                                                                 <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
@@ -481,15 +481,7 @@ function DokumenContent() {
                                                                 className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#2a6ba7]/10 text-[#2a6ba7] text-xs font-bold hover:bg-[#2a6ba7] hover:text-white transition-all"
                                                             >
                                                                 <span className="material-symbols-outlined text-[14px]">visibility</span>
-                                                                Lihat
-                                                            </a>
-                                                            <a
-                                                                href={doc.fileUrl}
-                                                                download
-                                                                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-600 text-xs font-bold hover:bg-slate-200 transition-all"
-                                                            >
-                                                                <span className="material-symbols-outlined text-[14px]">download</span>
-                                                                Unduh
+                                                                Lihat Link
                                                             </a>
                                                         </div>
                                                     </div>
@@ -525,7 +517,7 @@ function DokumenContent() {
                                                                 </div>
                                                                 <div className="min-w-0">
                                                                     <p className="font-bold text-sm truncate max-w-[220px]">{doc.name}</p>
-                                                                    <p className="text-xs text-slate-400 truncate">{doc.category || "Umum"} • {formatBytes(doc.fileSize)}</p>
+                                                                    <p className="text-xs text-slate-400 truncate">{doc.category || "Umum"}</p>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -547,18 +539,10 @@ function DokumenContent() {
                                                                     href={doc.fileUrl}
                                                                     target="_blank"
                                                                     rel="noopener noreferrer"
-                                                                    title="Lihat Dokumen"
+                                                                    title="Lihat Link"
                                                                     className="h-8 w-8 rounded-lg bg-[#2a6ba7]/10 flex items-center justify-center text-[#2a6ba7] hover:bg-[#2a6ba7] hover:text-white transition-all flex-shrink-0"
                                                                 >
                                                                     <span className="material-symbols-outlined text-[16px]">visibility</span>
-                                                                </a>
-                                                                <a
-                                                                    href={doc.fileUrl}
-                                                                    download
-                                                                    title="Unduh Dokumen"
-                                                                    className="h-8 w-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-all flex-shrink-0"
-                                                                >
-                                                                    <span className="material-symbols-outlined text-[16px]">download</span>
                                                                 </a>
                                                             </div>
                                                         </td>

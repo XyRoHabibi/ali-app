@@ -678,44 +678,22 @@ app.post("/admin/applications/:id/documents", async (c) => {
         }
 
         const applicationId = c.req.param("id");
-        const formData = await c.req.formData();
-        const file = formData.get("file") as File | null;
-        const docName = formData.get("name") as string || "";
-        const category = formData.get("category") as string || "";
-        const adminNote = formData.get("adminNote") as string || "";
-        const documentNumber = formData.get("documentNumber") as string || "";
+        const body = await c.req.json();
+        const docName = body.name || "";
+        const fileUrl = body.link || "";
+        const category = body.category || "";
+        const adminNote = body.adminNote || "";
+        const documentNumber = body.documentNumber || "";
 
-        if (!file) return c.json({ error: "File harus diupload" }, 400);
-        if (file.size > MAX_FILE_SIZE) {
-            return c.json({ error: "Ukuran file maksimal 5MB" }, 400);
-        }
-        if (!ALLOWED_FILE_TYPES.includes(file.type)) {
-            return c.json({ error: "Format file tidak didukung" }, 400);
-        }
-
-        // Upload to Supabase Storage
-        const fileName = `${applicationId}/${Date.now()}-${file.name}`;
-        const arrayBuffer = await file.arrayBuffer();
-        const { error: uploadError } = await supabaseAdmin.storage
-            .from(BUCKET_LEGAL_DOCS)
-            .upload(fileName, arrayBuffer, { contentType: file.type });
-
-        if (uploadError) {
-            console.error("Upload error:", uploadError);
-            return c.json({ error: "Gagal mengunggah file: " + uploadError.message }, 500);
-        }
-
-        const { data: urlData } = supabaseAdmin.storage
-            .from(BUCKET_LEGAL_DOCS)
-            .getPublicUrl(fileName);
+        if (!fileUrl) return c.json({ error: "Link Google Drive harus diisi" }, 400);
 
         const doc = await prisma.applicationDocument.create({
             data: {
                 applicationId,
-                name: docName || file.name,
-                fileUrl: urlData.publicUrl,
-                fileSize: file.size,
-                fileType: file.type,
+                name: docName || "Dokumen",
+                fileUrl: fileUrl,
+                fileSize: 0,
+                fileType: "link",
                 category: category || null,
                 adminNote: adminNote || null,
                 documentNumber: documentNumber || null,
@@ -742,10 +720,12 @@ app.delete("/admin/applications/:id/documents/:docId", async (c) => {
         const doc = await prisma.applicationDocument.findUnique({ where: { id: docId } });
         if (!doc) return c.json({ error: "Dokumen tidak ditemukan" }, 404);
 
-        // Delete from Supabase Storage
-        const path = doc.fileUrl.split(`${BUCKET_LEGAL_DOCS}/`).pop();
-        if (path) {
-            await supabaseAdmin.storage.from(BUCKET_LEGAL_DOCS).remove([path]);
+        // Delete from Supabase Storage only if it's not a link
+        if (doc.fileType !== "link" && doc.fileUrl.includes(BUCKET_LEGAL_DOCS)) {
+            const path = doc.fileUrl.split(`${BUCKET_LEGAL_DOCS}/`).pop();
+            if (path) {
+                await supabaseAdmin.storage.from(BUCKET_LEGAL_DOCS).remove([path]);
+            }
         }
 
         await prisma.applicationDocument.delete({ where: { id: docId } });
