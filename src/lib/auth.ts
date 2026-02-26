@@ -17,10 +17,27 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             credentials: {
                 email: { label: "Email", type: "email" },
                 password: { label: "Password", type: "password" },
+                recaptchaToken: { label: "Captcha", type: "text" },
             },
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
                     throw new Error("Email dan password harus diisi");
+                }
+
+                if (!credentials.recaptchaToken) {
+                    throw new Error("Harap verifikasi captcha terlebih dahulu");
+                }
+
+                const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+                if (secretKey) {
+                    const verifyRes = await fetch(
+                        `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${credentials.recaptchaToken}`,
+                        { method: "POST" }
+                    );
+                    const verifyData = await verifyRes.json();
+                    if (!verifyData.success) {
+                        throw new Error("Verifikasi Captcha gagal");
+                    }
                 }
 
                 const user = await prisma.user.findUnique({

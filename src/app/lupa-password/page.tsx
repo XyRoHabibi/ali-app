@@ -4,23 +4,31 @@ import { useState } from "react";
 import Link from "next/link";
 import { Mail, ArrowLeft, Shield, Send, CheckCircle } from "lucide-react";
 import Image from "next/image";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function LupaPasswordPage() {
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
     const [sent, setSent] = useState(false);
     const [error, setError] = useState("");
+    const [captchaValue, setCaptchaValue] = useState<string | null>(null);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
+
+        if (!captchaValue) {
+            setError("Harap verifikasi captcha terlebih dahulu");
+            return;
+        }
+
         setLoading(true);
 
         try {
             const res = await fetch("/api/hono/forgot-password", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email }),
+                body: JSON.stringify({ email, recaptchaToken: captchaValue }),
             });
 
             const data = await res.json();
@@ -123,6 +131,13 @@ export default function LupaPasswordPage() {
                                             className="w-full pl-12 pr-4 py-3.5 bg-white border border-[#e5e7eb] rounded-xl text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[#2a6ba7]/20 focus:border-[#2a6ba7] transition-all duration-200"
                                         />
                                     </div>
+                                </div>
+
+                                <div className="flex justify-center my-2">
+                                    <ReCAPTCHA
+                                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"}
+                                        onChange={(val) => setCaptchaValue(val)}
+                                    />
                                 </div>
 
                                 <button

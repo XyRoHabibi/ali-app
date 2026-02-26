@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import ReCAPTCHA from "react-google-recaptcha";
 import { Eye, EyeOff, Mail, Lock, ArrowRight, Shield } from "lucide-react";
 
 export default function MasukPage() {
@@ -13,16 +14,24 @@ export default function MasukPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const [captchaValue, setCaptchaValue] = useState<string | null>(null);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
+
+        if (!captchaValue) {
+            setError("Harap verifikasi captcha terlebih dahulu");
+            return;
+        }
+
         setLoading(true);
 
         try {
             const result = await signIn("credentials", {
                 email: form.email,
                 password: form.password,
+                recaptchaToken: captchaValue,
                 redirect: false,
             });
 
@@ -183,6 +192,13 @@ export default function MasukPage() {
                                     )}
                                 </button>
                             </div>
+                        </div>
+
+                        <div className="flex justify-center my-2">
+                            <ReCAPTCHA
+                                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"}
+                                onChange={(val) => setCaptchaValue(val)}
+                            />
                         </div>
 
                         {/* Submit */}

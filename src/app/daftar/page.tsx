@@ -17,6 +17,7 @@ import {
     Shield,
     CheckCircle2,
 } from "lucide-react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function DaftarPage() {
     const router = useRouter();
@@ -32,6 +33,7 @@ export default function DaftarPage() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const [captchaValue, setCaptchaValue] = useState<string | null>(null);
 
     const passwordChecks = {
         length: form.password.length >= 8,
@@ -58,13 +60,18 @@ export default function DaftarPage() {
             return;
         }
 
+        if (!captchaValue) {
+            setError("Harap verifikasi captcha terlebih dahulu");
+            return;
+        }
+
         setLoading(true);
 
         try {
             const res = await fetch("/api/hono/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(form),
+                body: JSON.stringify({ ...form, recaptchaToken: captchaValue }),
             });
 
             const data = await res.json();
@@ -78,6 +85,7 @@ export default function DaftarPage() {
             const result = await signIn("credentials", {
                 email: form.email,
                 password: form.password,
+                recaptchaToken: captchaValue,
                 redirect: false,
             });
 
@@ -329,6 +337,13 @@ export default function DaftarPage() {
                                 )}
                             </div>
                         )}
+
+                        <div className="flex justify-center my-2">
+                            <ReCAPTCHA
+                                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"}
+                                onChange={(val) => setCaptchaValue(val)}
+                            />
+                        </div>
 
                         {/* Submit */}
                         <button

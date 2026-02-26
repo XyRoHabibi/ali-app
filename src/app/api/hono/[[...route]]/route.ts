@@ -21,7 +21,24 @@ const app = new Hono().basePath("/api/hono");
 app.post("/register", async (c) => {
     try {
         const body = await c.req.json();
-        const { name, email, password, confirmPassword, alamat, telepon } = body;
+        const { name, email, password, confirmPassword, alamat, telepon, recaptchaToken } = body;
+
+        // Validation
+        if (!recaptchaToken) {
+            return c.json({ error: "Harap verifikasi captcha terlebih dahulu" }, 400);
+        }
+
+        const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+        if (secretKey) {
+            const verifyRes = await fetch(
+                `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaToken}`,
+                { method: "POST" }
+            );
+            const verifyData = await verifyRes.json();
+            if (!verifyData.success) {
+                return c.json({ error: "Verifikasi Captcha gagal" }, 400);
+            }
+        }
 
         // Validation
         if (!name || !email || !password || !confirmPassword) {
@@ -83,10 +100,26 @@ app.post("/register", async (c) => {
 // ==========================================
 app.post("/forgot-password", async (c) => {
     try {
-        const { email } = await c.req.json();
+        const { email, recaptchaToken } = await c.req.json();
 
         if (!email) {
             return c.json({ error: "Email harus diisi" }, 400);
+        }
+
+        if (!recaptchaToken) {
+            return c.json({ error: "Harap verifikasi captcha terlebih dahulu" }, 400);
+        }
+
+        const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+        if (secretKey) {
+            const verifyRes = await fetch(
+                `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaToken}`,
+                { method: "POST" }
+            );
+            const verifyData = await verifyRes.json();
+            if (!verifyData.success) {
+                return c.json({ error: "Verifikasi Captcha gagal" }, 400);
+            }
         }
 
         const user = await prisma.user.findUnique({
