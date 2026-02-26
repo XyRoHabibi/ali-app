@@ -45,6 +45,30 @@ const ICON_MAP: Record<string, { bg: string; color: string }> = {
     CANCELLED: { bg: "bg-red-500/10", color: "text-red-500" },
 };
 
+const TAX_REMINDERS = [
+    {
+        title: "SPT Masa PPh Pasal 21",
+        dueDate: "10 Desember 2024",
+        remaining: 3,
+        status: "red",
+        icon: "warning",
+    },
+    {
+        title: "SPT Masa PPN",
+        dueDate: "31 Desember 2024",
+        remaining: 24,
+        status: "amber",
+        icon: "schedule",
+    },
+    {
+        title: "SPT Tahunan Badan",
+        dueDate: "30 April 2025",
+        remaining: 143,
+        status: "emerald",
+        icon: "check_circle",
+    },
+];
+
 export default function DashboardPage() {
     const { data: session } = useSession();
     const [applications, setApplications] = useState<Application[]>([]);
@@ -213,138 +237,205 @@ export default function DashboardPage() {
 
             {/* Content Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-                {/* Recent Applications */}
-                <div className="lg:col-span-2 space-y-6">
-                    <div className="flex items-center justify-between">
-                        <h2 className="text-xl font-black">Permohonan Terbaru</h2>
-                        <Link
-                            href="/dashboard/dokumen"
-                            className="text-sm font-bold text-[#2a6ba7] hover:underline"
-                        >
-                            Lihat Semua
-                        </Link>
-                    </div>
+                {/* Main Content Column */}
+                <div className="lg:col-span-2 space-y-10">
+                    {/* Dashboard Segment: Pengingat Pajak */}
+                    <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-xl font-black flex items-center gap-2">
+                                <div className="relative flex items-center justify-center">
+                                    <span className="material-symbols-outlined text-red-500">
+                                        notifications_active
+                                    </span>
+                                    <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full animate-ping"></span>
+                                    <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
+                                </div>
+                                Pengingat Pajak
+                            </h2>
+                            <Link href="#" className="text-sm font-bold text-[#2a6ba7] hover:underline">
+                                Lihat Semua
+                            </Link>
+                        </div>
 
-                    <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
-                        {loading ? (
-                            <div className="p-8 space-y-4">
-                                {[1, 2, 3].map((i) => (
-                                    <div key={i} className="flex items-center gap-4 animate-pulse">
-                                        <div className="h-10 w-10 bg-slate-100 rounded-xl" />
-                                        <div className="flex-1 space-y-2">
-                                            <div className="h-4 bg-slate-100 rounded w-48" />
-                                            <div className="h-3 bg-slate-100 rounded w-32" />
+                        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden divide-y divide-slate-100">
+                            {TAX_REMINDERS.map((reminder, index) => (
+                                <div key={index} className="px-5 py-4 hover:bg-slate-50/80 transition-all duration-300 group cursor-pointer">
+                                    <div className="flex items-start gap-4">
+                                        <div
+                                            className={`h-11 w-11 rounded-2xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110 shadow-sm ${reminder.status === "red"
+                                                ? "bg-red-50 text-red-600 border border-red-100"
+                                                : reminder.status === "amber"
+                                                    ? "bg-amber-50 text-amber-600 border border-amber-100"
+                                                    : "bg-emerald-50 text-emerald-600 border border-emerald-100"
+                                                }`}
+                                        >
+                                            <span className="material-symbols-outlined text-[22px]">
+                                                {reminder.icon}
+                                            </span>
+                                        </div>
+                                        <div className="flex-1 min-w-0 pt-0.5">
+                                            <div className="flex items-start justify-between gap-2 mb-1">
+                                                <p className="font-extrabold text-sm text-slate-800 truncate group-hover:text-[#2a6ba7] transition-colors">
+                                                    {reminder.title}
+                                                </p>
+                                                <span
+                                                    className={`px-2.5 py-1 text-[10px] font-black tracking-widest uppercase rounded-md shadow-sm border ${reminder.status === "red"
+                                                        ? "bg-red-50 text-red-600 border-red-100/50"
+                                                        : reminder.status === "amber"
+                                                            ? "bg-amber-50 text-amber-600 border-amber-100/50"
+                                                            : "bg-emerald-50 text-emerald-600 border-emerald-100/50"
+                                                        }`}
+                                                >
+                                                    {reminder.remaining} HARI LAGI
+                                                </span>
+                                            </div>
+                                            <p className="text-xs font-semibold text-slate-500 flex items-center gap-1.5 truncate">
+                                                <span className="material-symbols-outlined text-[14px] text-slate-400">
+                                                    calendar_clock
+                                                </span>
+                                                Batas: {reminder.dueDate}
+                                            </p>
                                         </div>
                                     </div>
-                                ))}
-                            </div>
-                        ) : recentApps.length === 0 ? (
-                            <div className="p-12 text-center">
-                                <span className="material-symbols-outlined text-5xl text-slate-300 mb-4 block">
-                                    inbox
-                                </span>
-                                <p className="text-slate-500 font-bold mb-1">Belum ada permohonan</p>
-                                <p className="text-sm text-slate-400">
-                                    Mulai dengan memesan layanan legalitas.
-                                </p>
-                            </div>
-                        ) : (
-                            <>
-                                {/* Mobile Card Layout */}
-                                <div className="md:hidden divide-y divide-slate-100">
-                                    {recentApps.map((app) => {
-                                        const status = STATUS_MAP[app.status] || STATUS_MAP.PENDING;
-                                        const icon = ICON_MAP[app.status] || ICON_MAP.PENDING;
-                                        return (
-                                            <div key={app.id} className="p-4 hover:bg-slate-50/50 transition-colors">
-                                                <div className="flex items-start gap-3 mb-3">
-                                                    <div className={`h-10 w-10 rounded-xl ${icon.bg} flex items-center justify-center flex-shrink-0`}>
-                                                        <span className={`material-symbols-outlined ${icon.color}`}>business</span>
-                                                    </div>
-                                                    <div className="flex-1 min-w-0">
-                                                        <p className="font-bold text-sm truncate">{app.name || app.service.name}</p>
-                                                        <p className="text-xs text-slate-400 truncate">{app.service.name}</p>
-                                                    </div>
-                                                </div>
-                                                <div className="flex items-center justify-between ml-[52px]">
-                                                    <div className="flex items-center gap-3">
-                                                        <span className={`px-3 py-1 text-xs font-bold rounded-full ${status.color}`}>
-                                                            {status.label}
-                                                        </span>
-                                                        {app.estimate && (
-                                                            <span className="text-xs text-slate-400 font-medium flex items-center gap-1">
-                                                                <span className="material-symbols-outlined text-[14px]">schedule</span>
-                                                                {app.estimate}
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                    <Link
-                                                        href={`/dashboard/dokumen?appId=${app.id}`}
-                                                        className="h-8 w-8 rounded-lg bg-[#2a6ba7]/10 flex items-center justify-center text-[#2a6ba7] hover:bg-[#2a6ba7] hover:text-white transition-all"
-                                                    >
-                                                        <span className="material-symbols-outlined text-[18px]">visibility</span>
-                                                    </Link>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
                                 </div>
+                            ))}
+                        </div>
+                    </div>
 
-                                {/* Desktop Table Layout */}
-                                <table className="w-full text-left hidden md:table">
-                                    <thead className="bg-slate-50 border-b border-slate-200">
-                                        <tr className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                            <th className="px-6 py-4">Layanan</th>
-                                            <th className="px-6 py-4">Status</th>
-                                            <th className="px-6 py-4">Estimasi</th>
-                                            <th className="px-6 py-4">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-slate-100">
+                    {/* Recent Applications */}
+                    <div className="space-y-6">
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-xl font-black">Permohonan Terbaru</h2>
+                            <Link
+                                href="/dashboard/dokumen"
+                                className="text-sm font-bold text-[#2a6ba7] hover:underline"
+                            >
+                                Lihat Semua
+                            </Link>
+                        </div>
+
+                        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+                            {loading ? (
+                                <div className="p-8 space-y-4">
+                                    {[1, 2, 3].map((i) => (
+                                        <div key={i} className="flex items-center gap-4 animate-pulse">
+                                            <div className="h-10 w-10 bg-slate-100 rounded-xl" />
+                                            <div className="flex-1 space-y-2">
+                                                <div className="h-4 bg-slate-100 rounded w-48" />
+                                                <div className="h-3 bg-slate-100 rounded w-32" />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : recentApps.length === 0 ? (
+                                <div className="p-12 text-center">
+                                    <span className="material-symbols-outlined text-5xl text-slate-300 mb-4 block">
+                                        inbox
+                                    </span>
+                                    <p className="text-slate-500 font-bold mb-1">Belum ada permohonan</p>
+                                    <p className="text-sm text-slate-400">
+                                        Mulai dengan memesan layanan legalitas.
+                                    </p>
+                                </div>
+                            ) : (
+                                <>
+                                    {/* Mobile Card Layout */}
+                                    <div className="md:hidden divide-y divide-slate-100">
                                         {recentApps.map((app) => {
                                             const status = STATUS_MAP[app.status] || STATUS_MAP.PENDING;
                                             const icon = ICON_MAP[app.status] || ICON_MAP.PENDING;
                                             return (
-                                                <tr key={app.id} className="hover:bg-slate-50/50 transition-colors">
-                                                    <td className="px-6 py-4">
-                                                        <div className="flex items-center gap-3">
-                                                            <div className={`h-10 w-10 rounded-xl ${icon.bg} flex items-center justify-center flex-shrink-0`}>
-                                                                <span className={`material-symbols-outlined ${icon.color}`}>business</span>
-                                                            </div>
-                                                            <div className="min-w-0">
-                                                                <p className="font-bold text-sm truncate">{app.name || app.service.name}</p>
-                                                                <p className="text-xs text-slate-400 truncate">{app.service.name}</p>
-                                                            </div>
+                                                <div key={app.id} className="p-4 hover:bg-slate-50/50 transition-colors">
+                                                    <div className="flex items-start gap-3 mb-3">
+                                                        <div className={`h-10 w-10 rounded-xl ${icon.bg} flex items-center justify-center flex-shrink-0`}>
+                                                            <span className={`material-symbols-outlined ${icon.color}`}>business</span>
                                                         </div>
-                                                    </td>
-                                                    <td className="px-6 py-4">
-                                                        <span className={`px-3 py-1 text-xs font-bold rounded-full ${status.color}`}>
-                                                            {status.label}
-                                                        </span>
-                                                    </td>
-                                                    <td className="px-6 py-4 text-sm text-slate-500 font-medium">
-                                                        {app.estimate || "-"}
-                                                    </td>
-                                                    <td className="px-6 py-4">
+                                                        <div className="flex-1 min-w-0">
+                                                            <p className="font-bold text-sm truncate">{app.name || app.service.name}</p>
+                                                            <p className="text-xs text-slate-400 truncate">{app.service.name}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-center justify-between ml-[52px]">
+                                                        <div className="flex items-center gap-3">
+                                                            <span className={`px-3 py-1 text-xs font-bold rounded-full ${status.color}`}>
+                                                                {status.label}
+                                                            </span>
+                                                            {app.estimate && (
+                                                                <span className="text-xs text-slate-400 font-medium flex items-center gap-1">
+                                                                    <span className="material-symbols-outlined text-[14px]">schedule</span>
+                                                                    {app.estimate}
+                                                                </span>
+                                                            )}
+                                                        </div>
                                                         <Link
                                                             href={`/dashboard/dokumen?appId=${app.id}`}
-                                                            className="text-[#2a6ba7] hover:text-[#2a6ba7]/70 transition-colors"
+                                                            className="h-8 w-8 rounded-lg bg-[#2a6ba7]/10 flex items-center justify-center text-[#2a6ba7] hover:bg-[#2a6ba7] hover:text-white transition-all"
                                                         >
-                                                            <span className="material-symbols-outlined">visibility</span>
+                                                            <span className="material-symbols-outlined text-[18px]">visibility</span>
                                                         </Link>
-                                                    </td>
-                                                </tr>
+                                                    </div>
+                                                </div>
                                             );
                                         })}
-                                    </tbody>
-                                </table>
-                            </>
-                        )}
+                                    </div>
+
+                                    {/* Desktop Table Layout */}
+                                    <table className="w-full text-left hidden md:table">
+                                        <thead className="bg-slate-50 border-b border-slate-200">
+                                            <tr className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                                <th className="px-6 py-4">Layanan</th>
+                                                <th className="px-6 py-4">Status</th>
+                                                <th className="px-6 py-4">Estimasi</th>
+                                                <th className="px-6 py-4">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-slate-100">
+                                            {recentApps.map((app) => {
+                                                const status = STATUS_MAP[app.status] || STATUS_MAP.PENDING;
+                                                const icon = ICON_MAP[app.status] || ICON_MAP.PENDING;
+                                                return (
+                                                    <tr key={app.id} className="hover:bg-slate-50/50 transition-colors">
+                                                        <td className="px-6 py-4">
+                                                            <div className="flex items-center gap-3">
+                                                                <div className={`h-10 w-10 rounded-xl ${icon.bg} flex items-center justify-center flex-shrink-0`}>
+                                                                    <span className={`material-symbols-outlined ${icon.color}`}>business</span>
+                                                                </div>
+                                                                <div className="min-w-0">
+                                                                    <p className="font-bold text-sm truncate">{app.name || app.service.name}</p>
+                                                                    <p className="text-xs text-slate-400 truncate">{app.service.name}</p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-6 py-4">
+                                                            <span className={`px-3 py-1 text-xs font-bold rounded-full ${status.color}`}>
+                                                                {status.label}
+                                                            </span>
+                                                        </td>
+                                                        <td className="px-6 py-4 text-sm text-slate-500 font-medium">
+                                                            {app.estimate || "-"}
+                                                        </td>
+                                                        <td className="px-6 py-4">
+                                                            <Link
+                                                                href={`/dashboard/dokumen?appId=${app.id}`}
+                                                                className="text-[#2a6ba7] hover:text-[#2a6ba7]/70 transition-colors"
+                                                            >
+                                                                <span className="material-symbols-outlined">visibility</span>
+                                                            </Link>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })}
+                                        </tbody>
+                                    </table>
+                                </>
+                            )}
+                        </div>
                     </div>
                 </div>
 
                 {/* AI Chatbot Sidebar */}
                 <div className="space-y-6">
+                    {/* AI Chatbot */}
                     <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col" style={{ height: "480px" }}>
                         {/* Chat Header */}
                         <div className="bg-gradient-to-r from-[#2a6ba7] to-[#1e4f7e] px-5 py-4 flex items-center gap-3">
@@ -390,8 +481,8 @@ export default function DashboardPage() {
                                     )}
                                     <div
                                         className={`max-w-[80%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed ${msg.role === "user"
-                                                ? "bg-[#2a6ba7] text-white rounded-br-md"
-                                                : "bg-white border border-slate-200 text-slate-700 rounded-bl-md shadow-sm"
+                                            ? "bg-[#2a6ba7] text-white rounded-br-md"
+                                            : "bg-white border border-slate-200 text-slate-700 rounded-bl-md shadow-sm"
                                             }`}
                                     >
                                         {msg.content}
@@ -492,3 +583,4 @@ export default function DashboardPage() {
         </>
     );
 }
+
