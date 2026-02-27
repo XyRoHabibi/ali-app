@@ -1073,6 +1073,154 @@ app.delete("/company-logo", async (c) => {
     }
 });
 
+// ==========================================
+// REMINDERS MANAGEMENT
+// ==========================================
+
+// GET /api/hono/reminders (User: own reminders with calculated remaining days)
+app.get("/reminders", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user) return c.json({ error: "Unauthorized" }, 401);
+
+        const reminders = await prisma.reminder.findMany({
+            where: { userId: session.user.id },
+            orderBy: { dueDate: "asc" },
+        });
+
+        // Calculate remaining days and status color
+        const now = new Date();
+        const enrichedReminders = reminders.map((r) => {
+            const diffMs = new Date(r.dueDate).getTime() - now.getTime();
+            const remaining = Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
+            let status = "emerald";
+            if (remaining <= 5) status = "red";
+            else if (remaining <= 30) status = "amber";
+            return {
+                ...r,
+                remaining,
+                status,
+            };
+        });
+
+        return c.json({ reminders: enrichedReminders });
+    } catch (error) {
+        console.error("Get reminders error:", error);
+        return c.json({ error: "Terjadi kesalahan" }, 500);
+    }
+});
+
+// GET /api/hono/admin/reminders (Admin: all or by userId)
+app.get("/admin/reminders", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+            return c.json({ error: "Unauthorized" }, 403);
+        }
+
+        const userId = c.req.query("userId");
+        const where = userId ? { userId } : {};
+
+        const reminders = await prisma.reminder.findMany({
+            where,
+            orderBy: { dueDate: "asc" },
+            include: {
+                user: { select: { id: true, name: true, email: true } },
+            },
+        });
+
+        return c.json({ reminders });
+    } catch (error) {
+        console.error("Admin get reminders error:", error);
+        return c.json({ error: "Terjadi kesalahan" }, 500);
+    }
+});
+
+// POST /api/hono/admin/reminders (Admin: create reminder for user)
+app.post("/admin/reminders", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+            return c.json({ error: "Unauthorized" }, 403);
+        }
+
+        const { userId, title, type, dueDate, icon } = await c.req.json();
+
+        if (!userId || !title || !dueDate) {
+            return c.json({ error: "userId, title, dan dueDate harus diisi" }, 400);
+        }
+
+        // Verify user exists
+        const user = await prisma.user.findUnique({ where: { id: userId } });
+        if (!user) return c.json({ error: "User tidak ditemukan" }, 404);
+
+        const reminder = await prisma.reminder.create({
+            data: {
+                userId,
+                title,
+                type: type || "task",
+                dueDate: new Date(dueDate),
+                icon: icon || "notifications",
+            },
+            include: {
+                user: { select: { id: true, name: true, email: true } },
+            },
+        });
+
+        return c.json({ reminder }, 201);
+    } catch (error) {
+        console.error("Create reminder error:", error);
+        return c.json({ error: "Terjadi kesalahan" }, 500);
+    }
+});
+
+// PATCH /api/hono/admin/reminders/:id (Admin: update reminder)
+app.patch("/admin/reminders/:id", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+            return c.json({ error: "Unauthorized" }, 403);
+        }
+
+        const id = c.req.param("id");
+        const body = await c.req.json();
+
+        const reminder = await prisma.reminder.update({
+            where: { id },
+            data: {
+                ...(body.title && { title: body.title }),
+                ...(body.type && { type: body.type }),
+                ...(body.dueDate && { dueDate: new Date(body.dueDate) }),
+                ...(body.icon && { icon: body.icon }),
+            },
+            include: {
+                user: { select: { id: true, name: true, email: true } },
+            },
+        });
+
+        return c.json({ reminder });
+    } catch (error) {
+        console.error("Update reminder error:", error);
+        return c.json({ error: "Terjadi kesalahan" }, 500);
+    }
+});
+
+// DELETE /api/hono/admin/reminders/:id (Admin: delete reminder)
+app.delete("/admin/reminders/:id", async (c) => {
+    try {
+        const session = await auth();
+        if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+            return c.json({ error: "Unauthorized" }, 403);
+        }
+
+        await prisma.reminder.delete({ where: { id: c.req.param("id") } });
+        return c.json({ message: "Pengingat berhasil dihapus" });
+    } catch (error) {
+        console.error("Delete reminder error:", error);
+        return c.json({ error: "Gagal menghapus pengingat" }, 500);
+    }
+});
+
 export const GET = handle(app);
 export const POST = handle(app);
 export const DELETE = handle(app);

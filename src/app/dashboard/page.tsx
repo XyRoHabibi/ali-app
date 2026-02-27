@@ -14,6 +14,16 @@ interface Application {
     documents: { id: string }[];
 }
 
+interface Reminder {
+    id: string;
+    title: string;
+    type: string;
+    dueDate: string;
+    icon: string;
+    remaining: number;
+    status: string;
+}
+
 interface ChatMessage {
     id: string;
     role: "user" | "assistant";
@@ -45,61 +55,14 @@ const ICON_MAP: Record<string, { bg: string; color: string }> = {
     CANCELLED: { bg: "bg-red-500/10", color: "text-red-500" },
 };
 
-const REMINDERS = [
-    {
-        title: "SPT Masa PPh Pasal 21",
-        type: "pajak",
-        dueDate: "10 Desember 2024",
-        remaining: 3,
-        status: "red",
-        icon: "warning",
-    },
-    {
-        title: "Task : Kirim Dokumen NPWP Perusahaan",
-        type: "task",
-        dueDate: "12 Desember 2024",
-        remaining: 4,
-        status: "red",
-        icon: "assignment",
-    },
-    {
-        title: "Masa Jabatan Direktur Utama",
-        type: "jabatan",
-        dueDate: "20 Desember 2024",
-        remaining: 13,
-        status: "amber",
-        icon: "badge",
-    },
-    {
-        title: "SPT Masa PPN",
-        type: "pajak",
-        dueDate: "31 Desember 2024",
-        remaining: 24,
-        status: "amber",
-        icon: "schedule",
-    },
-    {
-        title: "Masa Berlaku NIB",
-        type: "dokumen",
-        dueDate: "30 Januari 2025",
-        remaining: 54,
-        status: "emerald",
-        icon: "verified_user",
-    },
-    {
-        title: "SPT Tahunan Badan",
-        type: "pajak",
-        dueDate: "30 April 2025",
-        remaining: 143,
-        status: "emerald",
-        icon: "check_circle",
-    },
-];
+
 
 export default function DashboardPage() {
     const { data: session } = useSession();
     const [applications, setApplications] = useState<Application[]>([]);
     const [loading, setLoading] = useState(true);
+    const [reminders, setReminders] = useState<Reminder[]>([]);
+    const [remindersLoading, setRemindersLoading] = useState(true);
     const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
         {
             id: "welcome",
@@ -129,6 +92,24 @@ export default function DashboardPage() {
             }
         }
         fetchApplications();
+    }, []);
+
+    // Fetch reminders
+    useEffect(() => {
+        async function fetchReminders() {
+            try {
+                const res = await fetch("/api/hono/reminders");
+                if (res.ok) {
+                    const data = await res.json();
+                    setReminders(data.reminders || []);
+                }
+            } catch (err) {
+                console.error("Failed to fetch reminders:", err);
+            } finally {
+                setRemindersLoading(false);
+            }
+        }
+        fetchReminders();
     }, []);
 
     // Auto-scroll chat to bottom
@@ -283,79 +264,101 @@ export default function DashboardPage() {
                         </div>
 
                         <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden divide-y divide-slate-100 transition-all">
-                            {[...REMINDERS].sort((a, b) => a.remaining - b.remaining).slice(0, showAllReminders ? REMINDERS.length : 3).map((reminder, index) => (
-                                <div key={index} className="px-5 py-4 hover:bg-slate-50/80 transition-all duration-300 group cursor-pointer">
-                                    <div className="flex items-start gap-4">
-                                        <div
-                                            className={`h-11 w-11 rounded-2xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110 shadow-sm ${reminder.status === "red"
-                                                ? "bg-red-50 text-red-600 border border-red-100"
-                                                : reminder.status === "amber"
-                                                    ? "bg-amber-50 text-amber-600 border border-amber-100"
-                                                    : "bg-emerald-50 text-emerald-600 border border-emerald-100"
-                                                }`}
-                                        >
-                                            <span className="material-symbols-outlined text-[22px]">
-                                                {reminder.icon}
-                                            </span>
+                            {remindersLoading ? (
+                                <div className="p-6 space-y-4">
+                                    {[1, 2, 3].map((i) => (
+                                        <div key={i} className="flex items-center gap-4 animate-pulse">
+                                            <div className="h-11 w-11 bg-slate-100 rounded-2xl" />
+                                            <div className="flex-1 space-y-2">
+                                                <div className="h-4 bg-slate-100 rounded w-48" />
+                                                <div className="h-3 bg-slate-100 rounded w-32" />
+                                            </div>
                                         </div>
-                                        <div className="flex-1 min-w-0 pt-0.5">
-                                            <div className="flex items-start justify-between gap-2 mb-1">
-                                                <p className="font-extrabold text-sm text-slate-800 truncate group-hover:text-[#2a6ba7] transition-colors">
-                                                    {reminder.title}
-                                                </p>
-                                                <span
-                                                    className={`px-2.5 py-1 text-[10px] font-black tracking-widest uppercase rounded-md shadow-sm border ${reminder.status === "red"
-                                                        ? "bg-red-50 text-red-600 border-red-100/50"
+                                    ))}
+                                </div>
+                            ) : reminders.length === 0 ? (
+                                <div className="p-10 text-center">
+                                    <span className="material-symbols-outlined text-4xl text-slate-300 mb-3 block">notifications_off</span>
+                                    <p className="text-slate-500 font-bold mb-1">Belum ada pengingat</p>
+                                    <p className="text-sm text-slate-400">Admin akan menambahkan pengingat untuk Anda.</p>
+                                </div>
+                            ) : (
+                                <>
+                                    {reminders.slice(0, showAllReminders ? reminders.length : 3).map((reminder) => (
+                                        <div key={reminder.id} className="px-5 py-4 hover:bg-slate-50/80 transition-all duration-300 group cursor-pointer">
+                                            <div className="flex items-start gap-4">
+                                                <div
+                                                    className={`h-11 w-11 rounded-2xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110 shadow-sm ${reminder.status === "red"
+                                                        ? "bg-red-50 text-red-600 border border-red-100"
                                                         : reminder.status === "amber"
-                                                            ? "bg-amber-50 text-amber-600 border-amber-100/50"
-                                                            : "bg-emerald-50 text-emerald-600 border-emerald-100/50"
+                                                            ? "bg-amber-50 text-amber-600 border border-amber-100"
+                                                            : "bg-emerald-50 text-emerald-600 border border-emerald-100"
                                                         }`}
                                                 >
-                                                    {reminder.remaining} HARI LAGI
-                                                </span>
-                                            </div>
-                                            <div className="mt-1">
-                                                <p className="text-xs font-semibold text-slate-500 flex items-center gap-1.5 truncate">
-                                                    <span className="material-symbols-outlined text-[14px] text-slate-400">
-                                                        calendar_clock
+                                                    <span className="material-symbols-outlined text-[22px]">
+                                                        {reminder.icon}
                                                     </span>
-                                                    Batas: {reminder.dueDate}
-                                                </p>
-                                            </div>
-                                            {(reminder.remaining <= 3 && reminder.type === "pajak") && (
-                                                <div className="mt-3">
-                                                    <Link
-                                                        href="/dashboard/pajak"
-                                                        className="w-full relative overflow-hidden group/btn flex items-center justify-center gap-2 bg-gradient-to-r from-red-500 to-rose-600 text-white text-[11px] font-black uppercase tracking-wider px-4 py-2.5 rounded-xl shadow-[0_4px_12px_rgba(239,68,68,0.25)] hover:shadow-[0_6px_20px_rgba(239,68,68,0.4)] hover:-translate-y-0.5 transition-all duration-300"
-                                                    >
-                                                        <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent,rgba(255,255,255,0.25),transparent)] -translate-x-full group-hover/btn:translate-x-full duration-[800ms] ease-in-out"></div>
-                                                        <span className="material-symbols-outlined text-[16px] animate-pulse relative z-10">edit_document</span>
-                                                        <span className="relative z-10">Lapor Pajak Sekarang</span>
-                                                        <span className="material-symbols-outlined text-[16px] group-hover/btn:translate-x-1 transition-transform duration-300 relative z-10">arrow_forward</span>
-                                                    </Link>
                                                 </div>
-                                            )}
+                                                <div className="flex-1 min-w-0 pt-0.5">
+                                                    <div className="flex items-start justify-between gap-2 mb-1">
+                                                        <p className="font-extrabold text-sm text-slate-800 truncate group-hover:text-[#2a6ba7] transition-colors">
+                                                            {reminder.title}
+                                                        </p>
+                                                        <span
+                                                            className={`px-2.5 py-1 text-[10px] font-black tracking-widest uppercase rounded-md shadow-sm border flex-shrink-0 ${reminder.status === "red"
+                                                                ? "bg-red-50 text-red-600 border-red-100/50"
+                                                                : reminder.status === "amber"
+                                                                    ? "bg-amber-50 text-amber-600 border-amber-100/50"
+                                                                    : "bg-emerald-50 text-emerald-600 border-emerald-100/50"
+                                                                }`}
+                                                        >
+                                                            {reminder.remaining} HARI LAGI
+                                                        </span>
+                                                    </div>
+                                                    <div className="mt-1">
+                                                        <p className="text-xs font-semibold text-slate-500 flex items-center gap-1.5 truncate">
+                                                            <span className="material-symbols-outlined text-[14px] text-slate-400">
+                                                                calendar_clock
+                                                            </span>
+                                                            Batas: {new Date(reminder.dueDate).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}
+                                                        </p>
+                                                    </div>
+                                                    {(reminder.remaining <= 3 && reminder.type === "pajak") && (
+                                                        <div className="mt-3">
+                                                            <Link
+                                                                href="/dashboard/pajak"
+                                                                className="w-full relative overflow-hidden group/btn flex items-center justify-center gap-2 bg-gradient-to-r from-red-500 to-rose-600 text-white text-[11px] font-black uppercase tracking-wider px-4 py-2.5 rounded-xl shadow-[0_4px_12px_rgba(239,68,68,0.25)] hover:shadow-[0_6px_20px_rgba(239,68,68,0.4)] hover:-translate-y-0.5 transition-all duration-300"
+                                                            >
+                                                                <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent,rgba(255,255,255,0.25),transparent)] -translate-x-full group-hover/btn:translate-x-full duration-[800ms] ease-in-out"></div>
+                                                                <span className="material-symbols-outlined text-[16px] animate-pulse relative z-10">edit_document</span>
+                                                                <span className="relative z-10">Lapor Pajak Sekarang</span>
+                                                                <span className="material-symbols-outlined text-[16px] group-hover/btn:translate-x-1 transition-transform duration-300 relative z-10">arrow_forward</span>
+                                                            </Link>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            ))}
-                            {REMINDERS.length > 3 && (
-                                <button
-                                    onClick={() => setShowAllReminders(!showAllReminders)}
-                                    className="w-full py-3 text-sm font-bold text-[#2a6ba7] hover:bg-slate-50 transition-colors flex items-center justify-center gap-1.5"
-                                >
-                                    {showAllReminders ? (
-                                        <>
-                                            <span className="material-symbols-outlined text-[18px]">keyboard_arrow_up</span>
-                                            Tutup
-                                        </>
-                                    ) : (
-                                        <>
-                                            <span className="material-symbols-outlined text-[18px]">keyboard_arrow_down</span>
-                                            Lihat {REMINDERS.length - 3} Lainnya
-                                        </>
+                                    ))}
+                                    {reminders.length > 3 && (
+                                        <button
+                                            onClick={() => setShowAllReminders(!showAllReminders)}
+                                            className="w-full py-3 text-sm font-bold text-[#2a6ba7] hover:bg-slate-50 transition-colors flex items-center justify-center gap-1.5"
+                                        >
+                                            {showAllReminders ? (
+                                                <>
+                                                    <span className="material-symbols-outlined text-[18px]">keyboard_arrow_up</span>
+                                                    Tutup
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <span className="material-symbols-outlined text-[18px]">keyboard_arrow_down</span>
+                                                    Lihat {reminders.length - 3} Lainnya
+                                                </>
+                                            )}
+                                        </button>
                                     )}
-                                </button>
+                                </>
                             )}
                         </div>
                     </div>

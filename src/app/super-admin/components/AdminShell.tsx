@@ -9,6 +9,7 @@ import { signOut } from "next-auth/react";
 const adminNavItems = [
     { href: "/super-admin", label: "Dashboard", icon: "space_dashboard" },
     { href: "/super-admin/users", label: "Kelola User", icon: "group" },
+    { href: "/super-admin/reminders", label: "Pengingat", icon: "notifications_active" },
 ];
 
 interface AdminShellProps {
@@ -71,8 +72,8 @@ export default function AdminShell({ children, user }: AdminShellProps) {
                                 key={item.href}
                                 href={item.href}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all duration-200 ${isActive
-                                        ? "text-white bg-gradient-to-r from-indigo-500/20 to-purple-500/10 border border-indigo-500/20 shadow-lg shadow-indigo-500/5"
-                                        : "text-slate-400 hover:text-white hover:bg-white/5"
+                                    ? "text-white bg-gradient-to-r from-indigo-500/20 to-purple-500/10 border border-indigo-500/20 shadow-lg shadow-indigo-500/5"
+                                    : "text-slate-400 hover:text-white hover:bg-white/5"
                                     }`}
                             >
                                 <span

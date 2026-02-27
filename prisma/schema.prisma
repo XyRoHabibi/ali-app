@@ -47,6 +47,20 @@ model User {
   sessions      Session[]
   userDocuments UserDocument[]
   applications  Application[]
+  reminders     Reminder[]
+}
+
+model Reminder {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  type      String   // pajak, task, jabatan, dokumen
+  dueDate   DateTime
+  icon      String   @default("notifications")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Account {
