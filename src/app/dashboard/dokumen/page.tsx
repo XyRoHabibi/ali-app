@@ -290,6 +290,86 @@ function DokumenContent() {
                     </div>
                 )}
 
+                {/* ═══════ DIRECTORS SECTION ═══════ */}
+                        {directors.length > 0 && (
+                            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                                {/* Toggle Header */}
+                                <button
+                                    onClick={() => setShowDirectors(prev => !prev)}
+                                    className="w-full flex items-center justify-between px-5 py-4 hover:bg-slate-50/60 transition-colors"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <div className="h-9 w-9 rounded-xl bg-[#2a6ba7]/10 flex items-center justify-center">
+                                            <span className="material-symbols-outlined text-[#2a6ba7] text-lg">groups</span>
+                                        </div>
+                                        <div className="text-left">
+                                            <h2 className="text-sm font-bold text-slate-800">Masa Jabatan Direktur &amp; Komisaris</h2>
+                                            <p className="text-xs text-slate-400">{directors.length} orang pengurus</p>
+                                        </div>
+                                    </div>
+                                    <span className={`material-symbols-outlined text-slate-400 transition-transform duration-300 ${showDirectors ? "rotate-180" : ""}`}>
+                                        expand_more
+                                    </span>
+                                </button>
+
+                                {/* Collapsible Cards */}
+                                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${showDirectors ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
+                                    }`}>
+                                    <div className="px-5 pb-5 pt-1">
+                                        {/* Menggunakan auto-fit agar card mengisi seluruh lebar baris dan tidak ada hole di kanan */}
+                                        <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4">
+                                            {directors.map(d => {
+                                                const colors = getDirectorColor(d.jabatan);
+                                                const tenure = getTenureInfo(d.akhirMenjabat);
+                                                const initials = d.name.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase();
+                                                return (
+                                                    <div key={d.id} className="bg-slate-50 rounded-xl p-4 border border-slate-100 flex flex-col items-center text-center hover:shadow-md hover:bg-white transition-all">
+                                                        {/* Avatar */}
+                                                        <div className={`h-14 w-14 text-lg ${colors.bg} rounded-full flex items-center justify-center ${colors.text} font-black mb-3 shadow-sm`}>
+                                                            {initials}
+                                                        </div>
+
+                                                        {/* Name & Role */}
+                                                        <h3 className="font-bold text-sm leading-tight mb-0.5 line-clamp-2">{d.name}</h3>
+                                                        <p className="text-xs text-slate-500 mb-1">{d.jabatan}</p>
+
+                                                        {/* Status badge */}
+                                                        <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full mb-3 ${colors.bg} ${colors.text}`}>
+                                                            {d.status}
+                                                        </span>
+
+                                                        {/* Tenure Progress */}
+                                                        <div className="w-full mt-auto">
+                                                            <div className="flex justify-between text-[10px] text-slate-400 mb-1.5">
+                                                                <span>Masa Jabatan</span>
+                                                                <span className={`font-semibold ${tenure.expired ? "text-red-500" : colors.text}`}>
+                                                                    {tenure.percent}%
+                                                                </span>
+                                                            </div>
+                                                            <div className="w-full bg-slate-200 rounded-full h-1.5">
+                                                                <div
+                                                                    className={`${tenure.expired ? "bg-red-500" : colors.bar} h-1.5 rounded-full transition-all`}
+                                                                    style={{ width: `${tenure.percent}%` }}
+                                                                />
+                                                            </div>
+                                                            <p className={`text-[10px] mt-2 font-medium ${tenure.expired ? "text-red-500" : "text-slate-400"}`}>
+                                                                {tenure.remaining}
+                                                            </p>
+                                                            {d.akhirMenjabat && (
+                                                                <p className="text-[10px] text-slate-400 mt-0.5">
+                                                                    s/d {formatDate(d.akhirMenjabat)}
+                                                                </p>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
                 {/* Search & Filters — only show when a service is selected */}
                 {selectedAppId && (
                     <div className="flex items-center gap-3 flex-wrap">
@@ -592,85 +672,7 @@ function DokumenContent() {
                             </div>
                         )}
 
-                        {/* ═══════ DIRECTORS SECTION ═══════ */}
-                        {directors.length > 0 && (
-                            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                                {/* Toggle Header */}
-                                <button
-                                    onClick={() => setShowDirectors(prev => !prev)}
-                                    className="w-full flex items-center justify-between px-5 py-4 hover:bg-slate-50/60 transition-colors"
-                                >
-                                    <div className="flex items-center gap-3">
-                                        <div className="h-9 w-9 rounded-xl bg-[#2a6ba7]/10 flex items-center justify-center">
-                                            <span className="material-symbols-outlined text-[#2a6ba7] text-lg">groups</span>
-                                        </div>
-                                        <div className="text-left">
-                                            <h2 className="text-sm font-bold text-slate-800">Masa Jabatan Direktur &amp; Komisaris</h2>
-                                            <p className="text-xs text-slate-400">{directors.length} orang pengurus</p>
-                                        </div>
-                                    </div>
-                                    <span className={`material-symbols-outlined text-slate-400 transition-transform duration-300 ${showDirectors ? "rotate-180" : ""}`}>
-                                        expand_more
-                                    </span>
-                                </button>
-
-                                {/* Collapsible Cards */}
-                                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${showDirectors ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
-                                    }`}>
-                                    <div className="px-5 pb-5 pt-1">
-                                        {/* Menggunakan auto-fit agar card mengisi seluruh lebar baris dan tidak ada hole di kanan */}
-                                        <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4">
-                                            {directors.map(d => {
-                                                const colors = getDirectorColor(d.jabatan);
-                                                const tenure = getTenureInfo(d.akhirMenjabat);
-                                                const initials = d.name.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase();
-                                                return (
-                                                    <div key={d.id} className="bg-slate-50 rounded-xl p-4 border border-slate-100 flex flex-col items-center text-center hover:shadow-md hover:bg-white transition-all">
-                                                        {/* Avatar */}
-                                                        <div className={`h-14 w-14 text-lg ${colors.bg} rounded-full flex items-center justify-center ${colors.text} font-black mb-3 shadow-sm`}>
-                                                            {initials}
-                                                        </div>
-
-                                                        {/* Name & Role */}
-                                                        <h3 className="font-bold text-sm leading-tight mb-0.5 line-clamp-2">{d.name}</h3>
-                                                        <p className="text-xs text-slate-500 mb-1">{d.jabatan}</p>
-
-                                                        {/* Status badge */}
-                                                        <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full mb-3 ${colors.bg} ${colors.text}`}>
-                                                            {d.status}
-                                                        </span>
-
-                                                        {/* Tenure Progress */}
-                                                        <div className="w-full mt-auto">
-                                                            <div className="flex justify-between text-[10px] text-slate-400 mb-1.5">
-                                                                <span>Masa Jabatan</span>
-                                                                <span className={`font-semibold ${tenure.expired ? "text-red-500" : colors.text}`}>
-                                                                    {tenure.percent}%
-                                                                </span>
-                                                            </div>
-                                                            <div className="w-full bg-slate-200 rounded-full h-1.5">
-                                                                <div
-                                                                    className={`${tenure.expired ? "bg-red-500" : colors.bar} h-1.5 rounded-full transition-all`}
-                                                                    style={{ width: `${tenure.percent}%` }}
-                                                                />
-                                                            </div>
-                                                            <p className={`text-[10px] mt-2 font-medium ${tenure.expired ? "text-red-500" : "text-slate-400"}`}>
-                                                                {tenure.remaining}
-                                                            </p>
-                                                            {d.akhirMenjabat && (
-                                                                <p className="text-[10px] text-slate-400 mt-0.5">
-                                                                    s/d {formatDate(d.akhirMenjabat)}
-                                                                </p>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
+                        
 
                         {/* ═══════ 3-COL LAYOUT: Agreements + Tax | Data Penting ═══════ */}
                         {companyData && (

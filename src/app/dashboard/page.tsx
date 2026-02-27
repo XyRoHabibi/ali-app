@@ -45,23 +45,50 @@ const ICON_MAP: Record<string, { bg: string; color: string }> = {
     CANCELLED: { bg: "bg-red-500/10", color: "text-red-500" },
 };
 
-const TAX_REMINDERS = [
+const REMINDERS = [
     {
         title: "SPT Masa PPh Pasal 21",
+        type: "pajak",
         dueDate: "10 Desember 2024",
         remaining: 3,
         status: "red",
         icon: "warning",
     },
     {
+        title: "Task : Kirim Dokumen NPWP Perusahaan",
+        type: "task",
+        dueDate: "12 Desember 2024",
+        remaining: 4,
+        status: "red",
+        icon: "assignment",
+    },
+    {
+        title: "Masa Jabatan Direktur Utama",
+        type: "jabatan",
+        dueDate: "20 Desember 2024",
+        remaining: 13,
+        status: "amber",
+        icon: "badge",
+    },
+    {
         title: "SPT Masa PPN",
+        type: "pajak",
         dueDate: "31 Desember 2024",
         remaining: 24,
         status: "amber",
         icon: "schedule",
     },
     {
+        title: "Masa Berlaku NIB",
+        type: "dokumen",
+        dueDate: "30 Januari 2025",
+        remaining: 54,
+        status: "emerald",
+        icon: "verified_user",
+    },
+    {
         title: "SPT Tahunan Badan",
+        type: "pajak",
         dueDate: "30 April 2025",
         remaining: 143,
         status: "emerald",
@@ -83,6 +110,7 @@ export default function DashboardPage() {
     ]);
     const [chatInput, setChatInput] = useState("");
     const [isTyping, setIsTyping] = useState(false);
+    const [showAllReminders, setShowAllReminders] = useState(false);
     const chatEndRef = useRef<HTMLDivElement>(null);
     const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -250,15 +278,12 @@ export default function DashboardPage() {
                                     <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full animate-ping"></span>
                                     <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
                                 </div>
-                                Pengingat Pajak
+                                Pengingat
                             </h2>
-                            <Link href="#" className="text-sm font-bold text-[#2a6ba7] hover:underline">
-                                Lihat Semua
-                            </Link>
                         </div>
 
-                        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden divide-y divide-slate-100">
-                            {TAX_REMINDERS.map((reminder, index) => (
+                        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden divide-y divide-slate-100 transition-all">
+                            {[...REMINDERS].sort((a, b) => a.remaining - b.remaining).slice(0, showAllReminders ? REMINDERS.length : 3).map((reminder, index) => (
                                 <div key={index} className="px-5 py-4 hover:bg-slate-50/80 transition-all duration-300 group cursor-pointer">
                                     <div className="flex items-start gap-4">
                                         <div
@@ -289,16 +314,49 @@ export default function DashboardPage() {
                                                     {reminder.remaining} HARI LAGI
                                                 </span>
                                             </div>
-                                            <p className="text-xs font-semibold text-slate-500 flex items-center gap-1.5 truncate">
-                                                <span className="material-symbols-outlined text-[14px] text-slate-400">
-                                                    calendar_clock
-                                                </span>
-                                                Batas: {reminder.dueDate}
-                                            </p>
+                                            <div className="mt-1">
+                                                <p className="text-xs font-semibold text-slate-500 flex items-center gap-1.5 truncate">
+                                                    <span className="material-symbols-outlined text-[14px] text-slate-400">
+                                                        calendar_clock
+                                                    </span>
+                                                    Batas: {reminder.dueDate}
+                                                </p>
+                                            </div>
+                                            {(reminder.remaining <= 3 && reminder.type === "pajak") && (
+                                                <div className="mt-3">
+                                                    <Link
+                                                        href="/dashboard/pajak"
+                                                        className="w-full relative overflow-hidden group/btn flex items-center justify-center gap-2 bg-gradient-to-r from-red-500 to-rose-600 text-white text-[11px] font-black uppercase tracking-wider px-4 py-2.5 rounded-xl shadow-[0_4px_12px_rgba(239,68,68,0.25)] hover:shadow-[0_6px_20px_rgba(239,68,68,0.4)] hover:-translate-y-0.5 transition-all duration-300"
+                                                    >
+                                                        <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent,rgba(255,255,255,0.25),transparent)] -translate-x-full group-hover/btn:translate-x-full duration-[800ms] ease-in-out"></div>
+                                                        <span className="material-symbols-outlined text-[16px] animate-pulse relative z-10">edit_document</span>
+                                                        <span className="relative z-10">Lapor Pajak Sekarang</span>
+                                                        <span className="material-symbols-outlined text-[16px] group-hover/btn:translate-x-1 transition-transform duration-300 relative z-10">arrow_forward</span>
+                                                    </Link>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
                             ))}
+                            {REMINDERS.length > 3 && (
+                                <button
+                                    onClick={() => setShowAllReminders(!showAllReminders)}
+                                    className="w-full py-3 text-sm font-bold text-[#2a6ba7] hover:bg-slate-50 transition-colors flex items-center justify-center gap-1.5"
+                                >
+                                    {showAllReminders ? (
+                                        <>
+                                            <span className="material-symbols-outlined text-[18px]">keyboard_arrow_up</span>
+                                            Tutup
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span className="material-symbols-outlined text-[18px]">keyboard_arrow_down</span>
+                                            Lihat {REMINDERS.length - 3} Lainnya
+                                        </>
+                                    )}
+                                </button>
+                            )}
                         </div>
                     </div>
 
