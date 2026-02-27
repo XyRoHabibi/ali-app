@@ -45,23 +45,50 @@ const ICON_MAP: Record<string, { bg: string; color: string }> = {
     CANCELLED: { bg: "bg-red-500/10", color: "text-red-500" },
 };
 
-const TAX_REMINDERS = [
+const REMINDERS = [
     {
         title: "SPT Masa PPh Pasal 21",
+        type: "pajak",
         dueDate: "10 Desember 2024",
         remaining: 3,
         status: "red",
         icon: "warning",
     },
     {
+        title: "Task : Kirim Dokumen NPWP Perusahaan",
+        type: "task",
+        dueDate: "12 Desember 2024",
+        remaining: 4,
+        status: "red",
+        icon: "assignment",
+    },
+    {
+        title: "Masa Jabatan Direktur Utama",
+        type: "jabatan",
+        dueDate: "20 Desember 2024",
+        remaining: 13,
+        status: "amber",
+        icon: "badge",
+    },
+    {
         title: "SPT Masa PPN",
+        type: "pajak",
         dueDate: "31 Desember 2024",
         remaining: 24,
         status: "amber",
         icon: "schedule",
     },
     {
+        title: "Masa Berlaku NIB",
+        type: "dokumen",
+        dueDate: "30 Januari 2025",
+        remaining: 54,
+        status: "emerald",
+        icon: "verified_user",
+    },
+    {
         title: "SPT Tahunan Badan",
+        type: "pajak",
         dueDate: "30 April 2025",
         remaining: 143,
         status: "emerald",
@@ -83,6 +110,7 @@ export default function DashboardPage() {
     ]);
     const [chatInput, setChatInput] = useState("");
     const [isTyping, setIsTyping] = useState(false);
+    const [showAllReminders, setShowAllReminders] = useState(false);
     const chatEndRef = useRef<HTMLDivElement>(null);
     const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -252,13 +280,10 @@ export default function DashboardPage() {
                                 </div>
                                 Pengingat
                             </h2>
-                            <Link href="#" className="text-sm font-bold text-[#2a6ba7] hover:underline">
-                                Lihat Semua
-                            </Link>
                         </div>
 
-                        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden divide-y divide-slate-100">
-                            {TAX_REMINDERS.map((reminder, index) => (
+                        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden divide-y divide-slate-100 transition-all">
+                            {[...REMINDERS].sort((a, b) => a.remaining - b.remaining).slice(0, showAllReminders ? REMINDERS.length : 3).map((reminder, index) => (
                                 <div key={index} className="px-5 py-4 hover:bg-slate-50/80 transition-all duration-300 group cursor-pointer">
                                     <div className="flex items-start gap-4">
                                         <div
@@ -297,7 +322,7 @@ export default function DashboardPage() {
                                                     Batas: {reminder.dueDate}
                                                 </p>
                                             </div>
-                                            {reminder.remaining <= 3 && (
+                                            {(reminder.remaining <= 3 && reminder.type === "pajak") && (
                                                 <div className="mt-3">
                                                     <Link
                                                         href="/dashboard/pajak"
@@ -314,6 +339,24 @@ export default function DashboardPage() {
                                     </div>
                                 </div>
                             ))}
+                            {REMINDERS.length > 3 && (
+                                <button
+                                    onClick={() => setShowAllReminders(!showAllReminders)}
+                                    className="w-full py-3 text-sm font-bold text-[#2a6ba7] hover:bg-slate-50 transition-colors flex items-center justify-center gap-1.5"
+                                >
+                                    {showAllReminders ? (
+                                        <>
+                                            <span className="material-symbols-outlined text-[18px]">keyboard_arrow_up</span>
+                                            Tutup
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span className="material-symbols-outlined text-[18px]">keyboard_arrow_down</span>
+                                            Lihat {REMINDERS.length - 3} Lainnya
+                                        </>
+                                    )}
+                                </button>
+                            )}
                         </div>
                     </div>
 
