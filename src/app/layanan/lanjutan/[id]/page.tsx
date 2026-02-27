@@ -23,7 +23,7 @@ export default function LanjutanDetailPage({ params }: { params: Promise<{ id: s
     return (
         <div className="max-w-[1200px] mx-auto">
             {/* Hero Section */}
-            <section className="relative pt-20 pb-32 overflow-hidden bg-white border-b border-gray-100">
+            <section className="relative pt-20 pb-32 overflow-hidden bg-white border-b border-gray-100 rounded-b-2xl">
                 <div className="max-w-[1200px] mx-auto px-6 relative z-10">
                     <div className="max-w-3xl">
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary mb-6">
@@ -54,62 +54,98 @@ export default function LanjutanDetailPage({ params }: { params: Promise<{ id: s
             </section>
 
             {/* Content Section */}
-            <section className="py-20 bg-gray-50/50">
-                <div className="max-w-[1200px] mx-auto px-6">
-                    <div className="grid md:grid-cols-3 gap-12">
-                        <div className="md:col-span-2 space-y-12">
-                            <div>
-                                <h2 className="text-2xl font-black text-gray-900 mb-6">Kenapa Layanan Ini?</h2>
-                                <div className="grid sm:grid-cols-2 gap-6">
-                                    <div className="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
-                                        <div className="size-10 rounded-lg bg-green-100 text-green-600 flex items-center justify-center mb-4">
-                                            <span className="material-symbols-outlined">verified</span>
-                                        </div>
-                                        <h3 className="font-bold text-lg mb-2">Sertifikasi Resmi</h3>
-                                        <p className="text-sm text-gray-500">Dijamin terdaftar resmi di instansi terkait dan sah secara hukum Indonesia.</p>
-                                    </div>
-                                    <div className="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
-                                        <div className="size-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center mb-4">
-                                            <span className="material-symbols-outlined">speed</span>
-                                        </div>
-                                        <h3 className="font-bold text-lg mb-2">Proses Transparan</h3>
-                                        <p className="text-sm text-gray-500">Pengerjaan efisien dengan estimasi waktu yang jelas dan transparan.</p>
-                                    </div>
+            <section className="py-12 bg-gray-50">
+                <div className="max-w-[1000px] mx-auto px-6">
+                    {/* Section Header - More Compact */}
+                    <div className="mb-10 text-center md:text-left">
+                        <span className="inline-block rounded-full bg-primary/10 text-primary text-[10px] font-bold px-3 py-1 uppercase tracking-widest mb-3 border border-primary/20">
+                            Persyaratan {service.name}
+                        </span>
+                        <h2 className="text-2xl md:text-4xl font-black text-gray-900 leading-tight tracking-tighter mb-2">
+                            Siap Mendaftarkan {service.name}?
+                        </h2>
+                        <p className="text-gray-400 text-sm font-bold max-w-2xl leading-relaxed">
+                            Pastikan proses pendaftaran {service.name} Anda berjalan lancar dengan menyiapkan dokumen berikut.
+                        </p>
+                    </div>
+
+                    <div className="space-y-6">
+                        {/* Requirements Card - Optimized Spacing */}
+                        <div className="rounded-[2rem] bg-white p-6 md:p-8 shadow-lg shadow-gray-200/40 border border-gray-100">
+                            <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div>
+                                    <h3 className="text-xl font-black text-gray-900">Dokumen & Data Utama</h3>
+                                    <p className="mt-1 text-[11px] text-slate-400 font-bold leading-relaxed">
+                                        Data wajib untuk proses pendaftaran kilat.
+                                    </p>
                                 </div>
                             </div>
 
-                            <div>
-                                <h2 className="text-2xl font-black text-gray-900 mb-6">Persyaratan Dasar</h2>
-                                <ul className="space-y-4">
+                            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                                {[
+                                    { title: "Nama Lengkap", desc: "Pribadi / Badan Usaha", icon: "person" },
+                                    { title: "Dokumen Identitas", desc: "KTP, NPWP, dan NIB", icon: "assignment_ind" },
+                                    { title: "Informasi Kontak", desc: "Nomor Telepon & Email", icon: "contact_phone" },
+                                    { title: "Bidang Usaha", desc: "Deskripsi Produk/Layanan", icon: "business_center" },
+                                    { title: "Alamat Lengkap", desc: "Kota & Alamat Detail", icon: "location_on" },
+                                    { title: "Logo Usaha", desc: "Format JPG/PNG", icon: "draw" },
+                                    { title: "Foto Pemohon", desc: "Latar Belakang Biru", icon: "account_circle" }
+                                ].map((item, i) => (
+                                    <div key={i} className="flex items-center gap-4 rounded-2xl bg-gray-50/50 p-4 border border-transparent hover:border-primary/10 hover:bg-white transition-all duration-300 group">
+                                        <div className="size-9 rounded-xl bg-white shadow-sm flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all shrink-0">
+                                            <span className="material-symbols-outlined text-lg">{item.icon}</span>
+                                        </div>
+                                        <div className="min-w-0">
+                                            <p className="font-black text-gray-900 text-[12px] leading-tight mb-0.5 truncate">{item.title}</p>
+                                            <p className="text-[10px] text-slate-400 font-bold leading-tight truncate">{item.desc}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Deliverables Card & Help Section Grid - Reduced Height */}
+                        <div className="grid lg:grid-cols-5 gap-6">
+                            {/* Deliverables Card */}
+                            <div className="lg:col-span-3 rounded-[2rem] bg-white p-6 md:p-8 shadow-lg shadow-gray-200/40 border border-gray-100">
+                                <div className="mb-6 flex items-center gap-3">
+                                    <div className="size-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-600">
+                                        <span className="material-symbols-outlined text-lg">verified</span>
+                                    </div>
+                                    <h3 className="text-lg font-black text-gray-900">Output Layanan</h3>
+                                </div>
+                                <ul className="grid gap-3">
                                     {[
-                                        "KTP Pemohon / Direktur Utama",
-                                        "NPWP Perusahaan / Pribadi",
-                                        "NIB (Nomor Induk Berusaha)",
-                                        "Dokumen Pendukung Spesifik Layanan"
+                                        { title: "Form pendaftaran resmi", detail: "7-14 hari kerja" },
+                                        { title: "Sertifikat Merek Sah", detail: "~12 bulan proses" },
+                                        { title: "Masa aktif 10 tahun", detail: "Dapat diperpanjang" }
                                     ].map((item, i) => (
-                                        <li key={i} className="flex items-start gap-3">
-                                            <span className="material-symbols-outlined text-green-500 mt-1">check_circle</span>
-                                            <span className="text-gray-600 font-medium">{item}</span>
+                                        <li key={i} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50/50">
+                                            <div className="size-4 rounded-full bg-green-500/10 flex items-center justify-center shrink-0">
+                                                <span className="material-symbols-outlined text-green-600 text-[12px] font-black">check</span>
+                                            </div>
+                                            <div className="flex flex-1 items-center justify-between gap-4">
+                                                <p className="text-gray-900 font-black text-[11px]">{item.title}</p>
+                                                <span className="text-[9px] text-slate-400 font-bold italic">{item.detail}</span>
+                                            </div>
                                         </li>
                                     ))}
                                 </ul>
                             </div>
-                        </div>
 
-                        {/* Sidebar */}
-                        <div className="relative">
-                            <div className="sticky top-24 bg-white p-6 rounded-2xl border border-gray-100 shadow-xl shadow-gray-100/50">
-                                <h3 className="font-black text-lg mb-4">Butuh Bantuan?</h3>
-                                <p className="text-sm text-gray-500 mb-6">Konsultan kami siap membantu menjelaskan detail layanan ini kepada Anda.</p>
+                            {/* Help Section Card - Updated Content */}
+                            <div className="lg:col-span-2 rounded-[2rem] bg-slate-900 p-8 text-white relative overflow-hidden flex flex-col justify-between shadow-xl shadow-slate-900/10 min-h-[220px]">
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-[40px] -translate-y-1/2 translate-x-1/2"></div>
+                                <div className="relative z-10">
+                                    <h4 className="text-xl font-black mb-3 leading-tight">Dokumen belum lengkap?</h4>
+                                    <p className="text-[11px] text-slate-400 font-bold leading-relaxed mb-6">
+                                        Tim kami siap membantu siapkan dan cek kelayakan dokumen Anda secara gratis.
+                                    </p>
+                                </div>
                                 <a href={`https://wa.me/6285333338818?text=${waMessage}`} target="_blank"
-                                    className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-                                    <div className="size-10 rounded-full bg-green-500 flex items-center justify-center text-white shrink-0">
-                                        <span className="material-symbols-outlined text-xl">perm_phone_msg</span>
-                                    </div>
-                                    <div>
-                                        <p className="text-xs font-bold text-gray-400 uppercase">WhatsApp</p>
-                                        <p className="font-bold text-gray-900">+62 853-3333-8818</p>
-                                    </div>
+                                    className="relative z-10 inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-4 text-[12px] font-black text-gray-900 hover:bg-primary hover:text-white transition-all duration-300 shadow-lg group">
+                                    <span>Hubungi Tim Kami</span>
+                                    <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
                                 </a>
                             </div>
                         </div>
@@ -206,6 +242,64 @@ export default function LanjutanDetailPage({ params }: { params: Promise<{ id: s
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Brands Section */}
+            <section className="relative overflow-hidden pb-24">
+                <div className="container mx-auto px-4 md:px-8 relative z-10">
+                    {/* Header */}
+                    <div className="text-center mb-12 md:mb-16" data-aos="fade-up">
+                        <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-4">
+                            MEREK YANG KAMI DAFTARKAN
+                        </h2>
+                    </div>
+
+                    {/* Carousel Container */}
+                    <div className="marquee-container py-8 md:py-12" data-aos="zoom-in">
+                        <div className="animate-marquee items-center">
+                            {[1, 2].flatMap((loopIdx) =>
+                                [
+                                    { i: 1, alt: "Dapur Mr. Chef" },
+                                    { i: 2, alt: "Om Kembek" },
+                                    { i: 3, alt: "Bungahen Dapoer" },
+                                    { i: 4, alt: "Republik Pentol" },
+                                    { i: 5, alt: "Lu Kudu" },
+                                    { i: 6, alt: "Supersaji" },
+                                    { i: 7, alt: "Metasyifa" },
+                                    { i: 8, alt: "Herhopes" },
+                                    { i: 9, alt: "Laal Shining Skin" },
+                                    { i: 10, alt: "Aeera" },
+                                    { i: 11, alt: "Social Barn" },
+                                    { i: 12, alt: "Maju Abadi Perkasa" },
+                                    { i: 13, alt: "The Makmur" },
+                                    { i: 14, alt: "La-Data" },
+                                    { i: 15, alt: "JS Cosmetik" },
+                                    { i: 16, alt: "Catering Mayspa" },
+                                    { i: 17, alt: "Halo Kopi" },
+                                    { i: 18, alt: "NSJ Glow" },
+                                    { i: 19, alt: "Anhar Foundation" },
+                                    { i: 20, alt: "Intipaint" },
+                                    { i: 21, alt: "Fitry Bakery" },
+                                    { i: 22, alt: "Amazing Project" },
+                                    { i: 23, alt: "Kabilah Atelier" },
+                                    { i: 24, alt: "ITA Ilmu Tsunai Alquran" }
+                                ].map((item) => (
+                                    <div key={`${loopIdx}-${item.i}`} className="shrink-0 w-32 md:w-48 h-20 md:h-28 flex items-center justify-center p-4 bg-white/50 border border-slate-100 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 group/brand">
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img src={`/testimoni/${item.i}.png`} alt={item.alt} title={item.alt} className="max-w-full max-h-full object-contain grayscale opacity-60 group-hover/brand:grayscale-0 group-hover/brand:opacity-100 transition-all duration-300" />
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Footer Text */}
+                    <div className="text-center mt-8 md:mt-12">
+                        <p className="text-lg md:text-xl text-slate-600 font-semibold">
+                            dan masih banyak merek lainnya...
+                        </p>
                     </div>
                 </div>
             </section>
