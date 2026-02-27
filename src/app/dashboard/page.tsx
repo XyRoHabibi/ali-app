@@ -250,7 +250,7 @@ export default function DashboardPage() {
                                     <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full animate-ping"></span>
                                     <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
                                 </div>
-                                Pengingat Pajak
+                                Pengingat
                             </h2>
                             <Link href="#" className="text-sm font-bold text-[#2a6ba7] hover:underline">
                                 Lihat Semua
@@ -289,12 +289,27 @@ export default function DashboardPage() {
                                                     {reminder.remaining} HARI LAGI
                                                 </span>
                                             </div>
-                                            <p className="text-xs font-semibold text-slate-500 flex items-center gap-1.5 truncate">
-                                                <span className="material-symbols-outlined text-[14px] text-slate-400">
-                                                    calendar_clock
-                                                </span>
-                                                Batas: {reminder.dueDate}
-                                            </p>
+                                            <div className="mt-1">
+                                                <p className="text-xs font-semibold text-slate-500 flex items-center gap-1.5 truncate">
+                                                    <span className="material-symbols-outlined text-[14px] text-slate-400">
+                                                        calendar_clock
+                                                    </span>
+                                                    Batas: {reminder.dueDate}
+                                                </p>
+                                            </div>
+                                            {reminder.remaining <= 3 && (
+                                                <div className="mt-3">
+                                                    <Link
+                                                        href="/dashboard/pajak"
+                                                        className="w-full relative overflow-hidden group/btn flex items-center justify-center gap-2 bg-gradient-to-r from-red-500 to-rose-600 text-white text-[11px] font-black uppercase tracking-wider px-4 py-2.5 rounded-xl shadow-[0_4px_12px_rgba(239,68,68,0.25)] hover:shadow-[0_6px_20px_rgba(239,68,68,0.4)] hover:-translate-y-0.5 transition-all duration-300"
+                                                    >
+                                                        <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent,rgba(255,255,255,0.25),transparent)] -translate-x-full group-hover/btn:translate-x-full duration-[800ms] ease-in-out"></div>
+                                                        <span className="material-symbols-outlined text-[16px] animate-pulse relative z-10">edit_document</span>
+                                                        <span className="relative z-10">Lapor Pajak Sekarang</span>
+                                                        <span className="material-symbols-outlined text-[16px] group-hover/btn:translate-x-1 transition-transform duration-300 relative z-10">arrow_forward</span>
+                                                    </Link>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
