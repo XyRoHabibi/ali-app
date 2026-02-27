@@ -30,6 +30,14 @@ export async function POST(request: NextRequest) {
         // Prepare CV attachment
         let attachments: { filename: string; content: Buffer }[] = [];
         if (cvFile) {
+            // Validate file size (max 5MB) to prevent memory exhaustion / DoS
+            if (cvFile.size > 5 * 1024 * 1024) {
+                return NextResponse.json(
+                    { error: "Ukuran file CV maksimal 5MB." },
+                    { status: 400 }
+                );
+            }
+
             const bytes = await cvFile.arrayBuffer();
             const buffer = Buffer.from(bytes);
             attachments = [
