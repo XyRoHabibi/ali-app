@@ -18,11 +18,41 @@ export async function POST(request: NextRequest) {
         const perempuan = formData.get("perempuan") as string;
         const pesan = formData.get("pesan") as string;
         const cvFile = formData.get("cv") as File | null;
+        const recaptchaToken = formData.get("recaptchaToken") as string;
 
         // Validate required fields
         if (!namaLengkap || !email || !noTelepon || !posisi) {
             return NextResponse.json(
                 { error: "Harap isi semua field yang wajib diisi." },
+                { status: 400 }
+            );
+        }
+
+        if (!recaptchaToken) {
+            return NextResponse.json(
+                { error: "Harap verifikasi captcha terlebih dahulu." },
+                { status: 400 }
+            );
+        }
+
+        const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+        if (!secretKey) {
+            console.error("Missing RECAPTCHA_SECRET_KEY");
+            return NextResponse.json(
+                { error: "Konfigurasi sistem bermasalah (missing captcha key)." },
+                { status: 500 }
+            );
+        }
+
+        const verifyRes = await fetch(
+            `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaToken}`,
+            { method: "POST" }
+        );
+        const verifyData = await verifyRes.json();
+
+        if (!verifyData.success) {
+            return NextResponse.json(
+                { error: "Verifikasi Captcha gagal, coba ulangi kembali." },
                 { status: 400 }
             );
         }

@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Suspense } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 // Job positions data (same as karir page for title matching)
 const jobPositions: Record<string, { title: string; icon: string; gradient: string }> = {
@@ -45,6 +46,8 @@ function LamarForm() {
     const [pendidikan, setPendidikan] = useState(""); // For Jobs
     const [pesan, setPesan] = useState(""); // For Jobs
     const [cvFile, setCvFile] = useState<File | null>(null);
+    const [recaptchaToken, setRecaptchaToken] = useState("");
+    const recaptchaRef = useRef<ReCAPTCHA>(null);
 
     const isMagang = parseInt(jobId) >= 5;
 
@@ -109,6 +112,12 @@ function LamarForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (!recaptchaToken) {
+            setErrorMessage("Harap verifikasi captcha terlebih dahulu.");
+            return;
+        }
+
         setFormStatus("loading");
         setErrorMessage("");
 
@@ -132,6 +141,7 @@ function LamarForm() {
             if (cvFile) {
                 formData.append("cv", cvFile);
             }
+            formData.append("recaptchaToken", recaptchaToken);
 
             const response = await fetch("/api/lamar", {
                 method: "POST",
@@ -150,6 +160,8 @@ function LamarForm() {
             setErrorMessage(
                 err instanceof Error ? err.message : "Terjadi kesalahan saat mengirim lamaran."
             );
+            if (recaptchaRef.current) recaptchaRef.current.reset();
+            setRecaptchaToken("");
         }
     };
 
@@ -641,6 +653,15 @@ function LamarForm() {
                                     <p className="text-sm font-medium">{errorMessage}</p>
                                 </div>
                             )}
+
+                            {/* ReCAPTCHA */}
+                            <div className="reveal-up flex justify-center w-full" style={{ transitionDelay: "200ms" }}>
+                                <ReCAPTCHA
+                                    ref={recaptchaRef}
+                                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
+                                    onChange={(token) => setRecaptchaToken(token || "")}
+                                />
+                            </div>
 
                             {/* Submit Section */}
                             <div
