@@ -42,3 +42,6 @@ next-env.d.ts
 
 # Security
 prisma/update-admin.ts
+
+# Uploaded files (local storage)
+/uploads/

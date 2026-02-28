@@ -6,12 +6,15 @@ import prisma from "@/lib/prisma";
 import nodemailer from "nodemailer";
 import { auth } from "@/lib/auth";
 import {
-    supabaseAdmin,
     BUCKET_LEGAL_DOCS,
     BUCKET_USER_VAULT,
     ALLOWED_FILE_TYPES,
     MAX_FILE_SIZE,
-} from "@/lib/supabase";
+    uploadFile,
+    removeFiles,
+    getPublicUrl,
+    extractPathFromUrl,
+} from "@/lib/storage";
 
 const app = new Hono().basePath("/api/hono");
 
@@ -720,11 +723,11 @@ app.delete("/admin/applications/:id/documents/:docId", async (c) => {
         const doc = await prisma.applicationDocument.findUnique({ where: { id: docId } });
         if (!doc) return c.json({ error: "Dokumen tidak ditemukan" }, 404);
 
-        // Delete from Supabase Storage only if it's not a link
+        // Delete from local storage only if it's not a link
         if (doc.fileType !== "link" && doc.fileUrl.includes(BUCKET_LEGAL_DOCS)) {
-            const path = doc.fileUrl.split(`${BUCKET_LEGAL_DOCS}/`).pop();
-            if (path) {
-                await supabaseAdmin.storage.from(BUCKET_LEGAL_DOCS).remove([path]);
+            const filePath = extractPathFromUrl(doc.fileUrl, BUCKET_LEGAL_DOCS);
+            if (filePath) {
+                await removeFiles(BUCKET_LEGAL_DOCS, [filePath]);
             }
         }
 
@@ -806,21 +809,22 @@ app.post("/user-documents", async (c) => {
             }, 403);
         }
 
-        // Upload to Supabase Storage
+        // Upload to local storage
         const fileName = `${session.user.id}/${Date.now()}-${file.name}`;
         const arrayBuffer = await file.arrayBuffer();
-        const { error: uploadError } = await supabaseAdmin.storage
-            .from(BUCKET_USER_VAULT)
-            .upload(fileName, arrayBuffer, { contentType: file.type });
+        const { error: uploadError } = await uploadFile(
+            BUCKET_USER_VAULT,
+            fileName,
+            arrayBuffer,
+            file.type
+        );
 
         if (uploadError) {
             console.error("Upload error:", uploadError);
             return c.json({ error: "Gagal mengunggah file: " + uploadError.message }, 500);
         }
 
-        const { data: urlData } = supabaseAdmin.storage
-            .from(BUCKET_USER_VAULT)
-            .getPublicUrl(fileName);
+        const publicUrl = getPublicUrl(BUCKET_USER_VAULT, fileName);
 
         // Save document record + update storage used
         const [doc] = await prisma.$transaction([
@@ -828,7 +832,7 @@ app.post("/user-documents", async (c) => {
                 data: {
                     userId: session.user.id,
                     name: file.name,
-                    fileUrl: urlData.publicUrl,
+                    fileUrl: publicUrl,
                     fileSize: file.size,
                     fileType: file.type,
                 },
@@ -860,10 +864,10 @@ app.delete("/user-documents/:id", async (c) => {
 
         if (!doc) return c.json({ error: "Dokumen tidak ditemukan" }, 404);
 
-        // Delete from Supabase Storage
-        const path = doc.fileUrl.split(`${BUCKET_USER_VAULT}/`).pop();
-        if (path) {
-            await supabaseAdmin.storage.from(BUCKET_USER_VAULT).remove([path]);
+        // Delete from local storage
+        const filePath = extractPathFromUrl(doc.fileUrl, BUCKET_USER_VAULT);
+        if (filePath) {
+            await removeFiles(BUCKET_USER_VAULT, [filePath]);
         }
 
         // Delete record + decrement storage
@@ -1000,43 +1004,44 @@ app.post("/company-logo", async (c) => {
             return c.json({ error: "Ukuran logo maksimal 2MB" }, 400);
         }
 
-        // Delete old logo from Supabase if exists
+        // Delete old logo from local storage if exists
         const currentUser = await prisma.user.findUnique({
             where: { id: session.user.id },
             select: { companyLogo: true },
         });
 
         if (currentUser?.companyLogo) {
-            const oldPath = currentUser.companyLogo.split(`${BUCKET_USER_VAULT}/`).pop();
+            const oldPath = extractPathFromUrl(currentUser.companyLogo, BUCKET_USER_VAULT);
             if (oldPath) {
-                await supabaseAdmin.storage.from(BUCKET_USER_VAULT).remove([oldPath]);
+                await removeFiles(BUCKET_USER_VAULT, [oldPath]);
             }
         }
 
-        // Upload to Supabase Storage
+        // Upload to local storage
         const ext = file.name.split(".").pop()?.toLowerCase() || "png";
         const fileName = `${session.user.id}/company-logo-${Date.now()}.${ext}`;
         const arrayBuffer = await file.arrayBuffer();
-        const { error: uploadError } = await supabaseAdmin.storage
-            .from(BUCKET_USER_VAULT)
-            .upload(fileName, arrayBuffer, { contentType: file.type });
+        const { error: uploadError } = await uploadFile(
+            BUCKET_USER_VAULT,
+            fileName,
+            arrayBuffer,
+            file.type
+        );
 
         if (uploadError) {
             console.error("Upload logo error:", uploadError);
             return c.json({ error: "Gagal mengunggah logo: " + uploadError.message }, 500);
         }
 
-        const { data: urlData } = supabaseAdmin.storage
-            .from(BUCKET_USER_VAULT)
-            .getPublicUrl(fileName);
+        const logoUrl = getPublicUrl(BUCKET_USER_VAULT, fileName);
 
         // Update user record
         await prisma.user.update({
             where: { id: session.user.id },
-            data: { companyLogo: urlData.publicUrl },
+            data: { companyLogo: logoUrl },
         });
 
-        return c.json({ companyLogo: urlData.publicUrl }, 201);
+        return c.json({ companyLogo: logoUrl }, 201);
     } catch (error) {
         console.error("Upload company logo error:", error);
         return c.json({ error: "Terjadi kesalahan saat upload logo" }, 500);
@@ -1055,9 +1060,9 @@ app.delete("/company-logo", async (c) => {
         });
 
         if (user?.companyLogo) {
-            const path = user.companyLogo.split(`${BUCKET_USER_VAULT}/`).pop();
-            if (path) {
-                await supabaseAdmin.storage.from(BUCKET_USER_VAULT).remove([path]);
+            const logoPath = extractPathFromUrl(user.companyLogo, BUCKET_USER_VAULT);
+            if (logoPath) {
+                await removeFiles(BUCKET_USER_VAULT, [logoPath]);
             }
         }
 

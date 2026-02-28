@@ -57,6 +57,10 @@ COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 # Copy the env file if needed by prisma at runtime
 COPY --from=builder --chown=nextjs:nodejs /app/.env* ./
 
+# Create uploads directory for local file storage
+RUN mkdir -p uploads/legal-docs uploads/user-vault
+RUN chown -R nextjs:nodejs uploads
+
 USER nextjs
 
 EXPOSE 3000
