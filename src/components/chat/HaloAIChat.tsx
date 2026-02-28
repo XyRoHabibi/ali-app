@@ -88,7 +88,7 @@ export default function HaloAIChat() {
     }, []);
 
     return (
-        <div className="group relative bg-white rounded-2xl border border-slate-200/80 overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-shadow duration-300" style={{ height: "520px" }}>
+        <div className="group relative bg-white rounded-2xl border border-slate-200/80 overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-shadow duration-300" style={{ height: "640px" }}>
             {/* ✨ Premium Header */}
             <div className="relative overflow-hidden bg-gradient-to-br from-[#1e4f7e] via-[#2a6ba7] to-[#3b82c4] px-5 py-4">
                 {/* Decorative elements */}
