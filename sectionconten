@@ -1,0 +1,198 @@
+<section class="py-12 bg-gray-50">
+            <div class="max-w-5xl mx-auto px-6">
+                <div class="mb-6">
+                    <span class="inline-block rounded-full bg-yellow-400 text-black text-sm font-semibold px-4 py-1">
+                        Persyaratan Pendaftaran Merek
+                    </span>
+                    <h2 class="mt-3 text-3xl font-bold leading-tight sm:text-4xl">Siap Mendaftarkan Merek?
+                        <span class="block">Ini Persyaratan yang Perlu Anda Siapkan</span>
+                    </h2>
+                    <p class="mt-3 text-slate-600 max-w-2xl"></p>
+                </div>
+
+                <div class="mt-12 space-y-6">
+                    <div class="rounded-2xl bg-white p-6 shadow ring-1 ring-slate-200">
+                        <div class="mb-6">
+                            <h3 class="text-xl font-bold text-gray-800">Dokumen & Data yang Diperlukan</h3>
+                            <p class="mt-1 text-sm text-slate-600">Pastikan Anda memiliki data-data berikut untuk proses
+                                pendaftaran yang cepat.</p>
+                        </div>
+
+                        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                            <div class="flex items-start gap-3 rounded-xl bg-gray-50 p-4">
+                                <span
+                                    class="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-green-500/25">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        class="h-4 w-4 text-green-700">
+                                        <path fill-rule="evenodd"
+                                            d="M2.25 12a9.75 9.75 0 1119.5 0 9.75 9.75 0 01-19.5 0zm14.03-2.47a.75.75 0 10-1.06-1.06l-5.22 5.22-1.72-1.72a.75.75 0 10-1.06 1.06l2.25 2.25c.3.3.79.3 1.09 0l5.72-5.75z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+                                <div>
+                                    <p class="font-semibold text-gray-800">Nama Lengkap</p>
+                                    <p class="text-sm text-slate-600">Pribadi / Badan Usaha</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 rounded-xl bg-gray-50 p-4">
+                                <span
+                                    class="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-green-500/25">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        class="h-4 w-4 text-green-700">
+                                        <path fill-rule="evenodd"
+                                            d="M2.25 12a9.75 9.75 0 1119.5 0 9.75 9.75 0 01-19.5 0zm14.03-2.47a.75.75 0 10-1.06-1.06l-5.22 5.22-1.72-1.72a.75.75 0 10-1.06 1.06l2.25 2.25c.3.3.79.3 1.09 0l5.72-5.75z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+                                <div>
+                                    <p class="font-semibold text-gray-800">Dokumen Identitas</p>
+                                    <p class="text-sm text-slate-600">KTP, NPWP, dan NIB</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 rounded-xl bg-gray-50 p-4">
+                                <span
+                                    class="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-green-500/25">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        class="h-4 w-4 text-green-700">
+                                        <path fill-rule="evenodd"
+                                            d="M2.25 12a9.75 9.75 0 1119.5 0 9.75 9.75 0 01-19.5 0zm14.03-2.47a.75.75 0 10-1.06-1.06l-5.22 5.22-1.72-1.72a.75.75 0 10-1.06 1.06l2.25 2.25c.3.3.79.3 1.09 0l5.72-5.75z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+                                <div>
+                                    <p class="font-semibold text-gray-800">Informasi Kontak</p>
+                                    <p class="text-sm text-slate-600">Nomor Telepon dan Email</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 rounded-xl bg-gray-50 p-4">
+                                <span
+                                    class="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-green-500/25">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        class="h-4 w-4 text-green-700">
+                                        <path fill-rule="evenodd"
+                                            d="M2.25 12a9.75 9.75 0 1119.5 0 9.75 9.75 0 01-19.5 0zm14.03-2.47a.75.75 0 10-1.06-1.06l-5.22 5.22-1.72-1.72a.75.75 0 10-1.06 1.06l2.25 2.25c.3.3.79.3 1.09 0l5.72-5.75z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+                                <div>
+                                    <p class="font-semibold text-gray-800">Bidang Usaha</p>
+                                    <p class="text-sm text-slate-600">Deskripsi singkat produk/layanan</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 rounded-xl bg-gray-50 p-4">
+                                <span
+                                    class="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-green-500/25">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        class="h-4 w-4 text-green-700">
+                                        <path fill-rule="evenodd"
+                                            d="M2.25 12a9.75 9.75 0 1119.5 0 9.75 9.75 0 01-19.5 0zm14.03-2.47a.75.75 0 10-1.06-1.06l-5.22 5.22-1.72-1.72a.75.75 0 10-1.06 1.06l2.25 2.25c.3.3.79.3 1.09 0l5.72-5.75z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+                                <div>
+                                    <p class="font-semibold text-gray-800">Alamat Lengkap</p>
+                                    <p class="text-sm text-slate-600">Kota, Kecamatan, dan Kelurahan</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 rounded-xl bg-gray-50 p-4">
+                                <span
+                                    class="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-green-500/25">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        class="h-4 w-4 text-green-700">
+                                        <path fill-rule="evenodd"
+                                            d="M2.25 12a9.75 9.75 0 1119.5 0 9.75 9.75 0 01-19.5 0zm14.03-2.47a.75.75 0 10-1.06-1.06l-5.22 5.22-1.72-1.72a.75.75 0 10-1.06 1.06l2.25 2.25c.3.3.79.3 1.09 0l5.72-5.75z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+                                <div>
+                                    <p class="font-semibold text-gray-800">Logo Usaha</p>
+                                    <p class="text-sm text-slate-600">Format JPG/PNG</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 rounded-xl bg-gray-50 p-4">
+                                <span
+                                    class="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-green-500/25">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        class="h-4 w-4 text-green-700">
+                                        <path fill-rule="evenodd"
+                                            d="M2.25 12a9.75 9.75 0 1119.5 0 9.75 9.75 0 01-19.5 0zm14.03-2.47a.75.75 0 10-1.06-1.06l-5.22 5.22-1.72-1.72a.75.75 0 10-1.06 1.06l2.25 2.25c.3.3.79.3 1.09 0l5.72-5.75z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+                                <div>
+                                    <p class="font-semibold text-gray-800">Foto Pemohon</p>
+                                    <p class="text-sm text-slate-600">Latar belakang biru</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rounded-2xl bg-white p-6 shadow ring-1 ring-slate-200">
+                        <div class="mb-6">
+                            <h3 class="text-xl font-bold text-gray-800">Dokumen yang Akan Anda Dapatkan</h3>
+                            <p class="mt-1 text-sm text-slate-600">Setelah semua proses selesai, berikut dokumen yang
+                                akan
+                                Anda terima.</p>
+                        </div>
+                        <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-start gap-3">
+                                <span class="inline-flex h-6 w-6 items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        class="h-4 w-4 text-green-500">
+                                        <path fill-rule="evenodd"
+                                            d="M2.25 12a9.75 9.75 0 1119.5 0 9.75 9.75 0 01-19.5 0zm14.03-2.47a.75.75 0 10-1.06-1.06l-5.22 5.22-1.72-1.72a.75.75 0 10-1.06 1.06l2.25 2.25c.3.3.79.3 1.09 0l5.72-5.75z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+                                <p>Form pendaftaran resmi <span class="italic text-sm text-slate-500">(bisa digunakan
+                                        dalam
+                                        7-14 hari kerja)</span></p>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="inline-flex h-6 w-6 items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        class="h-4 w-4 text-green-500">
+                                        <path fill-rule="evenodd"
+                                            d="M2.25 12a9.75 9.75 0 1119.5 0 9.75 9.75 0 01-19.5 0zm14.03-2.47a.75.75 0 10-1.06-1.06l-5.22 5.22-1.72-1.72a.75.75 0 10-1.06 1.06l2.25 2.25c.3.3.79.3 1.09 0l5.72-5.75z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+                                <p>Sertifikat Merek <span class="italic text-sm text-slate-500">(proses penerbitan
+                                        sekitar
+                                        12 bulan)</span></p>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="inline-flex h-6 w-6 items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        class="h-4 w-4 text-green-500">
+                                        <path fill-rule="evenodd"
+                                            d="M2.25 12a9.75 9.75 0 1119.5 0 9.75 9.75 0 01-19.5 0zm14.03-2.47a.75.75 0 10-1.06-1.06l-5.22 5.22-1.72-1.72a.75.75 0 10-1.06 1.06l2.25 2.25c.3.3.79.3 1.09 0l5.72-5.75z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+                                <p>Masa aktif merek selama <span class="font-bold">10 tahun</span> dan dapat
+                                    diperpanjang.
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-6">
+                    <div
+                        class="flex flex-col gap-4 rounded-xl bg-slate-100 p-6 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <p class="text-base text-gray-800 font-semibold">Dokumen belum lengkap?</p>
+                            <p class="text-sm text-slate-600 mt-1">Tim kami siap membantu siapkan dan cek kelayakan
+                                dokumen
+                                Anda secara gratis.</p>
+                        </div>
+                        <a href="https://api.whatsapp.com/send?phone=6285333338818&text=Halo%20admin%20saya%20dari%20website,%20ingin%20konsultasi%20terkait%20merek"
+                            target="_blank" rel="noopener noreferrer"
+                            class="inline-flex items-center justify-center rounded-lg border border-yellow-500 bg-white px-6 py-3 font-semibold text-yellow-500 hover:bg-yellow-50 hover:text-yellow-600 transition-colors duration-200">
+                            Hubungi Tim Kami
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
