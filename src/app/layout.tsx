@@ -19,6 +19,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://ali-app-dev.vercel.app"),
   title: "Akses Legal Indonesia - Legalitas Bisnis Mudah & Termurah",
   description:
     "Partner legalitas bisnis terpercaya di Indonesia. Membantu UMKM naik kelas dengan proses yang mudah, cepat, dan transparan. Pendirian PT, CV, HAKI, dan perizinan usaha.",
@@ -42,12 +43,21 @@ export const metadata: Metadata = {
     type: "website",
     locale: "id_ID",
     siteName: "Akses Legal Indonesia",
+    images: [
+      {
+        url: "/images/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Akses Legal Indonesia - Legalitas Bisnis Mudah & Termurah",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Akses Legal Indonesia - Legalitas Bisnis Mudah & Termurah",
     description:
       "Partner legalitas bisnis terpercaya di Indonesia. Pendirian PT, CV, HAKI dengan proses cepat dan harga transparan.",
+    images: ["/images/og-image.png"],
   },
   robots: {
     index: true,
