@@ -69,6 +69,7 @@ COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
 # Copy entrypoint script
 COPY docker-entrypoint.sh ./
+RUN sed -i 's/\r$//' docker-entrypoint.sh
 RUN chmod +x docker-entrypoint.sh
 
 # Buat direktori uploads dengan permission yang benar
