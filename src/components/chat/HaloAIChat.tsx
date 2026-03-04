@@ -106,7 +106,7 @@ export default function HaloAIChat() {
                     </div>
 
                     <div className="flex-1 min-w-0">
-                        <h3 className="text-white font-bold text-[15px] tracking-tight">Ali Assistant</h3>
+                        <h3 className="text-white font-bold text-[15px] tracking-tight">Legal Assistant</h3>
                         <div className="flex items-center gap-2 mt-0.5">
                             <span className="relative flex h-2 w-2">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
