@@ -45,3 +45,6 @@ prisma/update-admin.ts
 
 # Uploaded files (local storage)
 /uploads/
+
+# sql
+data_ali_app.sql

@@ -1,9 +1,13 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import HaloAIChat from "@/components/chat/HaloAIChat";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface Application {
     id: string;
@@ -50,6 +54,8 @@ export default function DashboardPage() {
     const [remindersLoading, setRemindersLoading] = useState(true);
     const [showAllReminders, setShowAllReminders] = useState(false);
 
+    const chatSidebarRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
         async function fetchApplications() {
             try {
@@ -83,6 +89,16 @@ export default function DashboardPage() {
             }
         }
         fetchReminders();
+    }, []);
+
+    // GSAP: animate HaloAIChat sidebar entrance
+    useEffect(() => {
+        if (!chatSidebarRef.current) return;
+        gsap.fromTo(
+            chatSidebarRef.current,
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.6, ease: "power2.out", delay: 0.3 }
+        );
     }, []);
 
 
@@ -429,7 +445,7 @@ export default function DashboardPage() {
                 </div>
 
                 {/* AI Chatbot Sidebar — HaloAI Live Chat */}
-                <div className="space-y-6">
+                <div ref={chatSidebarRef} className="space-y-6 lg:sticky lg:top-[100px] self-start opacity-0">
                     <HaloAIChat />
                 </div>
             </div>

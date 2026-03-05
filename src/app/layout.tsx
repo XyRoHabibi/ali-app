@@ -83,7 +83,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${plusJakartaSans.variable} ${outfit.variable} bg-[#f9fafb] text-[#101519] min-h-screen overflow-x-hidden font-[family-name:var(--font-display)]`}
+        className={`${plusJakartaSans.variable} ${outfit.variable} bg-[#f9fafb] text-[#101519] min-h-screen overflow-x-clip font-[family-name:var(--font-display)]`}
       >
         <Providers>
           <LayoutWrapper>{children}</LayoutWrapper>
