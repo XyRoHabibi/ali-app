@@ -151,38 +151,37 @@ export default function DashboardPage() {
                 </div>
             </div>
 
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-                {statsData.map((stat, index) => (
-                    <div
-                        key={index}
-                        className="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg hover:shadow-slate-200/50 transition-all"
-                    >
-                        <div className="flex items-start justify-between mb-4">
-                            <div
-                                className={`h-12 w-12 rounded-xl ${stat.bgColor} flex items-center justify-center`}
-                            >
-                                <span className={`material-symbols-outlined ${stat.textColor}`}>
-                                    {stat.icon}
-                                </span>
-                            </div>
-                        </div>
-                        <p className="text-3xl font-black tracking-tight">
-                            {loading ? (
-                                <span className="inline-block h-8 w-12 bg-slate-100 rounded animate-pulse" />
-                            ) : (
-                                stat.value
-                            )}
-                        </p>
-                        <p className="text-sm font-bold text-slate-400 mt-1">{stat.label}</p>
-                    </div>
-                ))}
-            </div>
-
             {/* Content Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
                 {/* Main Content Column */}
                 <div className="lg:col-span-2 space-y-10">
+                    {/* Stats Grid */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        {statsData.map((stat, index) => (
+                            <div
+                                key={index}
+                                className="bg-white rounded-xl border border-slate-200 p-4 hover:shadow-lg hover:shadow-slate-200/50 transition-all"
+                            >
+                                <div className="flex items-start justify-between mb-3">
+                                    <div
+                                        className={`h-10 w-10 rounded-lg ${stat.bgColor} flex items-center justify-center`}
+                                    >
+                                        <span className={`material-symbols-outlined text-[20px] ${stat.textColor}`}>
+                                            {stat.icon}
+                                        </span>
+                                    </div>
+                                </div>
+                                <p className="text-2xl font-black tracking-tight">
+                                    {loading ? (
+                                        <span className="inline-block h-7 w-10 bg-slate-100 rounded animate-pulse" />
+                                    ) : (
+                                        stat.value
+                                    )}
+                                </p>
+                                <p className="text-xs font-bold text-slate-400 mt-1">{stat.label}</p>
+                            </div>
+                        ))}
+                    </div>
                     {/* Dashboard Segment: Pengingat Pajak */}
                     <div className="space-y-4">
                         <div className="flex items-center justify-between">
