@@ -171,8 +171,33 @@ export default function DashboardPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
                 {/* Main Content Column */}
                 <div className="lg:col-span-2 space-y-10">
-                    {/* Stats Grid */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    {/* Stats Grid — Mobile: compact 2-col | Desktop: card grid */}
+                    {/* Mobile View */}
+                    <div className="sm:hidden grid grid-cols-2 gap-3">
+                        {statsData.map((stat, index) => (
+                            <div key={index} className="bg-white rounded-xl border border-slate-200 px-3 py-2.5 flex items-center gap-2.5">
+                                <div
+                                    className={`h-8 w-8 rounded-lg ${stat.bgColor} flex items-center justify-center flex-shrink-0`}
+                                >
+                                    <span className={`material-symbols-outlined text-[16px] ${stat.textColor}`}>
+                                        {stat.icon}
+                                    </span>
+                                </div>
+                                <div className="min-w-0">
+                                    <p className="text-base font-black tracking-tight leading-tight">
+                                        {loading ? (
+                                            <span className="inline-block h-4 w-6 bg-slate-100 rounded animate-pulse" />
+                                        ) : (
+                                            stat.value
+                                        )}
+                                    </p>
+                                    <p className="text-[10px] font-bold text-slate-400 leading-tight">{stat.label}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    {/* Desktop Grid View */}
+                    <div className="hidden sm:grid sm:grid-cols-4 gap-4">
                         {statsData.map((stat, index) => (
                             <div
                                 key={index}
