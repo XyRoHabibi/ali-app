@@ -97,7 +97,7 @@ export default function DashboardPage() {
         gsap.fromTo(
             chatSidebarRef.current,
             { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 0.6, ease: "power2.out", delay: 0.3 }
+            { opacity: 1, y: 0, duration: 0.6, ease: "power2.out", delay: 0.3, clearProps: "transform" }
         );
     }, []);
 
@@ -470,7 +470,7 @@ export default function DashboardPage() {
                 </div>
 
                 {/* AI Chatbot Sidebar — HaloAI Live Chat */}
-                <div ref={chatSidebarRef} className="space-y-6 lg:sticky lg:top-[100px] self-start opacity-0">
+                <div ref={chatSidebarRef} className="space-y-6 lg:sticky lg:top-[100px] self-start opacity-0 z-[9999]">
                     <HaloAIChat />
                 </div>
             </div>

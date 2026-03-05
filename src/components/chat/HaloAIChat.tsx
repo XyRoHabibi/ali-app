@@ -26,6 +26,7 @@ export default function HaloAIChat() {
     const scriptLoadedRef = useRef(false);
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
+    const [isMobileOpen, setIsMobileOpen] = useState(false);
 
     useEffect(() => {
         if (scriptLoadedRef.current) return;
@@ -86,93 +87,169 @@ export default function HaloAIChat() {
             if (s) s.remove();
         };
     }, []);
+    // Lock body scroll when mobile chat is open
+    useEffect(() => {
+        if (isMobileOpen) {
+            document.documentElement.classList.add("haloai-open");
+            document.body.classList.add("haloai-open");
+        } else {
+            document.documentElement.classList.remove("haloai-open");
+            document.body.classList.remove("haloai-open");
+        }
+
+        return () => {
+            document.documentElement.classList.remove("haloai-open");
+            document.body.classList.remove("haloai-open");
+        };
+    }, [isMobileOpen]);
 
     return (
-        <div className="group relative bg-white rounded-2xl border border-slate-200/80 overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-shadow duration-300" style={{ height: "640px" }}>
-            {/* ✨ Premium Header */}
-            <div className="relative overflow-hidden bg-gradient-to-br from-[#1e4f7e] via-[#2a6ba7] to-[#3b82c4] px-5 py-4">
-                {/* Decorative elements */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-                <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
-                <div className="absolute top-2 right-12 w-2 h-2 bg-white/20 rounded-full animate-pulse" />
+        <>
+            {/* Chat Modal Backdrop (Mobile only) */}
+            {isMobileOpen && (
+                <div
+                    className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[99998] lg:hidden transition-opacity duration-300 touch-none"
+                    onClick={() => setIsMobileOpen(false)}
+                />
+            )}
 
-                <div className="relative flex items-center gap-3.5">
-                    {/* Avatar with glow */}
-                    <div className="relative">
-                        <div className="absolute inset-0 bg-emerald-400/30 rounded-full blur-md animate-pulse" />
-                        <div className="relative h-11 w-11 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center ring-2 ring-white/20">
-                            <span className="material-symbols-outlined text-white text-xl">smart_toy</span>
-                        </div>
-                    </div>
-
-                    <div className="flex-1 min-w-0">
-                        <h3 className="text-white font-bold text-[15px] tracking-tight">Legal Assistant</h3>
-                        <div className="flex items-center gap-2 mt-0.5">
-                            <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
-                            </span>
-                            <span className="text-white/60 text-[11px] font-medium tracking-wide uppercase">Live Chat</span>
-                        </div>
-                    </div>
-
-                    {/* HaloAI Badge */}
-                    <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm rounded-lg px-2.5 py-1.5">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                            src="https://www.haloai.co.id/haloai/halo-ai-icon-contact.webp"
-                            alt="HaloAI"
-                            className="h-4 w-4 object-contain"
-                        />
-                        <span className="text-white/70 text-[10px] font-semibold tracking-wide">HaloAI</span>
-                    </div>
+            {/* Floating Assistant Button */}
+            <div className={`fixed bottom-4 right-4 z-[99997] lg:hidden flex items-end justify-end transition-transform duration-300 ${isMobileOpen ? 'scale-0 opacity-0 pointer-events-none' : 'scale-100 opacity-100'}`}>
+                {/* Chat Bubble */}
+                <div
+                    onClick={() => setIsMobileOpen(true)}
+                    className="relative top-[-30px] mr-[-15px] bg-[#2a6ba7] text-white text-[13px] whitespace-nowrap font-bold px-4 py-3 rounded-2xl rounded-br-sm shadow-xl shadow-blue-900/20 cursor-pointer animate-[float_3s_ease-in-out_infinite] hover:bg-[#1e4f7e] transition-colors"
+                >
+                    Hi, aku siap membantu
+                    {/* Tail pointing right towards the gif */}
+                    <div className="absolute -right-[8px] bottom-1 border-t-[8px] border-b-[8px] border-l-[10px] border-transparent border-l-[#2a6ba7]"></div>
                 </div>
+
+                {/* GIF Mascot */}
+                <button
+                    onClick={() => setIsMobileOpen(true)}
+                    className="relative shrink-0 flex flex-col items-center justify-center hover:scale-105 transition-transform duration-300 z-10"
+                    aria-label="Buka Live Chat"
+                >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                        src="/legalassistant.gif"
+                        alt="Legal Assistant"
+                        className="w-[110px] h-[110px] object-contain drop-shadow-lg"
+                    />
+                </button>
             </div>
 
-            {/* Chat Body — HaloAI Embed */}
-            <div className="flex-1 relative overflow-hidden bg-gradient-to-b from-slate-50 to-white">
-                {/* Loading State */}
-                {isLoading && (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center z-10 bg-gradient-to-b from-slate-50 to-white">
-                        <div className="relative mb-4">
-                            <div className="h-12 w-12 rounded-full bg-[#2a6ba7]/10 flex items-center justify-center">
-                                <span className="material-symbols-outlined text-[#2a6ba7] text-2xl animate-pulse">smart_toy</span>
-                            </div>
-                            <div className="absolute -inset-1 rounded-full border-2 border-[#2a6ba7]/20 border-t-[#2a6ba7] animate-spin" />
-                        </div>
-                        <p className="text-sm font-semibold text-slate-600">Menghubungkan...</p>
-                        <p className="text-[11px] text-slate-400 mt-1">Menyiapkan live chat untuk Anda</p>
-                    </div>
-                )}
+            {/* Chat Container */}
+            <div
+                className={`
+                    group bg-white overflow-hidden flex flex-col shadow-sm transition-all duration-300
+                    /* Desktop Styles */
+                    hidden lg:flex lg:rounded-2xl lg:border lg:border-slate-200/80 lg:w-full lg:h-[640px] lg:hover:shadow-md lg:relative
+                    /* Mobile Styles (Alert-like) */
+                    ${isMobileOpen
+                        ? "!fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-3rem)] sm:w-[380px] z-[99999] h-[75vh] min-h-[500px] max-h-[700px] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] !flex border border-slate-200"
+                        : ""
+                    }
+                `}
+                style={{ height: isMobileOpen ? undefined : '640px' }}
+            >
+                {/* ✨ Premium Header */}
+                <div className="relative overflow-hidden bg-gradient-to-br from-[#1e4f7e] via-[#2a6ba7] to-[#3b82c4] px-5 py-4 shrink-0">
+                    {/* Decorative elements */}
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+                    <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
+                    <div className="absolute top-2 right-12 w-2 h-2 bg-white/20 rounded-full animate-pulse" />
 
-                {/* Error State */}
-                {hasError && !isLoading && (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center z-10 bg-gradient-to-b from-slate-50 to-white px-6">
-                        <div className="h-14 w-14 rounded-2xl bg-red-50 flex items-center justify-center mb-4">
-                            <span className="material-symbols-outlined text-red-400 text-2xl">wifi_off</span>
+                    <div className="relative flex items-center justify-between gap-3.5">
+                        <div className="flex items-center gap-3.5">
+                            {/* Avatar with glow */}
+                            <div className="relative">
+                                <div className="absolute inset-0 bg-emerald-400/30 rounded-full blur-md animate-pulse" />
+                                <div className="relative h-11 w-11 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center ring-2 ring-white/20">
+                                    <span className="material-symbols-outlined text-white text-xl">smart_toy</span>
+                                </div>
+                            </div>
+
+                            <div className="flex-1 min-w-0">
+                                <h3 className="text-white font-bold text-[15px] tracking-tight">Legal Assistant</h3>
+                                <div className="flex items-center gap-2 mt-0.5">
+                                    <span className="relative flex h-2 w-2">
+                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+                                    </span>
+                                    <span className="text-white/60 text-[11px] font-medium tracking-wide uppercase">Live Chat</span>
+                                </div>
+                            </div>
+
+                            {/* HaloAI Badge */}
+                            <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm rounded-lg px-2.5 py-1.5">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src="https://www.haloai.co.id/haloai/halo-ai-icon-contact.webp"
+                                    alt="HaloAI"
+                                    className="h-4 w-4 object-contain"
+                                />
+                                <span className="text-white/70 text-[10px] font-semibold tracking-wide hidden sm:inline">HaloAI</span>
+                            </div>
                         </div>
-                        <p className="text-sm font-bold text-slate-700 mb-1">Koneksi Gagal</p>
-                        <p className="text-xs text-slate-400 text-center leading-relaxed">
-                            Tidak dapat menghubungkan ke live chat. Silakan refresh halaman atau coba lagi nanti.
-                        </p>
+
+                        {/* Mobile Close Button */}
                         <button
-                            onClick={() => window.location.reload()}
-                            className="mt-4 px-4 py-2 bg-[#2a6ba7] text-white text-xs font-bold rounded-xl hover:bg-[#1e4f7e] transition-colors"
+                            onClick={() => setIsMobileOpen(false)}
+                            className="lg:hidden h-8 w-8 ml-auto bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-colors shadow-sm"
+                            aria-label="Tutup live chat"
                         >
-                            Refresh Halaman
+                            <span className="material-symbols-outlined text-[20px]">close</span>
                         </button>
                     </div>
-                )}
+                </div>
 
-                {/* HaloAI iframe container */}
-                <div
-                    id={CONTAINER_ID}
-                    className="w-full h-full [&_div]:!shadow-none [&_div]:!rounded-none [&_iframe]:!rounded-none [&_iframe]:!shadow-none"
-                />
+                {/* Chat Body — HaloAI Embed */}
+                <div className="flex-1 relative overflow-hidden bg-gradient-to-b from-slate-50 to-white">
+                    {/* Loading State */}
+                    {isLoading && (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center z-10 bg-gradient-to-b from-slate-50 to-white">
+                            <div className="relative mb-4">
+                                <div className="h-12 w-12 rounded-full bg-[#2a6ba7]/10 flex items-center justify-center">
+                                    <span className="material-symbols-outlined text-[#2a6ba7] text-2xl animate-pulse">smart_toy</span>
+                                </div>
+                                <div className="absolute -inset-1 rounded-full border-2 border-[#2a6ba7]/20 border-t-[#2a6ba7] animate-spin" />
+                            </div>
+                            <p className="text-sm font-semibold text-slate-600">Menghubungkan...</p>
+                            <p className="text-[11px] text-slate-400 mt-1">Menyiapkan live chat untuk Anda</p>
+                        </div>
+                    )}
+
+                    {/* Error State */}
+                    {hasError && !isLoading && (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center z-10 bg-gradient-to-b from-slate-50 to-white px-6">
+                            <div className="h-14 w-14 rounded-2xl bg-red-50 flex items-center justify-center mb-4">
+                                <span className="material-symbols-outlined text-red-400 text-2xl">wifi_off</span>
+                            </div>
+                            <p className="text-sm font-bold text-slate-700 mb-1">Koneksi Gagal</p>
+                            <p className="text-xs text-slate-400 text-center leading-relaxed">
+                                Tidak dapat menghubungkan ke live chat. Silakan refresh halaman atau coba lagi nanti.
+                            </p>
+                            <button
+                                onClick={() => window.location.reload()}
+                                className="mt-4 px-4 py-2 bg-[#2a6ba7] text-white text-xs font-bold rounded-xl hover:bg-[#1e4f7e] transition-colors"
+                            >
+                                Refresh Halaman
+                            </button>
+                        </div>
+                    )}
+
+                    {/* HaloAI iframe container */}
+                    <div
+                        id={CONTAINER_ID}
+                        className="w-full h-full [&_div]:!shadow-none [&_div]:!rounded-none [&_iframe]:!rounded-none [&_iframe]:!shadow-none"
+                    />
+                </div>
+
+                {/* Bottom accent line */}
+                <div className="h-1 bg-gradient-to-r from-[#2a6ba7] via-emerald-400 to-[#3b82c4]" />
             </div>
-
-            {/* Bottom accent line */}
-            <div className="h-1 bg-gradient-to-r from-[#2a6ba7] via-emerald-400 to-[#3b82c4]" />
-        </div>
+        </>
     );
 }
