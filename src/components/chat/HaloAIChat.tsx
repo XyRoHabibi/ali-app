@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 const CHANNEL_ID = "019ca236-76af-75da-99ef-7d12829dd140";
 const SESSION_ID = "019ca236-7920-729b-beed-d1d4bb938242";
@@ -27,6 +28,39 @@ export default function HaloAIChat() {
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
     const [isMobileOpen, setIsMobileOpen] = useState(false);
+    const [showBubble, setShowBubble] = useState(false);
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragConstraints, setDragConstraints] = useState({ left: 0, right: 0, top: 0, bottom: 0 });
+
+    useEffect(() => {
+        const updateConstraints = () => {
+            setDragConstraints({
+                left: 0,
+                right: 0,
+                top: -(window.innerHeight - 110 - 64),
+                bottom: 20
+            });
+        };
+        updateConstraints();
+        window.addEventListener('resize', updateConstraints);
+        return () => window.removeEventListener('resize', updateConstraints);
+    }, []);
+
+    // Show bubble after 2s, hide after 12s total (10s duration)
+    useEffect(() => {
+        const showTimer = setTimeout(() => {
+            setShowBubble(true);
+        }, 3000);
+
+        const hideTimer = setTimeout(() => {
+            setShowBubble(false);
+        }, 10000);
+
+        return () => {
+            clearTimeout(showTimer);
+            clearTimeout(hideTimer);
+        };
+    }, []);
 
     useEffect(() => {
         if (scriptLoadedRef.current) return;
@@ -114,20 +148,37 @@ export default function HaloAIChat() {
             )}
 
             {/* Floating Assistant Button */}
-            <div className={`fixed bottom-4 right-4 z-[99997] lg:hidden flex items-end justify-end transition-transform duration-300 ${isMobileOpen ? 'scale-0 opacity-0 pointer-events-none' : 'scale-100 opacity-100'}`}>
-                {/* Chat Bubble */}
+            <motion.div
+                className={`fixed bottom-10 right-4 z-[99997] lg:hidden flex items-end justify-end transition-opacity duration-300 ${isMobileOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+                drag="y"
+                dragConstraints={dragConstraints}
+                dragMomentum={false}
+                dragElastic={0}
+                onDragStart={() => setIsDragging(true)}
+                onDragEnd={() => {
+                    setTimeout(() => setIsDragging(false), 150);
+                }}
+                style={{ touchAction: "none" }}
+            >
+                {/* Chat Bubble (Disappears after 10s) */}
                 <div
-                    onClick={() => setIsMobileOpen(true)}
-                    className="relative top-[-30px] mr-[-15px] bg-[#2a6ba7] text-white text-[13px] whitespace-nowrap font-bold px-4 py-3 rounded-2xl rounded-br-sm shadow-xl shadow-blue-900/20 cursor-pointer animate-[float_3s_ease-in-out_infinite] hover:bg-[#1e4f7e] transition-colors"
+                    className={`relative mb-[50px] mr-[-15px] bg-[#2a6ba7] text-white text-[13px] whitespace-nowrap font-bold px-4 py-3 rounded-2xl shadow-xl shadow-blue-900/20 cursor-pointer hover:bg-[#1e4f7e] transition-all duration-500 z-0 ${showBubble ? 'opacity-100 scale-100 translate-x-0 animate-[float_3s_ease-in-out_infinite]' : 'opacity-0 scale-90 translate-x-4 pointer-events-none'}`}
+                    onClick={(e) => {
+                        if (isDragging) return e.preventDefault();
+                        if (showBubble) setIsMobileOpen(true);
+                    }}
                 >
                     Hi, aku siap membantu
                     {/* Tail pointing right towards the gif */}
-                    <div className="absolute -right-[8px] bottom-1 border-t-[8px] border-b-[8px] border-l-[10px] border-transparent border-l-[#2a6ba7]"></div>
+                    <div className="absolute -right-[8px] top-1/2 -translate-y-1/2 border-t-[8px] border-b-[8px] border-l-[10px] border-transparent border-l-[#2a6ba7]"></div>
                 </div>
 
                 {/* GIF Mascot */}
                 <button
-                    onClick={() => setIsMobileOpen(true)}
+                    onClick={(e) => {
+                        if (isDragging) return e.preventDefault();
+                        setIsMobileOpen(true);
+                    }}
                     className="relative shrink-0 flex flex-col items-center justify-center hover:scale-105 transition-transform duration-300 z-10"
                     aria-label="Buka Live Chat"
                 >
@@ -135,10 +186,10 @@ export default function HaloAIChat() {
                     <img
                         src="/legalassistant.gif"
                         alt="Legal Assistant"
-                        className="w-[110px] h-[110px] object-contain drop-shadow-lg"
+                        className="w-[110px] h-[110px] object-contain drop-shadow-lg pointer-events-none"
                     />
                 </button>
-            </div>
+            </motion.div>
 
             {/* Chat Container */}
             <div
