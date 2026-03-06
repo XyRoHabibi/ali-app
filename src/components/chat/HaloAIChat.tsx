@@ -1,12 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useAnimation } from "framer-motion";
+import Image from "next/image";
 
 const CHANNEL_ID = "019ca236-76af-75da-99ef-7d12829dd140";
 const SESSION_ID = "019ca236-7920-729b-beed-d1d4bb938242";
 const SESSION_SECRET = "e5b987cc27844c0383d69658e24b166939912cb4aefe8fe4";
 const CONTAINER_ID = "haloai-sidebar-embed";
+
+const HEADER_HEIGHT = 80; // Dashboard top nav h-20 = 80px
+const FLOAT_BOTTOM_OFFSET = 40; // bottom-10 = 40px
+const FLOAT_ELEMENT_HEIGHT = 140; // GIF mascot ~110px
 
 declare global {
     interface Window {
@@ -30,21 +35,10 @@ export default function HaloAIChat() {
     const [isMobileOpen, setIsMobileOpen] = useState(false);
     const [showBubble, setShowBubble] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
-    const [dragConstraints, setDragConstraints] = useState({ left: 0, right: 0, top: 0, bottom: 0 });
-
-    useEffect(() => {
-        const updateConstraints = () => {
-            setDragConstraints({
-                left: 0,
-                right: 0,
-                top: -(window.innerHeight - 110 - 64),
-                bottom: 20
-            });
-        };
-        updateConstraints();
-        window.addEventListener('resize', updateConstraints);
-        return () => window.removeEventListener('resize', updateConstraints);
-    }, []);
+    const floatingRef = useRef<HTMLDivElement>(null);
+    const dragX = useMotionValue(0);
+    const dragY = useMotionValue(0);
+    const controls = useAnimation();
 
     // Show bubble after 2s, hide after 12s total (10s duration)
     useEffect(() => {
@@ -149,16 +143,48 @@ export default function HaloAIChat() {
 
             {/* Floating Assistant Button */}
             <motion.div
+                ref={floatingRef}
                 className={`fixed bottom-10 right-4 z-[99997] lg:hidden flex items-end justify-end transition-opacity duration-300 ${isMobileOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
-                drag="y"
-                dragConstraints={dragConstraints}
+                drag
                 dragMomentum={false}
-                dragElastic={0}
+                dragElastic={0.15}
+                dragConstraints={{
+                    left: -(typeof window !== 'undefined' ? window.innerWidth - 130 : 300),
+                    right: 0,
+                    top: -(typeof window !== 'undefined' ? window.innerHeight - FLOAT_BOTTOM_OFFSET - FLOAT_ELEMENT_HEIGHT - HEADER_HEIGHT : 500),
+                    bottom: 20,
+                }}
+                style={{ x: dragX, y: dragY, touchAction: "none" }}
+                animate={controls}
                 onDragStart={() => setIsDragging(true)}
                 onDragEnd={() => {
+                    // Snap X back to 0 (right edge) with a bouncy spring
+                    controls.start({
+                        x: 0,
+                        transition: {
+                            type: "spring",
+                            stiffness: 300,
+                            damping: 20,
+                            mass: 0.8,
+                        },
+                    });
+
+                    // Clamp Y so it doesn't go above the header
+                    const currentY = dragY.get();
+                    const maxUp = -(typeof window !== 'undefined' ? window.innerHeight - FLOAT_BOTTOM_OFFSET - FLOAT_ELEMENT_HEIGHT - HEADER_HEIGHT : 500);
+                    if (currentY < maxUp) {
+                        controls.start({
+                            y: maxUp,
+                            transition: {
+                                type: "spring",
+                                stiffness: 300,
+                                damping: 25,
+                            },
+                        });
+                    }
+
                     setTimeout(() => setIsDragging(false), 150);
                 }}
-                style={{ touchAction: "none" }}
             >
                 {/* Chat Bubble (Disappears after 10s) */}
                 <div
@@ -168,7 +194,7 @@ export default function HaloAIChat() {
                         if (showBubble) setIsMobileOpen(true);
                     }}
                 >
-                    Hi, aku siap membantu
+                    Hi, aku Legal Assistant <br />siap membantu
                     {/* Tail pointing right towards the gif */}
                     <div className="absolute -right-[8px] top-1/2 -translate-y-1/2 border-t-[8px] border-b-[8px] border-l-[10px] border-transparent border-l-[#2a6ba7]"></div>
                 </div>
@@ -183,10 +209,12 @@ export default function HaloAIChat() {
                     aria-label="Buka Live Chat"
                 >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <Image
                         src="/legalassistant.gif"
                         alt="Legal Assistant"
-                        className="w-[110px] h-[110px] object-contain drop-shadow-lg pointer-events-none"
+                        width={100}
+                        height={100}
+                        className="object-contain drop-shadow-lg pointer-events-none"
                     />
                 </button>
             </motion.div>
@@ -218,7 +246,15 @@ export default function HaloAIChat() {
                             <div className="relative">
                                 <div className="absolute inset-0 bg-emerald-400/30 rounded-full blur-md animate-pulse" />
                                 <div className="relative h-11 w-11 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center ring-2 ring-white/20">
-                                    <span className="material-symbols-outlined text-white text-xl">smart_toy</span>
+                                    <span className="material-symbols-outlined text-white text-xl">
+                                        <Image
+                                            src="/legalassistant.gif"
+                                            alt="Legal Assistant"
+                                            width={110}
+                                            height={110}
+                                            className="pt-2"
+                                        />
+                                    </span>
                                 </div>
                             </div>
 
